@@ -48,7 +48,7 @@ public interface Director {
 	/**
 	 * Consente di visualizzare a schermo i dati relativi all'azienda del direttore
 	 */
-	void showAgencyData();
+	void showsAgencyInfo();
 	
 	/**
 	 * Consente di avere il riferimento all'azienda gestita dal direttore

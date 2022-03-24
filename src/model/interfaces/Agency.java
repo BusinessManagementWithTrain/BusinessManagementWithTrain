@@ -8,4 +8,33 @@ package model.interfaces;
 
 public interface Agency {
 
+	/**
+	 * 
+	 * @return
+	 */
+	String getName();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	Warehouse getLoadingWarehouse();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	Warehouse getUnloadingWarehouse();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	Director getDirector();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	Material getMaterial();
 }

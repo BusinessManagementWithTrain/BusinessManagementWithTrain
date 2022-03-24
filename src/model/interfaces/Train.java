@@ -8,4 +8,43 @@ package model.interfaces;
 
 public interface Train {
 
+	/**
+	 * 
+	 */
+	void cargoManagment();
+	
+	/**
+	 * 
+	 * @param newRequest
+	 */
+	void addRequest(Request newRequest);
+	
+	/**
+	 * 
+	 */
+	void nextDestination();
+	
+	/**
+	 * 
+	 */
+	void showsCargoInfo();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	int getCargoTotalQuantity();
+	
+	/**
+	 * 
+	 * @param material
+	 * @return
+	 */
+	int getCargoQuantityByMaterial(Material material);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	Agency getCurrentDestination();
 }
