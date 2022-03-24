@@ -8,4 +8,19 @@ package model.interfaces;
 
 public interface Staff {
 
+	/**
+	 * 
+	 */
+	void startWorking();
+	
+	/**
+	 * 
+	 */
+	void stopWorking();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	int getNumber();
 }

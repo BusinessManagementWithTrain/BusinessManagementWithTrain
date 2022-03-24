@@ -8,4 +8,27 @@ package model.interfaces;
 
 public interface Warehouse {
 
+	/**
+	 * 
+	 * @param quantity
+	 */
+	void addMaterial(int quantity);
+	
+	/**
+	 * 
+	 * @param quantity
+	 */
+	void removeMaterial(int quantity);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	int getTotalCapacity();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	int getCurrentCapacity();
 }
