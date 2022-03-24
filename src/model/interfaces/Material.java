@@ -1,10 +1,17 @@
 package model.interfaces;
 
+/**
+ * Breve descrizione del materiale
+ * 
+ * @author Grasso Emanuele
+ */
+
 public interface Material {
 
 	/**
-	 * Breve descrizione del materiale
+	 * Consente di avere il riferimento al nome del materiale
 	 * 
-	 * @author Grasso Emanuele
+	 * @return il nome del materiale
 	 */
+	String getName();
 }
