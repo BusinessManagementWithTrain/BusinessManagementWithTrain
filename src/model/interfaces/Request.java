@@ -13,14 +13,14 @@ public interface Request {
 	 * 
 	 * @return azienda mittente
 	 */
-	Factory getSendingAgency();
+	Factory getSendingFactory();
 	
 	/**
 	 * Consente di avere il riferimento all'azienda che riceve il materiale
 	 * 
 	 * @return azienda destinatario
 	 */
-	Factory getReceiverAgency();
+	Factory getReceiverFactory();
 	
 	/**
 	 * Consente di avere il riferimento al tipo di materiale spedito
@@ -49,5 +49,5 @@ public interface Request {
 	 * 
 	 * @param azienda mittente
 	 */
-	void setSendingAgency(Factory sendingAgency);
+	void setSendingFactory(Factory sendingAgency);
 }

@@ -11,13 +11,13 @@ public class RequestImpl implements Request {
 	}
 
 	@Override
-	public Factory getSendingAgency() {
+	public Factory getSendingFactory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Factory getReceiverAgency() {
+	public Factory getReceiverFactory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -41,7 +41,7 @@ public class RequestImpl implements Request {
 	}
 
 	@Override
-	public void setSendingAgency(Factory sendingAgency) {
+	public void setSendingFactory(Factory sendingAgency) {
 		// TODO Auto-generated method stub
 		
 	}

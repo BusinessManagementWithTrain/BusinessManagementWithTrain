@@ -41,13 +41,13 @@ public class DirectorImpl implements Director {
 	}
 
 	@Override
-	public void showsAgencyInfo() {
+	public void showsFactoryInfo() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Factory getAgency() {
+	public Factory getFactory() {
 		// TODO Auto-generated method stub
 		return null;
 	}

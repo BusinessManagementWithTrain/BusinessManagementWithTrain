@@ -65,26 +65,26 @@ public class Test {
 		aldoDirector.addRequestToSatisfy(null);
 		aldoDirector.emptyWarehouse();
 		aldoDirector.satisfyRequest(null);
-		aldoDirector.getAgency();
+		aldoDirector.getFactory();
 		aldoDirector.getRequestById(0);
 		aldoDirector.removeRequestToSatisfy(null);
-		aldoDirector.showsAgencyInfo();
+		aldoDirector.showsFactoryInfo();
 	
 		pietroDirector.addRequestToSatisfy(null);
 		pietroDirector.emptyWarehouse();
 		pietroDirector.satisfyRequest(null);
-		pietroDirector.getAgency();
+		pietroDirector.getFactory();
 		pietroDirector.getRequestById(0);
 		pietroDirector.removeRequestToSatisfy(null);
-		pietroDirector.showsAgencyInfo();
+		pietroDirector.showsFactoryInfo();
 		
 		giovanniDirector.addRequestToSatisfy(null);
 		giovanniDirector.emptyWarehouse();
 		giovanniDirector.satisfyRequest(null);
-		giovanniDirector.getAgency();
+		giovanniDirector.getFactory();
 		giovanniDirector.getRequestById(0);
 		giovanniDirector.removeRequestToSatisfy(null);
-		giovanniDirector.showsAgencyInfo();
+		giovanniDirector.showsFactoryInfo();
 	}
 	
 	@org.junit.Test
@@ -110,24 +110,24 @@ public class Test {
 		//Elenco dei metodi che saranno da testare
 		firstRequest.getSentMaterial();
 		firstRequest.getSentQuantity();
-		firstRequest.getReceiverAgency();
+		firstRequest.getReceiverFactory();
 		firstRequest.getRequestId();
-		firstRequest.getSendingAgency();
-		firstRequest.setSendingAgency(null);
+		firstRequest.getSendingFactory();
+		firstRequest.setSendingFactory(null);
 	
 		secondRequest.getSentMaterial();
 		secondRequest.getSentQuantity();
-		secondRequest.getReceiverAgency();
+		secondRequest.getReceiverFactory();
 		secondRequest.getRequestId();
-		secondRequest.getSendingAgency();
-		secondRequest.setSendingAgency(null);
+		secondRequest.getSendingFactory();
+		secondRequest.setSendingFactory(null);
 		
 		thirdRequest.getSentMaterial();
 		thirdRequest.getSentQuantity();
-		thirdRequest.getReceiverAgency();
+		thirdRequest.getReceiverFactory();
 		thirdRequest.getRequestId();
-		thirdRequest.getSendingAgency();
-		thirdRequest.setSendingAgency(null);
+		thirdRequest.getSendingFactory();
+		thirdRequest.setSendingFactory(null);
 	}
 
 	@org.junit.Test
