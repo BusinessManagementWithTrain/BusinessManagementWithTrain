@@ -1,6 +1,6 @@
 package controller.interfaces;
 
-import model.interfaces.Agency;
+import model.interfaces.Director;
 import model.interfaces.Request;
 import model.interfaces.Train;
 
@@ -13,28 +13,28 @@ import model.interfaces.Train;
 public interface Manager {
 
 	/**
-	 * Viene passato un riferimento all'oggeto agenzia da aggiungere, 
-	 * che andrà aggiunta alla lista delle agenzie
+	 * Viene passato un riferimento all'oggeto direttore da aggiungere, 
+	 * che andrà aggiunta alla lista dei direttori
 	 * 
-	 * @param agenzia da aggiungere
+	 * @param direttore assunto
 	 */
-	void addAgency(Agency agencyToAdd);
+	void hireDirector(Director hiredDirector);
 
 	/**
-	 * Viene passato un riferimento all'oggetto agenzia da rimuovere, 
-	 * che andrà rimosso dalla lista delle agenzie
+	 * Viene passato un riferimento all'oggetto direttore da rimuovere, 
+	 * che andrà rimosso dalla lista dei direttori
 	 * 
-	 * @param agenzia da rimuovere
+	 * @param direttore licenziato
 	 */
-	void removeAgency(Agency agencyToRemove);
+	void fireDirector(Director firedDirector);
 
 	/**
-	 * Viene passato un rimerimento all'oggetto agenzia,
-	 * si stamperanno tutte le informazioni di tale agenzia
+	 * Viene passato un rimerimento all'oggetto direttore,
+	 * si stamperanno tutte le informazioni dell'azienda del direttore
 	 * 
-	 * @param agenzia da vedere
+	 * @param direttore da cui prendere l'azienda
 	 */
-	void viewAgencyInfo(Agency agency);
+	void viewAgencyInfo(Director director);
 
 	/**
 	 * Viene passata una richiesta, la si invia al treno 
@@ -45,12 +45,12 @@ public interface Manager {
 	void satisfiesRequest(Request requestApproved);
 
 	/**
-	 * Viene passato un nome dell'azienda e ritorna il riferimento all'azienda
+	 * Viene passato un nome del direttore e ritorna il riferimento al direttore
 	 *
-	 * @param nome dell'agenzia
+	 * @param nome del direttore
 	 * @return
 	 */
-	Agency getAgency(String name);
+	Director getDirector(String directorName);
 	
 	/**
 	 * Ritorna il treno

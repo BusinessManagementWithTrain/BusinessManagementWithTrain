@@ -1,7 +1,6 @@
 package model.classes;
 
 import model.interfaces.Agency;
-import model.interfaces.Director;
 import model.interfaces.Material;
 import model.interfaces.Warehouse;
 
@@ -25,12 +24,6 @@ public class AgencyImpl implements Agency {
 
 	@Override
 	public Warehouse getUnloadingWarehouse() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Director getDirector() {
 		// TODO Auto-generated method stub
 		return null;
 	}

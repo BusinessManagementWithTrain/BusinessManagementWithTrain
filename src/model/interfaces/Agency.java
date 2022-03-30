@@ -30,11 +30,5 @@ public interface Agency {
 	 * 
 	 * @return
 	 */
-	Director getDirector();
-	
-	/**
-	 * 
-	 * @return
-	 */
 	Material getMaterial();
 }

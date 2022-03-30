@@ -2,26 +2,11 @@ package test;
 
 import static org.junit.Assert.*;
 import java.util.*;
-import java.util.concurrent.ForkJoinPool.ManagedBlocker;
 
 import controller.classes.ManagerImpl;
 import controller.interfaces.Manager;
-import model.classes.AgencyImpl;
-import model.classes.DirectorImpl;
-import model.classes.MaterialImpl;
-import model.classes.RequestImpl;
-import model.classes.StaffImpl;
-import model.classes.StoreImpl;
-import model.classes.TrainImpl;
-import model.classes.WarehouseImpl;
-import model.interfaces.Agency;
-import model.interfaces.Director;
-import model.interfaces.Material;
-import model.interfaces.Request;
-import model.interfaces.Staff;
-import model.interfaces.Store;
-import model.interfaces.Train;
-import model.interfaces.Warehouse;
+import model.classes.*;
+import model.interfaces.*;
 
 /**
  * Breve descrizione dei test
@@ -36,12 +21,12 @@ public class Test {
 		Manager manager = new ManagerImpl();
 		
 		//Elenco dei metodi che saranno da testare
-		manager.addAgency(new AgencyImpl());
+		manager.hireDirector(new DirectorImpl());;
 		manager.createRequest(null);
-		manager.getAgency(null);
+		manager.getDirector(null);
 		manager.getRequest(0);
 		manager.getTrain();
-		manager.removeAgency(null);
+		manager.fireDirector(null);
 		manager.satisfiesRequest(null);
 		manager.viewAgencyInfo(null);
 	}
@@ -54,19 +39,16 @@ public class Test {
 		
 		
 		//Elenco dei metodi che saranno da testare
-		firstAgency.getDirector();
 		firstAgency.getLoadingWarehouse();
 		firstAgency.getMaterial();
 		firstAgency.getName();
 		firstAgency.getUnloadingWarehouse();
 	
-		secondAgency.getDirector();
 		secondAgency.getLoadingWarehouse();
 		secondAgency.getMaterial();
 		secondAgency.getName();
 		secondAgency.getUnloadingWarehouse();
 		
-		thirdAgency.getDirector();
 		thirdAgency.getLoadingWarehouse();
 		thirdAgency.getMaterial();
 		thirdAgency.getName();

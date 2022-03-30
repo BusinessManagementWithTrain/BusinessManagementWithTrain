@@ -1,7 +1,7 @@
 package controller.classes;
 
 import controller.interfaces.Manager;
-import model.interfaces.Agency;
+import model.interfaces.Director;
 import model.interfaces.Request;
 import model.interfaces.Train;
 
@@ -12,31 +12,31 @@ public class ManagerImpl implements Manager {
 	}
 
 	@Override
-	public void addAgency(Agency agencyToAdd) {
+	public void hireDirector(Director hiredDirector) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void removeAgency(Agency agencyToRemove) {
+	public void fireDirector(Director firedDirector) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void viewAgencyInfo(Agency agency) {
+	public void viewAgencyInfo(Director director) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void satisfiesRequest(Request requestApproved) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public Agency getAgency(String name) {
+	public Director getDirector(String directorName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -56,7 +56,6 @@ public class ManagerImpl implements Manager {
 	@Override
 	public void createRequest(Request requestToCreate) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
 }
