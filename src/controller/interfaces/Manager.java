@@ -18,7 +18,7 @@ public interface Manager {
 	 * 
 	 * @param direttore assunto
 	 */
-	void hireDirector(Director hiredDirector);
+	void hireDirector(Director director);
 
 	/**
 	 * Viene passato un riferimento all'oggetto direttore da rimuovere, 
@@ -26,7 +26,7 @@ public interface Manager {
 	 * 
 	 * @param direttore licenziato
 	 */
-	void fireDirector(Director firedDirector);
+	void fireDirector(Director director);
 
 	/**
 	 * Viene passato un rimerimento all'oggetto direttore,
@@ -34,7 +34,7 @@ public interface Manager {
 	 * 
 	 * @param direttore da cui prendere l'azienda
 	 */
-	void viewAgencyInfo(Director director);
+	void showAgencyInfo(Director director);
 
 	/**
 	 * Viene passata una richiesta, la si invia al treno 
@@ -50,7 +50,7 @@ public interface Manager {
 	 * @param nome del direttore
 	 * @return
 	 */
-	Director getDirector(String directorName);
+	Director getDirectorByName(String directorName);
 	
 	/**
 	 * Ritorna il treno
@@ -65,10 +65,10 @@ public interface Manager {
 	 * @param id univoco della richiesta
 	 * @return
 	 */
-	Request getRequest(int id);
+	Request getRequestById(int id);
 
 	/**
-	 * Viene aggiunta la richiesta alle varie aziende che possono soddisfarla
+	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
 	 * 
 	 * @param richiesta da condividere
 	 */

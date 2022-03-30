@@ -35,7 +35,7 @@ public interface Director {
 	 * 
 	 * @param richiesta soddisfatta
 	 */
-	void fullfilsRequest(Request requestFulfilled);
+	void satisfyRequest(Request requestFulfilled);
 	
 	/**
 	 * Consente di avere il riferimento ad una specifica richiesta da soddisfare
@@ -55,6 +55,6 @@ public interface Director {
 	 * 
 	 * @return azienda gestita dal direttore
 	 */
-	Agency getAgency();
+	Factory getAgency();
 	
 }

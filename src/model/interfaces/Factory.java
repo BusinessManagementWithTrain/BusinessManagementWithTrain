@@ -6,7 +6,7 @@ package model.interfaces;
  * @author Rinaldi Simone
  */
 
-public interface Agency {
+public interface Factory {
 
 	/**
 	 * 

@@ -27,7 +27,7 @@ public interface Train {
 	/**
 	 * 
 	 */
-	void showsCargoInfo();
+	void showCargoInfo();
 	
 	/**
 	 * 
@@ -46,5 +46,5 @@ public interface Train {
 	 * 
 	 * @return
 	 */
-	Agency getCurrentDestination();
+	Factory getCurrentDestination();
 }

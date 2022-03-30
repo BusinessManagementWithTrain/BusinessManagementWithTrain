@@ -1,6 +1,6 @@
 package model.classes;
 
-import model.interfaces.Agency;
+import model.interfaces.Factory;
 import model.interfaces.Material;
 import model.interfaces.Request;
 
@@ -11,25 +11,25 @@ public class RequestImpl implements Request {
 	}
 
 	@Override
-	public Agency getSendingAgency() {
+	public Factory getSendingAgency() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Agency getReceiverAgency() {
+	public Factory getReceiverAgency() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Material getMaterialSended() {
+	public Material getSentMaterial() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int getQuantitySended() {
+	public int getSentQuantity() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -41,9 +41,8 @@ public class RequestImpl implements Request {
 	}
 
 	@Override
-	public void setSendingAgency(Agency sendingAgency) {
+	public void setSendingAgency(Factory sendingAgency) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
 }

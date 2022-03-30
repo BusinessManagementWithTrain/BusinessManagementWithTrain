@@ -13,28 +13,28 @@ public interface Request {
 	 * 
 	 * @return azienda mittente
 	 */
-	Agency getSendingAgency();
+	Factory getSendingAgency();
 	
 	/**
 	 * Consente di avere il riferimento all'azienda che riceve il materiale
 	 * 
 	 * @return azienda destinatario
 	 */
-	Agency getReceiverAgency();
+	Factory getReceiverAgency();
 	
 	/**
 	 * Consente di avere il riferimento al tipo di materiale spedito
 	 * 
 	 * @return il tipo di materiale spedito/da spedire
 	 */
-	Material getMaterialSended();
+	Material getSentMaterial();
 	
 	/**
 	 * Consente di avere il riferimento alla quantità di materiale spedito 
 	 * 
 	 * @return quantità di materiale spedito/da spedire
 	 */
-	int getQuantitySended();
+	int getSentQuantity();
 	
 	/**
 	 * Consente di avere il riferimento all'id univoco della richiesta
@@ -49,5 +49,5 @@ public interface Request {
 	 * 
 	 * @param azienda mittente
 	 */
-	void setSendingAgency(Agency sendingAgency);
+	void setSendingAgency(Factory sendingAgency);
 }

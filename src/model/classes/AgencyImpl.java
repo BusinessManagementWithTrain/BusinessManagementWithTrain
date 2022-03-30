@@ -1,10 +1,10 @@
 package model.classes;
 
-import model.interfaces.Agency;
+import model.interfaces.Factory;
 import model.interfaces.Material;
 import model.interfaces.Warehouse;
 
-public class AgencyImpl implements Agency {
+public class AgencyImpl implements Factory {
 	
 	public AgencyImpl() {
 		// TODO Auto-generated constructor stub
@@ -33,5 +33,4 @@ public class AgencyImpl implements Agency {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

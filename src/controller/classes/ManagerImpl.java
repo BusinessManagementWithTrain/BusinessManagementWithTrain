@@ -24,7 +24,7 @@ public class ManagerImpl implements Manager {
 	}
 
 	@Override
-	public void viewAgencyInfo(Director director) {
+	public void showAgencyInfo(Director director) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -36,7 +36,7 @@ public class ManagerImpl implements Manager {
 	}
 
 	@Override
-	public Director getDirector(String directorName) {
+	public Director getDirectorByName(String directorName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -48,7 +48,7 @@ public class ManagerImpl implements Manager {
 	}
 
 	@Override
-	public Request getRequest(int id) {
+	public Request getRequestById(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -6,6 +6,6 @@ package model.interfaces;
  * @author Scaramuzzino Elia
  */
 
-public interface Store {
-
+public interface Store extends Factory {
+	
 }

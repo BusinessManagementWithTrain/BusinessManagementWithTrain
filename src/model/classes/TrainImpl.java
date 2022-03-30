@@ -1,6 +1,6 @@
 package model.classes;
 
-import model.interfaces.Agency;
+import model.interfaces.Factory;
 import model.interfaces.Material;
 import model.interfaces.Request;
 import model.interfaces.Train;
@@ -30,7 +30,7 @@ public class TrainImpl implements Train {
 	}
 
 	@Override
-	public void showsCargoInfo() {
+	public void showCargoInfo() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -48,7 +48,7 @@ public class TrainImpl implements Train {
 	}
 
 	@Override
-	public Agency getCurrentDestination() {
+	public Factory getCurrentDestination() {
 		// TODO Auto-generated method stub
 		return null;
 	}

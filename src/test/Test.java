@@ -23,19 +23,19 @@ public class Test {
 		//Elenco dei metodi che saranno da testare
 		manager.hireDirector(new DirectorImpl());;
 		manager.createRequest(null);
-		manager.getDirector(null);
-		manager.getRequest(0);
+		manager.getDirectorByName(null);
+		manager.getRequestById(0);
 		manager.getTrain();
 		manager.fireDirector(null);
 		manager.satisfiesRequest(null);
-		manager.viewAgencyInfo(null);
+		manager.showAgencyInfo(null);
 	}
 
 	@org.junit.Test
 	public void agencyTest() {
-		Agency firstAgency = new AgencyImpl();
-		Agency secondAgency = new AgencyImpl();
-		Agency thirdAgency = new AgencyImpl();
+		Factory firstAgency = new AgencyImpl();
+		Factory secondAgency = new AgencyImpl();
+		Factory thirdAgency = new AgencyImpl();
 		
 		
 		//Elenco dei metodi che saranno da testare
@@ -64,7 +64,7 @@ public class Test {
 		//Elenco dei metodi che saranno da testare
 		aldoDirector.addRequestToSatisfy(null);
 		aldoDirector.emptyWarehouse();
-		aldoDirector.fullfilsRequest(null);
+		aldoDirector.satisfyRequest(null);
 		aldoDirector.getAgency();
 		aldoDirector.getRequestById(0);
 		aldoDirector.removeRequestToSatisfy(null);
@@ -72,7 +72,7 @@ public class Test {
 	
 		pietroDirector.addRequestToSatisfy(null);
 		pietroDirector.emptyWarehouse();
-		pietroDirector.fullfilsRequest(null);
+		pietroDirector.satisfyRequest(null);
 		pietroDirector.getAgency();
 		pietroDirector.getRequestById(0);
 		pietroDirector.removeRequestToSatisfy(null);
@@ -80,7 +80,7 @@ public class Test {
 		
 		giovanniDirector.addRequestToSatisfy(null);
 		giovanniDirector.emptyWarehouse();
-		giovanniDirector.fullfilsRequest(null);
+		giovanniDirector.satisfyRequest(null);
 		giovanniDirector.getAgency();
 		giovanniDirector.getRequestById(0);
 		giovanniDirector.removeRequestToSatisfy(null);
@@ -108,22 +108,22 @@ public class Test {
 		Request thirdRequest = new RequestImpl();
 		
 		//Elenco dei metodi che saranno da testare
-		firstRequest.getMaterialSended();
-		firstRequest.getQuantitySended();
+		firstRequest.getSentMaterial();
+		firstRequest.getSentQuantity();
 		firstRequest.getReceiverAgency();
 		firstRequest.getRequestId();
 		firstRequest.getSendingAgency();
 		firstRequest.setSendingAgency(null);
 	
-		secondRequest.getMaterialSended();
-		secondRequest.getQuantitySended();
+		secondRequest.getSentMaterial();
+		secondRequest.getSentQuantity();
 		secondRequest.getReceiverAgency();
 		secondRequest.getRequestId();
 		secondRequest.getSendingAgency();
 		secondRequest.setSendingAgency(null);
 		
-		thirdRequest.getMaterialSended();
-		thirdRequest.getQuantitySended();
+		thirdRequest.getSentMaterial();
+		thirdRequest.getSentQuantity();
 		thirdRequest.getReceiverAgency();
 		thirdRequest.getRequestId();
 		thirdRequest.getSendingAgency();
@@ -168,7 +168,7 @@ public class Test {
 		train.getCargoTotalQuantity();
 		train.getCurrentDestination();
 		train.nextDestination();
-		train.showsCargoInfo();
+		train.showCargoInfo();
 	}
 	
 	@org.junit.Test

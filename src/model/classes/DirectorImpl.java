@@ -1,6 +1,6 @@
 package model.classes;
 
-import model.interfaces.Agency;
+import model.interfaces.Factory;
 import model.interfaces.Director;
 import model.interfaces.Request;
 
@@ -29,7 +29,7 @@ public class DirectorImpl implements Director {
 	}
 
 	@Override
-	public void fullfilsRequest(Request requestFulfilled) {
+	public void satisfyRequest(Request requestFulfilled) {
 		// TODO Auto-generated method stub
 
 	}
@@ -47,7 +47,7 @@ public class DirectorImpl implements Director {
 	}
 
 	@Override
-	public Agency getAgency() {
+	public Factory getAgency() {
 		// TODO Auto-generated method stub
 		return null;
 	}
