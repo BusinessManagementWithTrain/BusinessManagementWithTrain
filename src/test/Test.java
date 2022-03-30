@@ -33,9 +33,9 @@ public class Test {
 
 	@org.junit.Test
 	public void agencyTest() {
-		Factory firstAgency = new AgencyImpl();
-		Factory secondAgency = new AgencyImpl();
-		Factory thirdAgency = new AgencyImpl();
+		Factory firstAgency = new FactoryImpl();
+		Factory secondAgency = new FactoryImpl();
+		Factory thirdAgency = new FactoryImpl();
 		
 		
 		//Elenco dei metodi che saranno da testare

@@ -4,9 +4,9 @@ import model.interfaces.Factory;
 import model.interfaces.Material;
 import model.interfaces.Warehouse;
 
-public class AgencyImpl implements Factory {
+public class FactoryImpl implements Factory {
 	
-	public AgencyImpl() {
+	public FactoryImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
