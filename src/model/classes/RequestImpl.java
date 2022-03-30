@@ -5,6 +5,7 @@ import model.interfaces.Material;
 import model.interfaces.Request;
 
 public class RequestImpl implements Request {
+
 	
 	public RequestImpl() {
 		// TODO Auto-generated constructor stub
@@ -41,7 +42,7 @@ public class RequestImpl implements Request {
 	}
 
 	@Override
-	public void setSendingFactory(Factory sendingAgency) {
+	public void setSendingFactory(Factory sendingFactory) {
 		// TODO Auto-generated method stub
 		
 	}

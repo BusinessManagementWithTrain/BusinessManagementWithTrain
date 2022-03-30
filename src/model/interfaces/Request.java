@@ -49,5 +49,5 @@ public interface Request {
 	 * 
 	 * @param azienda mittente
 	 */
-	void setSendingFactory(Factory sendingAgency);
+	void setSendingFactory(Factory sendingFactory);
 }
