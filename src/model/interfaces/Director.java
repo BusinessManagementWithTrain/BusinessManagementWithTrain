@@ -1,20 +1,34 @@
 package model.interfaces;
 
+import java.util.Set;
+
 /**
- * Breve descrizione del direttore
+ * Interfaccia del direttore, ovvero l'oggetto che gestirà
+ * un'azienda e comunicherà con gli altri direttori all'atto dell'utilizzo del programma.
  * 
  * @author Grasso Emanuele
  */
 
 public interface Director {
-
-	/**
-	 * Svuota il magazzino di prodotti lavorati
-	 */
-	void emptyWarehouse(); 
 	
 	/**
-	 * Consente al dirigente di aggiungere una richiesta alla lista delle
+	 * Consente al direttore di creare una richiesta per ricevere il materiale
+	 * da lavorare
+	 * 
+	 * @param la quantità specificata dall'utente
+	 * @return la richiesta per ricevere il materiale
+	 */
+	Request newRequest(int neededQuantity);
+
+	/**
+	 * Crea la richiesta per svuotare il magazzino di prodotti lavorati
+	 * 
+	 * @return la richiesta per svuotare
+	 */
+	Request emptyWarehouse(); 
+	
+	/**
+	 * Consente al dirigente di aggiungere una richiesta al set delle
 	 * richieste soddisfabili dal direttore
 	 * 
 	 * @param nuova richiesta da soddisfare
@@ -22,7 +36,7 @@ public interface Director {
 	void addRequestToSatisfy(Request requestToSatisfy);
 	
 	/**
-	 * Consente al dirigente di rimuovere una richiesta dalla lista delle
+	 * Consente al dirigente di rimuovere una richiesta dal set delle
 	 * richieste soddisfabili poichè già soddisfatta da un altro direttore
 	 * 
 	 * @param richiesta soddisfatta da rimuovere
@@ -38,12 +52,11 @@ public interface Director {
 	void satisfyRequest(Request requestFulfilled);
 	
 	/**
-	 * Consente di avere il riferimento ad una specifica richiesta da soddisfare
+	 * Consente di avere il riferimento al set delle richieste da soddisfare
 	 * 
-	 * @param id della richiesta
-	 * @return richiesta corrispondente all'id
+	 * @return lista delle richieste
 	 */
-	Request getRequestById(int requestId);
+	Set<Request> getRequestsToSatisfy();
 	
 	/**
 	 * Consente di visualizzare a schermo i dati relativi all'azienda del direttore
@@ -56,5 +69,12 @@ public interface Director {
 	 * @return azienda gestita dal direttore
 	 */
 	Factory getFactory();
+	
+	/**
+	 * Consente di avere il riferimento al nome del direttore
+	 * 
+	 * @return nome del direttore
+	 */
+	String getName();
 	
 }

@@ -21,7 +21,7 @@ public class Test {
 		Manager manager = new ManagerImpl();
 		
 		//Elenco dei metodi che saranno da testare
-		manager.hireDirector(new DirectorImpl());;
+		manager.hireDirector(null);;
 		manager.createRequest(null);
 		manager.getDirectorByName(null);
 		manager.getRequestById(0);
@@ -57,16 +57,16 @@ public class Test {
 	
 	@org.junit.Test
 	public void directorTest() {
-		Director aldoDirector = new DirectorImpl();
-		Director pietroDirector = new DirectorImpl();
-		Director giovanniDirector = new DirectorImpl();
+		Director aldoDirector = new DirectorImpl(null, null);
+		Director pietroDirector = new DirectorImpl(null, null);
+		Director giovanniDirector = new DirectorImpl(null, null);
 		
 		//Elenco dei metodi che saranno da testare
 		aldoDirector.addRequestToSatisfy(null);
 		aldoDirector.emptyWarehouse();
 		aldoDirector.satisfyRequest(null);
 		aldoDirector.getFactory();
-		aldoDirector.getRequestById(0);
+		aldoDirector.getRequestsToSatisfy();
 		aldoDirector.removeRequestToSatisfy(null);
 		aldoDirector.showsFactoryInfo();
 	
@@ -74,7 +74,7 @@ public class Test {
 		pietroDirector.emptyWarehouse();
 		pietroDirector.satisfyRequest(null);
 		pietroDirector.getFactory();
-		pietroDirector.getRequestById(0);
+		pietroDirector.getRequestsToSatisfy();
 		pietroDirector.removeRequestToSatisfy(null);
 		pietroDirector.showsFactoryInfo();
 		
@@ -82,16 +82,16 @@ public class Test {
 		giovanniDirector.emptyWarehouse();
 		giovanniDirector.satisfyRequest(null);
 		giovanniDirector.getFactory();
-		giovanniDirector.getRequestById(0);
+		giovanniDirector.getRequestsToSatisfy();
 		giovanniDirector.removeRequestToSatisfy(null);
 		giovanniDirector.showsFactoryInfo();
 	}
 	
 	@org.junit.Test
 	public void materialTest() {
-		Material stone = new MaterialImpl();
-		Material sand = new MaterialImpl();
-		Material glass = new MaterialImpl();
+		Material stone = new MaterialImpl(null);
+		Material sand = new MaterialImpl(null);
+		Material glass = new MaterialImpl(null);
 
 		//Elenco dei metodi che saranno da testare
 		stone.getName();
@@ -103,9 +103,9 @@ public class Test {
 	
 	@org.junit.Test
 	public void requestTest() {
-		Request firstRequest = new RequestImpl();
-		Request secondRequest = new RequestImpl();
-		Request thirdRequest = new RequestImpl();
+		Request firstRequest = new RequestImpl(null, null, 0);
+		Request secondRequest = new RequestImpl(null, null, 0);
+		Request thirdRequest = new RequestImpl(null, null, 0);
 		
 		//Elenco dei metodi che saranno da testare
 		firstRequest.getSentMaterial();
