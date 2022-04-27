@@ -1,7 +1,7 @@
 package model.interfaces;
 
 /**
- * Breve descrizione del negozio
+ * Il negozio permetterà di scaricare materiale inutilizzato senza limiti
  * 
  * @author Scaramuzzino Elia
  */
