@@ -3,6 +3,7 @@ package controller.classes;
 import java.util.LinkedHashSet;
 
 import controller.interfaces.Manager;
+import model.classes.DirectorImpl;
 import model.classes.RequestImpl;
 import model.classes.TrainImpl;
 import model.interfaces.Director;
@@ -19,7 +20,7 @@ public class ManagerImpl implements Manager {
 	
 	private ManagerImpl() {
 		this.linkDirectors = new LinkedHashSet<Director>();
-		this.train = new TrainImpl();
+		this.train = new TrainImpl(0, null);
 		this.linkRequestsManager = new LinkedHashSet<Request>();
 		this.linkGlobalRequests = new LinkedHashSet<Request>();
 	}
@@ -73,7 +74,7 @@ public class ManagerImpl implements Manager {
 		this.train.addRequest(requestApproved);
 		// riscrivibile con stream
 		for (Director d : linkDirectors) {
-			if(d.getRequestsToSatisfy.Contains(requestApproved))
+			if(d.getRequestsToSatisfy().contains(requestApproved))
 				d.removeRequestToSatisfy(requestApproved);
 		}
 		
@@ -132,7 +133,7 @@ public class ManagerImpl implements Manager {
 	 * @param quantità di metariale richiesta e nome del direttore
 	 */
 	public void createNewRequest(int quantity, String directorName) {
-		sendRequest(getDirectorByName(directorName).createRequest(quantity));
+		sendRequest(getDirectorByName(directorName).newRequest(quantity));
 	}
 	
 	/**
@@ -141,7 +142,7 @@ public class ManagerImpl implements Manager {
 	 * 
 	 * @param nome del direttore
 	 */
-	public DirectorImpl showDirectorInfo(String directorName) {
+	public Director showDirectorInfo(String directorName) {
 		return getDirectorByName(directorName);
 		
 	}

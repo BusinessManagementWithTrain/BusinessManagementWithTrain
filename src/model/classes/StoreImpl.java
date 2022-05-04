@@ -15,18 +15,22 @@ public class StoreImpl implements Store {
 			 *i metodi sono stati lasciati vuoti in quanto non necessari.
 			 */
 			@Override
-			void addMaterial(int quantity) {}
+			public void addMaterial(int quantity) {}
 
 			@Override
-			void removeMaterial(int quantity) {}
+			public void removeMaterial(int quantity) {}
 	
 			@Override
-			int getTotalCapacity() {}	
+			public int getTotalCapacity() {
+				return 0;
+			}	
 
 			@Override
-			int getCurrentCapacity() {}
+			public int getCurrentCapacity() {
+				return 0;
+			}	
 		
-		}	
+		};	
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class StoreImpl implements Store {
 
 	@Override
 	public Warehouse getLoadingWarehouse() {
-		return null;
+		return this.loadingWarehouse;
 	}
 
 	@Override
@@ -51,7 +55,6 @@ public class StoreImpl implements Store {
 
 	@Override
 	public Staff getStuffMembers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

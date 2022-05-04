@@ -1,8 +1,8 @@
 package controller.interfaces;
 
 import model.interfaces.Director;
+import model.interfaces.Factory;
 import model.interfaces.Request;
-import model.interfaces.Train;
 
 /**
  * Breve descrizione del dirigente
