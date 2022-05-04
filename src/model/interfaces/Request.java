@@ -1,7 +1,8 @@
 package model.interfaces;
 
 /**
- * Breve descrizione della richiesta.
+ * Interfaccia della richiesta, oggetto fondamentale sul quale tutto il programma grava,
+ * questa consentirà ai vari direttori e al dirigente di poter richiedere e/o spedire del materiale.
  * 
  * @author Grasso Emanuele
  */

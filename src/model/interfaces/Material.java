@@ -1,7 +1,8 @@
 package model.interfaces;
 
 /**
- * Breve descrizione del materiale
+ * Interfaccia del materiale, oggetto utilizzato principalmente per indicare la
+ * produzione delle varie aziende, così da semplificare la richiesta e l'invio dello stesso
  * 
  * @author Grasso Emanuele
  */
