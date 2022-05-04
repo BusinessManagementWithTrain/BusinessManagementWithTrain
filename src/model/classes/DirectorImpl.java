@@ -104,13 +104,6 @@ public class DirectorImpl implements Director {
 	public void satisfyRequest(Request requestFulfilled) {
 		requestFulfilled.setSendingFactory(factory);
 	}
-	
-	/*
-	 * Consente al direttore di visualizzare a schermo i dati relativi alla sua azienda
-	 */
-	@Override
-	public void showsFactoryInfo() {
-	}
 
 	/*
 	 * Consente di avere il riferimento al set delle richieste da soddisfare
@@ -123,6 +116,16 @@ public class DirectorImpl implements Director {
 	}
 
 	/*
+	 * Consente di avere il riferimento al nome del direttore
+	 * 
+	 * @return il nome del direttore
+	 */
+	@Override
+	public String getName() {
+		return this.name;
+	}
+	
+	/*
 	 * Consente di avere il riferimento all'azienda gestita dal direttore
 	 * 
 	 * @return azienda gestita dal direttore
@@ -132,16 +135,6 @@ public class DirectorImpl implements Director {
 		return this.factory;
 	}
 	
-	/*
-	 * Consente di avere il riferimento al nome del direttore
-	 * 
-	 * @return il nome del direttore
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
 	/*
 	 * Come specificato nella documentazione, due direttori sono considerati
 	 * uguali se gestiscono la stessa azienda o hanno lo stesso nome
