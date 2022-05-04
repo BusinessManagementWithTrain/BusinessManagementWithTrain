@@ -9,26 +9,32 @@ package model.interfaces;
 public interface Factory {
 
 	/**
-	 * 
-	 * @return
+	 * metodo per ottenere il nome dell'azienda
+	 * @return nome dell'azienda
 	 */
 	String getName();
 	
 	/**
-	 * 
-	 * @return
+	 * metodo per ottenere il magazzino di carico
+	 * @return magazzino di carico
 	 */
 	Warehouse getLoadingWarehouse();
 	
 	/**
-	 * 
-	 * @return
+	 * metodo per ottenere il magazzino di scarico
+	 * @return magazzino di scarico
 	 */
 	Warehouse getUnloadingWarehouse();
 	
 	/**
-	 * 
-	 * @return
+	 * metodo per ottenere il materiale dell'azienda
+	 * @return materiale dell'azienda
 	 */
 	Material getMaterial();
+
+	/**
+	 * metodo per ottenere il numero di dipendenti dell'azienda
+	 * @return numero dipendenti dell'azienda
+	 */
+	Staff getStuffMembers();
 }

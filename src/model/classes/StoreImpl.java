@@ -1,6 +1,7 @@
 package model.classes;
 
 import model.interfaces.Material;
+import model.interfaces.Staff;
 import model.interfaces.Store;
 import model.interfaces.Warehouse;
 
@@ -30,6 +31,12 @@ public class StoreImpl implements Store {
 
 	@Override
 	public Material getMaterial() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Staff getStuffMembers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
