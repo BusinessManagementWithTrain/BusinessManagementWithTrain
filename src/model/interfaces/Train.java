@@ -1,5 +1,6 @@
 package model.interfaces;
 
+
 /**
  * Breve descrizione del treno
  * 
@@ -8,43 +9,22 @@ package model.interfaces;
 
 public interface Train {
 
-	/**
-	 * 
+	/*
+	 * metood per la gestione del carico/scarico della merce
 	 */
 	void cargoManagment();
 	
 	/**
-	 * 
+	 * metodo per aggiungere richieste alla lista di richieste di carico
 	 * @param newRequest
 	 */
 	void addRequest(Request newRequest);
 	
-	/**
-	 * 
+	/*
+	 * metodo per vedere la prossima destinazione 
 	 */
 	void nextDestination();
 	
-	/**
-	 * 
-	 */
-	void showCargoInfo();
 	
-	/**
-	 * 
-	 * @return
-	 */
-	int getCargoTotalQuantity();
 	
-	/**
-	 * 
-	 * @param material
-	 * @return
-	 */
-	int getCargoQuantityByMaterial(Material material);
-	
-	/**
-	 * 
-	 * @return
-	 */
-	Factory getCurrentDestination();
 }
