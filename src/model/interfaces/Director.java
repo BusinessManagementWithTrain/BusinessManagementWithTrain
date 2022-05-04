@@ -59,11 +59,6 @@ public interface Director {
 	Set<Request> getRequestsToSatisfy();
 	
 	/**
-	 * Consente di visualizzare a schermo i dati relativi all'azienda del direttore
-	 */
-	void showsFactoryInfo();
-	
-	/**
 	 * Consente di avere il riferimento all'azienda gestita dal direttore
 	 * 
 	 * @return azienda gestita dal direttore
