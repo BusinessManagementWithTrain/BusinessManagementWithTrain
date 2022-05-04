@@ -7,31 +7,45 @@ import model.interfaces.Warehouse;
 
 public class StoreImpl implements Store {
 
+	private Warehouse loadingWarehouse;	//ci permette di avere riferimento al magazzino di scarico che verrà appositamente riscritto ad hoc
+
 	public StoreImpl() {
-		// TODO Auto-generated constructor stub
+		this.loadingWarehouse = new Warehouse(){
+			/*l'unica cosa che servirà è la possibilità di scaricare materiale senza limiti.
+			 *i metodi sono stati lasciati vuoti in quanto non necessari.
+			 */
+			@Override
+			void addMaterial(int quantity) {}
+
+			@Override
+			void removeMaterial(int quantity) {}
+	
+			@Override
+			int getTotalCapacity() {}	
+
+			@Override
+			int getCurrentCapacity() {}
+		
+		}	
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Store";
 	}
 
 	@Override
 	public Warehouse getLoadingWarehouse() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Warehouse getUnloadingWarehouse() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Material getMaterial() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
