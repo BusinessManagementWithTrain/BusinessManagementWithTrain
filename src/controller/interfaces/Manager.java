@@ -26,15 +26,15 @@ public interface Manager {
 	 * 
 	 * @param direttore licenziato
 	 */
-	void fireDirector(Director director);
+	void fireDirector(String directorName);
 
 	/**
-	 * Viene passato un rimerimento all'oggetto direttore,
+	 * Viene passato ucome parametro il nome di un direttore,
 	 * si stamperanno tutte le informazioni dell'azienda del direttore
 	 * 
-	 * @param direttore da cui prendere l'azienda
+	 * @param nome del direttore da cui prendere l'azienda
 	 */
-	void showAgencyInfo(Director director);
+	Factory showFactoryInfo(String directorName);
 
 	/**
 	 * Viene passata una richiesta, la si invia al treno 
@@ -42,35 +42,48 @@ public interface Manager {
 	 * 
 	 * @param richiesta soddisfatta
 	 */
-	void satisfiesRequest(Request requestApproved);
+	void satisfiesRequest(Request requestApproved, String directorName);
+
+
 
 	/**
-	 * Viene passato un nome del direttore e ritorna il riferimento al direttore
-	 *
-	 * @param nome del direttore
-	 * @return
+	 * Prossima destinazione da raggiungere con il treno
+	 * 
+	 *  		  
 	 */
-	Director getDirectorByName(String directorName);
+	void nextDestination();
 	
 	/**
-	 * Ritorna il treno
+	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
 	 * 
-	 * @return
+	 * @param quantità di metariale richiesta e nome del direttore
 	 */
-	Train getTrain();
-
+	void createNewRequest(int quantity, String directorName);
+	
 	/**
-	 * Tramite id ritorna il riferimento alla richiesta
+	 * Metodo che visualizza le informazioni riguardanti un direttore
 	 * 
-	 * @param id univoco della richiesta
-	 * @return
+	 * 
+	 * @param nome del direttore
 	 */
-	Request getRequestById(int id);
-
+	Director showDirectorInfo(String directorName);
+	
 	/**
-	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
+	 * Metodo che visualizza le informazioni riguardanti il treno 
 	 * 
-	 * @param richiesta da condividere
+	 * 
+	 * @param 
 	 */
-	void createRequest(Request requestToCreate);
+	void showTrainInfo();
+	
+	/**
+	 * Metodo che visualizza le informazioni di una richiesta
+	 * 
+	 * 
+	 * @param ID della richiesta
+	 */
+	void showRequestInfo(int id);
+	
+	
+	
 }
