@@ -9,26 +9,30 @@ package model.interfaces;
 public interface Warehouse {
 
 	/**
-	 * Incrementa il numero di materiale nel magazzino (+quantity)
-	 * @param quantity
+	 * Incrementa il numero di materiale all'interno del magazzino
+	 * 
+	 * @param quantit‡ da inserire nel magazzino
 	 */
 	void addMaterial(int quantity);
 	
 	/**
-	 * Decrementa il numero di materliale nel magazzino (-quantity)
-	 * @param quantity
+	 * Decrementa il numero di materiale all'interno del magazzino
+	 * 
+	 * @param la quantit‡ da rimuovere dal magazzino
 	 */
 	void removeMaterial(int quantity);
 	
 	/**
-	 * Ritorna la capacit√† totale del magazzino
-	 * @return
+	 * Consente di avere il riferimento alla capienza totale del magazzino
+	 * 
+	 * @return la capienza totale del magazzino
 	 */
 	int getTotalCapacity();
 	
 	/**
-	 * Ritorna la capacit√† corrente del magazzino
-	 * @return
+	 * Consente di avere il riferimento alla capienza corrente del magazzino
+	 * 
+	 * @return la capienza corrente del magazzino
 	 */
 	int getCurrentCapacity();
 }

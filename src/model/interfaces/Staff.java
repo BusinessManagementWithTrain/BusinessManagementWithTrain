@@ -20,7 +20,8 @@ public interface Staff {
 	
 	/**
 	 * Consente di avere riferimento al numero di operai all'interno dell'azienda
-	 * @return Numero di operai
+	 *
+	 * @return il numero degli operai
 	 */
 	int getNumber();
 }

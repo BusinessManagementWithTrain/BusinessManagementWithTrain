@@ -19,10 +19,10 @@ public class ManagerImpl implements Manager {
 	private Train train;
 	
 	private ManagerImpl() {
-		this.linkDirectors = new LinkedHashSet<Director>();
-		this.train = new TrainImpl(0, null);
-		this.linkRequestsManager = new LinkedHashSet<Request>();
-		this.linkGlobalRequests = new LinkedHashSet<Request>();
+		this.linkDirectors			= new LinkedHashSet<Director>();
+		this.train 					= new TrainImpl(0);
+		this.linkRequestsManager	= new LinkedHashSet<Request>();
+		this.linkGlobalRequests 	= new LinkedHashSet<Request>();
 	}
 	
 	

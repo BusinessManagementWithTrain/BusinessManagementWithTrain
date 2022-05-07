@@ -3,46 +3,67 @@ package model.classes;
 import model.interfaces.Staff;
 import model.interfaces.Warehouse;
 
+/**
+ * Breve descrizione dei dipendenti
+ * 
+ * @author Scaramuzzino Elia
+ */
+
 public class StaffImpl implements Staff {
-	private final int staffNumber;				// Numero di operai
-	private final Warehouse receiverWarehouse;	// Magazzino di carico
-	private final Warehouse sendingWarehouse;	// Magazzino di scarico
-	private boolean isStaffWorking;				// Variabile per controllare se sto gia lavorando
+	/*
+	 * Come specificato nella documentazione, ogni gruppo di operatori avrà il riferimento
+	 * al numero totale dei dipendenti, al magazzino di carico in cui lavorare, al magazzino di
+	 * scarico dove appoggiare il materiale lavorato ed un booleano che controllerà se i dipendenti
+	 * stiano effettivamente lavorando
+	 */
+	private final int staffNumber;
+	private final Warehouse receiverWarehouse;
+	private final Warehouse sendingWarehouse;
+	private boolean isStaffWorking;
 	
 	/**
-	 * Il costruttore assegna valori presi in input alle variabili interne, il booleano "isStaffWorking" Ã¨ inizializzato
-	 * a false per garantire un corretto funzionamento dei metodi sottostanti
+	 * Il costruttore servirà principalmente ad assegnare i valori presi in input alle variabili interne e
+	 * ad inizializzare la variabile booleana a false in quanto, all'atto della creazione, i 
+	 * dipendenti non stiano ancora lavorando
 	 */
 	public StaffImpl(final int staffNumber, final Warehouse receiverWarehouse, final Warehouse sendingWarehouse) {
-		this.staffNumber = staffNumber;
-		this.receiverWarehouse = receiverWarehouse;
-		this.sendingWarehouse = sendingWarehouse;
-		this.isStaffWorking = false;
+		this.staffNumber 			= staffNumber;
+		this.receiverWarehouse		= receiverWarehouse;
+		this.sendingWarehouse 		= sendingWarehouse;
+		this.isStaffWorking 		= false;
 	}
 
-	//Consente di iniziare a lavorare il materiale dal magazzino di carico
+	/*
+	 * Consente di iniziare a lavorare il materiale dal magazzino di carico
+	 */
 	@Override
 	public void startWorking() {
-		if(isStaffWorking){
+		if(this.isStaffWorking){
 			//genero eccezione
 		}
 
-		this.receiverWarehouse.removeMaterial(staffNumber);
+		this.receiverWarehouse.removeMaterial(this.staffNumber);
 		this.isStaffWorking = true;
 	}
 
-	//Finisce di lavorare il materiale e lo mette nel magazzino di scarico
+	/*
+	 * Consente di finire di lavorare il materiale e di posizionarlo nel magazzino di scarico
+	 */
 	@Override
 	public void stopWorking() {
-		if(!isStaffWorking){
+		if(!this.isStaffWorking){
 			//genero eccezione
 		}
 		
-		this.sendingWarehouse.addMaterial(staffNumber);
+		this.sendingWarehouse.addMaterial(this.staffNumber);
 		this.isStaffWorking = false;
 	}
 
-	//Consente di avere riferimento al numero di operai all'interno dell'azienda
+	/*
+	 * Consente di avere riferimento al numero degli operai all'interno dell'azienda
+	 * 
+	 * @return il numero degli operai
+	 */
 	@Override
 	public int getNumber() {
 		return this.staffNumber;

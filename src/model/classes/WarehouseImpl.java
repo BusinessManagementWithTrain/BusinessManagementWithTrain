@@ -2,50 +2,77 @@ package model.classes;
 
 import model.interfaces.Warehouse;
 
+/**
+ * Il magazzino consentira di tener traccia dei prodotti da lavorare e/o lavorati
+ * 
+ * @author Scaramuzzino Elia
+ */
+
 public class WarehouseImpl implements Warehouse {
 
-	private final int totalCapacity; // dimensione del magazzino
-	private int currentCapacity; // capacit√† corrente del magazzino
+	/*
+	 * Come specificato nella documentazione, ogni magazzino conterr‡, rispettivamente,
+	 * la capienza totale dello stesso e la capienza corrente dello stesso
+	 */
+	private final int totalCapacity;
+	private int currentCapacity;
 
+	/**
+	 * Il costruttore servir‡ unicamente ad associare la capienza totale al magazzino in questione
+	 * 
+	 * @param la capienza totale del magazzino
+	 */
 	public WarehouseImpl(final int totalCapacity) {
 		this.totalCapacity = totalCapacity;
 		this.currentCapacity = 0;	
 	}
 	
-	//Incrementa il numero di materiale nel magazzino (+quantity)
+	/*
+	 * Incrementa il numero di materiale all'interno del magazzino
+	 * 
+	 * @param quantit‡ da inserire nel magazzino
+	 */
 	@Override
 	public void addMaterial(int quantity) {
 		if(!(this.currentCapacity + quantity <= this.totalCapacity)){
 			//genero eccezione
 		}
 		this.currentCapacity += quantity;
-
 	}
 
-	//Decrementa il numero di materliale nel magazzino (-quantity)
+	/*
+	 * Decrementa il numero di materiale all'interno del magazzino
+	 * 
+	 * @param la quantit‡ da rimuovere dal magazzino
+	 */
 	@Override
 	public void removeMaterial(int quantity) {
 		if(!(this.currentCapacity - quantity >= 0)){
 			//genero l'eccezione
 		}
 		this.currentCapacity -= quantity;
-
 	}
 
-	//Ritorna la capacit√† totale del magazzino
+	/*
+	 * Consente di avere il riferimento alla capienza totale del magazzino
+	 * 
+	 * @return la capienza totale del magazzino
+	 */
 	@Override
 	public int getTotalCapacity() {
 		
 		return this.totalCapacity;
 	}
 	
-	//POTREMMO RIMUOVERE QUESTO METODO
-	//Ritorna la capacit√† corrente del magazzino
+	/*
+	 * Consente di avere il riferimento alla capienza corrente del magazzino
+	 * 
+	 * @return la capienza corrente del magazzino
+	 */
 	@Override
 	public int getCurrentCapacity() {
 		
 		return this.currentCapacity;
 
 	}
-
 }

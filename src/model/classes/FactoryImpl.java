@@ -7,82 +7,98 @@ import model.interfaces.Material;
 import model.interfaces.Staff;
 import model.interfaces.Warehouse;
 
+/**
+ * Breve descrizione dell'azienda
+ * 
+ * @author Rinaldi Simone
+ */
+
 public class FactoryImpl implements Factory {
 	
-	//staff azienda
-	private Staff staff;
+	/*
+	 * Come specificato nella documentazione, ogni azienda avrà rispettivamente, il nome, il materiale
+	 * prodotto, il magazzino di carico merci, il magazzino di scarico merci e il personale assunto
+	 */
+	private final String name;
+	private final Material material;
+	private final Warehouse loadingWarehouse;
+	private final Warehouse unloadingWarehouse;
+	private final Staff staff;
 	
-	//nome azienda
-	private String name;
-	
-	//materiale dell'azienda
-	private Material material;
-	
-	//magazzino di carico
-	private Warehouse loadingWarehouse;
-	
-	//magazzino di scarico
-	private Warehouse unloadingWarehouse;
-	
-	//costruttore azienda
-	public FactoryImpl(String name,Material material,int staffSize) {
-		this.name=name;
-		this.material=material;
-		this.loadingWarehouse= new WarehouseImpl(staffSize);
-		this.unloadingWarehouse= new WarehouseImpl(staffSize);
-		//da vedere con elia
-		//this.staff=new StaffImpl(stuffSize,loadingWarehouse,unloadingWarehouse);
+	/**
+	 * Il costruttore servirà principalmente ad associare i vari valori di riferimento passati
+	 * dal controller, ed inoltre creerà i magazzini e i dipendenti ad essi collegati
+	 * 
+	 * @param il nome dell'azienda
+	 * @param il materiale prodotto dall'azienda
+	 * @param il numero dei dipendenti
+	 * @param la capienza del magazzino di carico
+	 * @param la capienza del magazzino di scarico
+	 */
+	public FactoryImpl(final String name, final Material material, final int staffSize, final int loadingSize, final int unloadingSize) {
+		this.name 					= name;
+		this.material 				= material;
+		this.loadingWarehouse 		= new WarehouseImpl(loadingSize);
+		this.unloadingWarehouse		= new WarehouseImpl(unloadingSize);
+		this.staff 					= new StaffImpl(staffSize, this.loadingWarehouse, this.unloadingWarehouse);
 	}
 
 	/*
-	 * metodo per ottenre il nome dell'azienda
-	 * @return nome dell'azienda
+	 * Metodo che consente di avere il riferimento al nome dell'azienda
+	 *
+	 * @return il nome dell'azienda
 	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return this.name;
 	}
 
 	/*
-	 * metodo per ottenere l'oggetto delle informazioni di carico
-	 * @return magazzino di carico
+	 * Metodo che consente di avere il riferimento al magazzino di carico
+	 *
+	 * @return il magazzino di carico
 	 */
 	@Override
 	public Warehouse getLoadingWarehouse() {
-		// TODO Auto-generated method stub
 		return this.loadingWarehouse;
 	}
 
 
 	/*
-	 * metodo per ottenere l'oggetto del magazzino di scarico
-	 * @return magazzinod di scarico
+	 * Metodo che consente di avere il riferimento al magazzino di scarico
+	 * 
+	 * @return magazzino di scarico
 	 */
 	@Override
 	public Warehouse getUnloadingWarehouse() {
-		// TODO Auto-generated method stub
 		return this.unloadingWarehouse;
 	}
 
-	/**
-	 * metodo per ottenere il materiale dell'azienda
-	 * @return il materiale dell'azienda
+	/*
+	 * Metodo che consente di avere il riferimento al materiale prodotto
+	 * 
+	 * @return il materiale prodotto dall'azienda
 	 */
 	@Override
 	public Material getMaterial() {
-		// TODO Auto-generated method stub
 		return this.material;
 	}
 
+	/*
+	 * Metodo che consente di avere il riferimento allo staff dell'azienda
+	 * 
+	 * @return lo staff dell'azienda
+	 */
 	@Override
 	public Staff getStuffMembers() {
-		return staff;
+		return this.staff;
 	}
 	
-	/**
-	 * metodo per controllare che non vengano generate aziende con lo stesso nome
-	 * @return se l'operazione di confronto ha generato conflitti con il nome dell'azienda o meno
+	/*
+	 * Come specificato nella documentazione, due aziende sono considerate uguali
+	 * se hanno lo stesso nome
+	 * 
+	 * @param oggetto da controllare
 	 */
 	@Override
 	public boolean equals(Object obj) {

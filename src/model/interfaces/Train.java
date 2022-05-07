@@ -1,5 +1,6 @@
 package model.interfaces;
 
+import java.util.Map;
 
 /**
  * Breve descrizione del treno
@@ -8,11 +9,11 @@ package model.interfaces;
  */
 
 public interface Train {
-
-	/*
-	 * metood per la gestione del carico/scarico della merce
+	
+	/**
+	 * Metodo che invia il treno alla prossima tappa utile
 	 */
-	void cargoManagment();
+	void nextDestination();
 	
 	/**
 	 * metodo per aggiungere richieste alla lista di richieste di carico
@@ -20,11 +21,24 @@ public interface Train {
 	 */
 	void addRequest(Request newRequest);
 	
-	/*
-	 * metodo per vedere la prossima destinazione 
+	/**
+	 * Metodo che consente di avere il riferimento alla mappa della merce sul treno
+	 * 
+	 * @return la mappa della merce
 	 */
-	void nextDestination();
-	
-	
-	
+	Map<Material, Integer> getStuffMap();
+
+	/**
+	 * Metodo che consente di avere il riferimento alla tappa attuale del treno
+	 * 
+	 * @return la tappa attuale del treno
+	 */
+	Factory getCurrentDestination();
+
+	/**
+	 * Metodo che consente di avere il riferimento alla capienza massima del treno 
+	 *
+	 * @return la capienza massima del treno
+	 */
+	int getMaxCapacity();
 }
