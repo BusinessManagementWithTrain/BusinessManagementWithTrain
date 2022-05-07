@@ -1,6 +1,7 @@
 package model.classes;
 
 import model.interfaces.Staff;
+import model.interfaces.Warehouse;
 
 public class StaffImpl implements Staff {
 	private final int staffNumber;				// Numero di operai
@@ -38,7 +39,7 @@ public class StaffImpl implements Staff {
 		}
 		
 		this.sendingWarehouse.addMaterial(staffNumber);
-		this.isStaffWorking = false.
+		this.isStaffWorking = false;
 	}
 
 	//Consente di avere riferimento al numero di operai all'interno dell'azienda

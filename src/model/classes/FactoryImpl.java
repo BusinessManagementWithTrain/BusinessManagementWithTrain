@@ -25,11 +25,11 @@ public class FactoryImpl implements Factory {
 	private Warehouse unloadingWarehouse;
 	
 	//costruttore azienda
-	public FactoryImpl(String name,Material material,int stuffSize) {
+	public FactoryImpl(String name,Material material,int staffSize) {
 		this.name=name;
 		this.material=material;
-		this.loadingWarehouse= new WarehouseImpl();
-		this.unloadingWarehouse= new WarehouseImpl();
+		this.loadingWarehouse= new WarehouseImpl(staffSize);
+		this.unloadingWarehouse= new WarehouseImpl(staffSize);
 		//da vedere con elia
 		//this.staff=new StaffImpl(stuffSize,loadingWarehouse,unloadingWarehouse);
 	}

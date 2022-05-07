@@ -15,7 +15,7 @@ public class WarehouseImpl implements Warehouse {
 	//Incrementa il numero di materiale nel magazzino (+quantity)
 	@Override
 	public void addMaterial(int quantity) {
-		if(!this.currentCapacity + quantity <= this.totalCapacity){
+		if(!(this.currentCapacity + quantity <= this.totalCapacity)){
 			//genero eccezione
 		}
 		this.currentCapacity += quantity;
@@ -25,7 +25,7 @@ public class WarehouseImpl implements Warehouse {
 	//Decrementa il numero di materliale nel magazzino (-quantity)
 	@Override
 	public void removeMaterial(int quantity) {
-		if(!this.currentCapacity - quantity >= 0){
+		if(!(this.currentCapacity - quantity >= 0)){
 			//genero l'eccezione
 		}
 		this.currentCapacity -= quantity;
