@@ -45,13 +45,13 @@ public class TrainImpl implements Train {
 	 * @param capacità massima di spazio del treno
 	 * @param istanza del negozio
 	 */
-	public TrainImpl(final int maxCapacity) {
+	public TrainImpl(final int maxCapacity, final Store store) {
 		this.loadingRequests 		= new LinkedHashSet<>();
 		this.unloadingRequests		= new LinkedHashSet<>();
 		this.stuffMap 				= new LinkedHashMap<>();
 		this.destinationsSet		= new LinkedHashSet<>();
 		
-		this.store 					= StoreImpl.getStore();
+		this.store 					= store;
 		this.maxCapacity			= maxCapacity;
 	}		
 	

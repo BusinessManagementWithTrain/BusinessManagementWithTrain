@@ -25,9 +25,8 @@ public class StoreImpl implements Store {
 	 * Il costruttore servirà unicamente per riscrivere il funzionamento del magazzino di carico
 	 * dal quale verranno tolti tutti i controlli e non verrà utilizzato neanche un metodo, questo
 	 * ci consentirà di utilizzare il negozio come un'azienda ma che all'effettivo non farà nulla.
-	 * Sarà privato per consentire l'utilizzo del SingleTon Pattern
 	 */
-	private StoreImpl() {
+	public StoreImpl() {
 		this.loadingWarehouse = new Warehouse(){
 			@Override
 			public void addMaterial(int quantity) {}
@@ -45,26 +44,6 @@ public class StoreImpl implements Store {
 				return 0;
 			}	
 		};	
-	}
-
-	/*
-	 * Classe dedicata all'utilizzo del SingleTon Pattern, questa classe contiene solo una costante,
-	 * la scelta di questo stile risiede nell'ideologia di puntare ad una soluzione comoda non solo
-	 * nell'implementazione, ma anche a livello hardware;
-	 * il riferimento alla classe e l'allocazione della stessa all'interno dello stack avverrà solo dopo
-	 * la prima invocazione del metodo getStore()
-	 */
-	private static class SingletonHelper {
-		private static final StoreImpl STORE = new StoreImpl();
-	}
-	
-	/*
-	 * Consente di avere il riferimento a sempre la stessa istanza della classe Store
-	 * 
-	 * @return l'istanza della classe StoreImpl
-	 */
-	public static StoreImpl getStore() {
-		return SingletonHelper.STORE;
 	}
 	
 	/*
