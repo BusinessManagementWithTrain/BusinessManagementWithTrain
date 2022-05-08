@@ -1,29 +1,71 @@
 package model.classes;
 
 import model.interfaces.Staff;
+import model.interfaces.Warehouse;
+
+/**
+ * Breve descrizione dei dipendenti
+ * 
+ * @author Scaramuzzino Elia
+ */
 
 public class StaffImpl implements Staff {
+	/*
+	 * Come specificato nella documentazione, ogni gruppo di operatori avrà il riferimento
+	 * al numero totale dei dipendenti, al magazzino di carico in cui lavorare, al magazzino di
+	 * scarico dove appoggiare il materiale lavorato ed un booleano che controllerà se i dipendenti
+	 * stiano effettivamente lavorando
+	 */
+	private final int staffNumber;
+	private final Warehouse receiverWarehouse;
+	private final Warehouse sendingWarehouse;
+	private boolean isStaffWorking;
 	
-	public StaffImpl() {
-		// TODO Auto-generated constructor stub
+	/**
+	 * Il costruttore servirà principalmente ad assegnare i valori presi in input alle variabili interne e
+	 * ad inizializzare la variabile booleana a false in quanto, all'atto della creazione, i 
+	 * dipendenti non stiano ancora lavorando
+	 */
+	public StaffImpl(final int staffNumber, final Warehouse receiverWarehouse, final Warehouse sendingWarehouse) {
+		this.staffNumber 			= staffNumber;
+		this.receiverWarehouse		= receiverWarehouse;
+		this.sendingWarehouse 		= sendingWarehouse;
+		this.isStaffWorking 		= false;
 	}
 
+	/*
+	 * Consente di iniziare a lavorare il materiale dal magazzino di carico
+	 */
 	@Override
 	public void startWorking() {
-		// TODO Auto-generated method stub
+		if(this.isStaffWorking){
+			//genero eccezione
+		}
 
+		this.receiverWarehouse.removeMaterial(this.staffNumber);
+		this.isStaffWorking = true;
 	}
 
+	/*
+	 * Consente di finire di lavorare il materiale e di posizionarlo nel magazzino di scarico
+	 */
 	@Override
 	public void stopWorking() {
-		// TODO Auto-generated method stub
-
+		if(!this.isStaffWorking){
+			//genero eccezione
+		}
+		
+		this.sendingWarehouse.addMaterial(this.staffNumber);
+		this.isStaffWorking = false;
 	}
 
+	/*
+	 * Consente di avere riferimento al numero degli operai all'interno dell'azienda
+	 * 
+	 * @return il numero degli operai
+	 */
 	@Override
 	public int getNumber() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.staffNumber;
 	}
-
 }

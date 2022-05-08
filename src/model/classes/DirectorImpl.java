@@ -35,9 +35,9 @@ public class DirectorImpl implements Director {
 	 * @param azienda
 	 */
 	public DirectorImpl(final String name, final Factory factory) {
-		this.name = name;
-		this.factory = factory;
-		this.requestsToSatisfy = new LinkedHashSet<>();
+		this.name 				= name;
+		this.factory 			= factory;
+		this.requestsToSatisfy	= new LinkedHashSet<>();
 	}
 
 	/*
