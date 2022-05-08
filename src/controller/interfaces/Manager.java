@@ -3,6 +3,7 @@ package controller.interfaces;
 import model.interfaces.Director;
 import model.interfaces.Factory;
 import model.interfaces.Request;
+import model.interfaces.Train;
 
 /**
  * Breve descrizione del dirigente
@@ -29,7 +30,7 @@ public interface Manager {
 	void fireDirector(String directorName);
 
 	/**
-	 * Viene passato ucome parametro il nome di un direttore,
+	 * Viene passato come parametro il nome di un direttore,
 	 * si stamperanno tutte le informazioni dell'azienda del direttore
 	 * 
 	 * @param nome del direttore da cui prendere l'azienda
@@ -74,7 +75,7 @@ public interface Manager {
 	 * 
 	 * @param 
 	 */
-	void showTrainInfo();
+	Train showTrainInfo();
 	
 	/**
 	 * Metodo che visualizza le informazioni di una richiesta
