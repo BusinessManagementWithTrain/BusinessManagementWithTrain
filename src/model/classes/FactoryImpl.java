@@ -8,7 +8,8 @@ import model.interfaces.Staff;
 import model.interfaces.Warehouse;
 
 /**
- * Breve descrizione dell'azienda
+ * 
+ * Classe destinata all'implementazione dell'interfaccia della generica azienda
  * 
  * @author Rinaldi Simone
  */
@@ -16,7 +17,7 @@ import model.interfaces.Warehouse;
 public class FactoryImpl implements Factory {
 	
 	/*
-	 * Come specificato nella documentazione, ogni azienda avr‡ rispettivamente, il nome, il materiale
+	 * Come specificato nella documentazione, ogni azienda avr√† rispettivamente, il nome, il materiale
 	 * prodotto, il magazzino di carico merci, il magazzino di scarico merci e il personale assunto
 	 */
 	private final String name;
@@ -26,8 +27,8 @@ public class FactoryImpl implements Factory {
 	private final Staff staff;
 	
 	/**
-	 * Il costruttore servir‡ principalmente ad associare i vari valori di riferimento passati
-	 * dal controller, ed inoltre creer‡ i magazzini e i dipendenti ad essi collegati
+	 * Il costruttore servir√† principalmente ad associare i vari valori di riferimento passati
+	 * dal controller, ed inoltre creer√† i magazzini e i dipendenti ad essi collegati
 	 * 
 	 * @param il nome dell'azienda
 	 * @param il materiale prodotto dall'azienda
