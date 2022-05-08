@@ -7,6 +7,13 @@ import model.interfaces.Material;
 import model.interfaces.Staff;
 import model.interfaces.Warehouse;
 
+/**
+ * 
+ * classe destinata all'implementazione dell'interfaccia della generica azienda
+ * 
+ * @author Rinaldi Simone
+ */
+
 public class FactoryImpl implements Factory {
 	
 	//staff azienda

@@ -18,7 +18,11 @@ import model.interfaces.Train;
 
 
 
-
+/**
+ *  Classe destinata all'implementazione dell'interfaccia del treno, ovvero l'oggetto
+ *  che avrà come compito quello di caricare e scaricare merce dai magazzini di carico e di
+ *  scarico delle aziende
+ */
 	
 
 
