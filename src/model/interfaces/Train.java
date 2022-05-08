@@ -2,7 +2,8 @@ package model.interfaces;
 
 
 /**
- * Breve descrizione del treno
+ * Interfaccia del treno, ovvero l'oggetto che gestirà
+ * il carico e lo scarico merci tra i magazzini delle aziende
  * 
  * @author Rinaldi Simone
  */
