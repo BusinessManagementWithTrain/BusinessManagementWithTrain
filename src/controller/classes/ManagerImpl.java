@@ -1,43 +1,46 @@
 package controller.classes;
 
 import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import controller.interfaces.Manager;
-import model.classes.DirectorImpl;
-import model.classes.RequestImpl;
-import model.classes.TrainImpl;
-import model.interfaces.Director;
-import model.interfaces.Factory;
-import model.interfaces.Request;
-import model.interfaces.Train;
+import model.interfaces.*;
+import model.classes.*;
 
 public class ManagerImpl implements Manager {
 	
-	private LinkedHashSet <Director> linkDirectors;				// set di tutti i direttori
-	private LinkedHashSet <Request> linkRequestsManager;		// set di richieste che può soddisfare il manager
-	private LinkedHashSet <Request> linkGlobalRequests;			// set di tutte le richieste
+	private static ManagerImpl manager = null;
+	
+	private Set<Director> linkDirectors;				// set di tutti i direttori
+	private Set<Request> linkRequestsManager;			// set di richieste che può soddisfare il manager
+	private Set<Request> linkGlobalRequests;			// set di tutte le richieste
+	private Store store;								// 
 	private Train train;
 	
-	private ManagerImpl() {
+	
+	private ManagerImpl(int trainCapacity) {
 		this.linkDirectors			= new LinkedHashSet<Director>();
-		this.train 					= new TrainImpl(0);
 		this.linkRequestsManager	= new LinkedHashSet<Request>();
 		this.linkGlobalRequests 	= new LinkedHashSet<Request>();
+		this.store 					= new StoreImpl();
+		this.train 					= new TrainImpl(trainCapacity,this.store);
 	}
 	
 	
 	
 	// utilizzo del Singleton Design Pattern
 	
-	/* questo metodo viene invocato all'interno getManager, e crea un'istanza di ManagerImpl */
-	private static class SingletonHelper {
-		private static final ManagerImpl MANAGER = new ManagerImpl();
-	}
+	
 	
 	/* invocando questo metodo per la prima volta, invoco la classe SigletonHelper 
 	 * quando lo invoco le volte succesive, mi ritorna la costante MANAGER*/
-	public static ManagerImpl getManager() {
-		return SingletonHelper.MANAGER;
+	public static ManagerImpl getManager(int trainCapacity) {
+		if(manager == null) {
+			manager = new ManagerImpl(trainCapacity);
+		}
+		return manager;
 	}
 	
 	/* questo metodo aggiunge un Director a linkDirectors
@@ -56,7 +59,10 @@ public class ManagerImpl implements Manager {
 		this.linkDirectors.remove(getDirectorByName(directorName));		
 	}
 
-	/* */
+	/* questo metodo consente di ritornare un'azienda attraverso il nome del direttore
+	 * 
+	 * @param nome del direttore
+	 *  */
 	
 	@Override
 	public Factory showFactoryInfo(String directorName) {
@@ -90,10 +96,8 @@ public class ManagerImpl implements Manager {
 				.get();
 	}
 
-	/* questo metodo ritorna un oggetto di tipo treno */
-	
-	
-	/**
+		
+	/*
 	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
 	 * 
 	 * @param quantità di materiale richiesto dall'utente 
@@ -102,7 +106,6 @@ public class ManagerImpl implements Manager {
 	
 	
 	private void sendRequest(Request request) {
-		// riscrivibile con stream
 		boolean satisfy = false;
 		for (Director d : linkDirectors) {
 			if(request.getSentMaterial().equals(d.getFactory().getMaterial())) {
@@ -118,7 +121,7 @@ public class ManagerImpl implements Manager {
 	}
 	
 
-	/**
+	/*
 	 * Prossima destinazione da raggiungere con il treno
 	 * 
 	 *  		  
@@ -127,7 +130,7 @@ public class ManagerImpl implements Manager {
 		this.train.nextDestination();		
 	}
 	
-	/**
+	/*
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
 	 * 
 	 * @param quantità di metariale richiesta e nome del direttore
@@ -136,7 +139,7 @@ public class ManagerImpl implements Manager {
 		sendRequest(getDirectorByName(directorName).newRequest(quantity));
 	}
 	
-	/**
+	/*
 	 * Metodo che visualizza le informazioni riguardanti un direttore
 	 * 
 	 * 
@@ -147,24 +150,27 @@ public class ManagerImpl implements Manager {
 		
 	}
 	
-	/**
+	/*
 	 * Metodo che visualizza le informazioni riguardanti il treno 
 	 * 
 	 * 
 	 * @param 
 	 */
-	public void showTrainInfo() {
-		this.train.TrainInfo();	
+	public Train showTrainInfo() {
+		return this.train;
 	}
 	
-	/**
+	/*
 	 * Metodo che visualizza le informazioni di una richiesta
 	 * 
 	 * 
-	 * @param nome del direttore da cui prendere l'azienda
+	 * @param valore dell'id
 	 */
-	public void showRequestInfo(int id){
-		
+	public Request showRequestInfo(int id){
+		return this.linkGlobalRequests.stream()
+				.filter(r ->r.getRequestId() == (id))
+				.findFirst().
+				get();
 	}
 	
 	
