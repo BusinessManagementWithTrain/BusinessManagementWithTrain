@@ -9,6 +9,7 @@ import java.util.Set;
 
 import model.interfaces.Director;
 import model.interfaces.Request;
+import model.interfaces.Store;
 
 /**
 * Classe destinata all'implementazione dell'interfaccia del direttore, ovvero l'oggetto
@@ -26,7 +27,8 @@ public class DirectorImpl implements Director {
 	 */
 	private final String name;
 	private final Factory factory;
-	private final Set<Request> requestsToSatisfy; 
+	private final Set<Request> requestsToSatisfy;
+	private final Store store;
 	
 	/**
 	 * Il costruttore servirà principalmente ad associare il nome e
@@ -34,10 +36,11 @@ public class DirectorImpl implements Director {
 	 * 
 	 * @param azienda
 	 */
-	public DirectorImpl(final String name, final Factory factory) {
+	public DirectorImpl(final String name, final Factory factory, final Store store) {
 		this.name 				= name;
 		this.factory 			= factory;
 		this.requestsToSatisfy	= new LinkedHashSet<>();
+		this.store 				= store;
 	}
 
 	/*
@@ -62,11 +65,11 @@ public class DirectorImpl implements Director {
 	 */
 	@Override
 	public Request emptyWarehouse() {
-		return new RequestImpl(null,
+		return new RequestImpl(this.factory,
+							   this.store,
 							   this.factory.getMaterial(),
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
-	}																				//DA CONTROLLARE L'UML
-																					//DA CONTROLLARE ANCHE MANAGER CREATEREQUEST
+	}																				
 	//DA GESTIRE L'ECCEZIONE IN CASO DI MAGAZZINO VUOTO
 	
 	
