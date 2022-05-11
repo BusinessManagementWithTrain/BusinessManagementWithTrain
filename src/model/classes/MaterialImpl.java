@@ -1,6 +1,5 @@
 package model.classes;
 
-import java.util.Objects;
 
 import model.interfaces.Material;
 
@@ -18,7 +17,8 @@ public class MaterialImpl implements Material {
 	 * Come indicato dalla documentazione, ogni materiale conterrà le informazioni relative
 	 * al nome, due materiali verranno considerati uguali quando avranno lo stesso nome
 	 */
-	private final String name; 
+	private final String rawMaterial;
+	private final String processedMaterial;
 	
 	/**
 	 * Il costruttore servirà per prendere in input il nome del materiale, al fine di 
@@ -26,18 +26,29 @@ public class MaterialImpl implements Material {
 	 * 
 	 * @param name
 	 */
-	public MaterialImpl(final String name) {
-		this.name = name;
+	public MaterialImpl(final String rawMaterial, final String processedMaterial) {
+		this.rawMaterial 			= rawMaterial;
+		this.processedMaterial 		= processedMaterial;
 	}
 	
 	/*
-	 * Consente di avere il riferimento al nome del materiale
+	 * Consente di avere il riferimento al materiale grezzo
 	 * 
-	 * @return il nome del materiale
+	 * @return il materiale grezzo
 	 */
 	@Override
-	public String getName() {
-		return this.name;
+	public String getRawMaterial() {
+		return this.rawMaterial;
+	}
+	
+	/*
+	 * Consente di avere il riferimento al materiale lavorato
+	 * 
+	 * @return il materiale lavorato
+	 */
+	@Override
+	public String getProcessedMaterial() {
+		return this.processedMaterial;
 	}
 
 	/*
@@ -55,6 +66,7 @@ public class MaterialImpl implements Material {
 		if (getClass() != obj.getClass())
 			return false;
 		MaterialImpl other = (MaterialImpl) obj;
-		return Objects.equals(this.name, other.name);
+		return (this.processedMaterial.equals(other.rawMaterial) ||
+				this.rawMaterial.equals(other.processedMaterial));
 	}
 }

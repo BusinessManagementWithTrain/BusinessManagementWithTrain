@@ -14,5 +14,7 @@ public interface Material {
 	 * 
 	 * @return il nome del materiale
 	 */
-	String getName();
+	String getRawMaterial();
+	
+	String getProcessedMaterial();
 }
