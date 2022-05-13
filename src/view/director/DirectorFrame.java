@@ -44,7 +44,7 @@ public class DirectorFrame extends JFrame {
 		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		ManagerImpl.getManager(100).hireDirector(new DirectorImpl(directorName, new FactoryImpl("Azienda 1", null, 5, 500, 1000)));
+		ManagerImpl.getManager(100).hireDirector( new DirectorImpl(directorName, new FactoryImpl("Azienda 1", null, 5, 500, 1000)));
 		
 		this.baseDirectorPanel = new BaseDirectorPanel(directorName);
 		
