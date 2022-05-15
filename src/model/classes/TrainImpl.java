@@ -51,7 +51,6 @@ public class TrainImpl implements Train {
 		this.unloadingRequests		= new LinkedHashSet<>();
 		this.stuffMap 				= new LinkedHashMap<>();
 		this.destinationsSet		= new LinkedHashSet<>();
-		
 		this.store 					= store;
 		this.maxCapacity			= maxCapacity;
 	}		
@@ -145,6 +144,7 @@ public class TrainImpl implements Train {
 	 * necessario commentarne il funzionamento dall'interno
 	 */
 	private void cargoManagment() {
+		
 		// Il primo controllo viene effettuato sulla lista di scarico, si verifica che abbia almeno un elemento
 		if(!getUnloadingRequest().isEmpty()) {
 			try {
@@ -153,18 +153,26 @@ public class TrainImpl implements Train {
 				int quantityToManage = getQuantityToManage(this.unloadingRequests, 
 														   r -> r.getReceiverFactory().equals(getCurrentDestination()));
 				
-				// Riempiamo il magazzino di carico dell'azienda
-				getCurrentDestination().getLoadingWarehouse()
-									   .addMaterial(quantityToManage);
+				if(getCurrentDestination().equals(store)) {
+					this.stuffMap.merge(getCurrentDestination().getMaterial(),-quantityToManage, Integer::sum);
+				    
+				}
 				
-				// Scarichiamo dal treno la quantità di materiale richiesta
-				this.stuffMap.merge(getCurrentDestination().getMaterial(),
-									- quantityToManage,
-									Integer::sum);
+				else {
 				
-				// Rimuovo tutte le richieste soddisfatte
-				this.unloadingRequests.removeAll(getUnloadingRequest());
-				
+					// Riempiamo il magazzino di carico dell'azienda
+					getCurrentDestination().getLoadingWarehouse()
+										   .addMaterial(quantityToManage);
+					
+					// Scarichiamo dal treno la quantità di materiale richiesta
+					//ricorda che non prendi il materiale direttamente dall'azeinda ma dai magazzini della medesima
+					this.stuffMap.merge(getCurrentDestination().getMaterial(),
+										- quantityToManage,
+										Integer::sum);
+					
+					// Rimuovo tutte le richieste soddisfatte
+					this.unloadingRequests.removeAll(getUnloadingRequest());
+				}
 			} catch (Exception e/*magazzino pieno*/) {
 				
 				/* Se nel magazzino non c'è spazio per scaricare tutta la merce, allora convoglio 
