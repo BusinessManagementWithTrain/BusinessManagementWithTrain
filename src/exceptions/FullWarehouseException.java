@@ -1,9 +1,13 @@
-package exception;
+package exceptions;
 
 public class FullWarehouseException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public FullWarehouseException() {
-		// TODO Auto-generated constructor stub
+		this("");
+	}
+	
+	public FullWarehouseException(String error) {
+		super(error);
 	}
 }
