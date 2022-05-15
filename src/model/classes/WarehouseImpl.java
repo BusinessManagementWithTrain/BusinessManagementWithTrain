@@ -14,17 +14,22 @@ public class WarehouseImpl implements Warehouse {
 	 * Come specificato nella documentazione, ogni magazzino conterrà, rispettivamente,
 	 * la capienza totale dello stesso e la capienza corrente dello stesso
 	 */
+	private final String material;
 	private final int totalCapacity;
 	private int currentCapacity;
 
 	/**
-	 * Il costruttore servirà unicamente ad associare la capienza totale al magazzino in questione
+	 * Il costruttore servirà unicamente ad associare il materiale contenuto nel magazzino e
+	 * la capienza totale al magazzino in questione
 	 * 
+	 * @param il nome del materiale
 	 * @param la capienza totale del magazzino
 	 */
-	public WarehouseImpl(final int totalCapacity) {
+	public WarehouseImpl(final String material, final int totalCapacity) {
+		this.material = material;
 		this.totalCapacity = totalCapacity;
-		this.currentCapacity = 0;	
+		this.currentCapacity = 0;
+		
 	}
 	
 	/*
@@ -74,5 +79,17 @@ public class WarehouseImpl implements Warehouse {
 		
 		return this.currentCapacity;
 
+	}
+	
+	/* 
+	 * Consente di avere il riferimento al materiale contenuto nel magazzino
+	 * 
+	 * @return il materiale contenuto nel magazzino
+	 */
+	@Override
+	public String getMaterial() {
+		
+		return this.material;
+		
 	}
 }
