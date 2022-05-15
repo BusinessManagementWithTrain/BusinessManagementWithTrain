@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.classes.ManagerImpl;
+import exception.EmptyDestinationsSetException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
 import model.classes.MaterialImpl;
@@ -24,10 +25,14 @@ public class DirectorFrame extends JFrame {
 	private static final int FRAME_HEIGTH = 400;
 	private static final int FRAME_WIDTH = 500;
 	
-	public static void main(String[] args) {
+	
+	
+	
+	public static void main(String[] args) throws EmptyDestinationsSetException {
 		ManagerImpl.getManager(100).hireDirector(new DirectorImpl("Gigio", new FactoryImpl("Azienda 1", new MaterialImpl("Ferro", "Acciaio"), 6, 600, 500)));
 		new DirectorFrame("Gigio");
 	}
+	
 	
 	private static final long serialVersionUID = 1;
 	
@@ -50,6 +55,4 @@ public class DirectorFrame extends JFrame {
 		this.add(baseDirectorPanel);
 		this.setVisible(true);
 	}
-
-	
 }

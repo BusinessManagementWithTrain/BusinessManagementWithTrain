@@ -1,0 +1,7 @@
+/EmptyDestinationsSetException.class
+/EmptyWarehouseException.class
+/FullTrainException.class
+/FullWarehouseException.class
+/IsNotPresentException.class
+/IsPresentException.class
+/WrongNeededQuantityException.class
