@@ -28,7 +28,6 @@ public class DirectorImpl implements Director {
 	private final String name;
 	private final Factory factory;
 	private final Set<Request> requestsToSatisfy;
-	private final Store store;
 	
 	/**
 	 * Il costruttore servirà principalmente ad associare il nome e
@@ -36,11 +35,10 @@ public class DirectorImpl implements Director {
 	 * 
 	 * @param azienda
 	 */
-	public DirectorImpl(final String name, final Factory factory, final Store store) {
+	public DirectorImpl(final String name, final Factory factory) {
 		this.name 				= name;
 		this.factory 			= factory;
 		this.requestsToSatisfy	= new LinkedHashSet<>();
-		this.store 				= store;
 	}
 
 	/*
@@ -53,7 +51,7 @@ public class DirectorImpl implements Director {
 	@Override
 	public Request newRequest(int neededQuantity) {
 		return new RequestImpl(this.factory,
-							   this.factory.getMaterial(),
+							   /*this.factory.getMaterial()*/"",
 							   neededQuantity);
 	}
 	//DA GESTIRE L'ECCEZIONE IN CASO DI QUANTITA' TROPPO GRANDE O NEGATIVA
@@ -66,8 +64,8 @@ public class DirectorImpl implements Director {
 	@Override
 	public Request emptyWarehouse() {
 		return new RequestImpl(this.factory,
-							   this.store,
-							   this.factory.getMaterial(),
+							   /*StoreImpl.getInstance()*/null,
+							   /*this.factory.getMaterial()*/"",
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
 	}																				
 	//DA GESTIRE L'ECCEZIONE IN CASO DI MAGAZZINO VUOTO

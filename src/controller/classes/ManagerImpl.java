@@ -73,7 +73,7 @@ public class ManagerImpl implements Manager {
 	private void sendRequest(Request request) {
 		boolean satisfy = false;
 		for (Director d : this.linkDirectors) {
-			if(request.getSentMaterial().equals(d.getFactory().getMaterial())) {
+			if(request.getSentMaterial().equals(/*d.getFactory().getMaterial()*/"A")) {
 				d.addRequestToSatisfy(request);
 				satisfy = true;
 			}
