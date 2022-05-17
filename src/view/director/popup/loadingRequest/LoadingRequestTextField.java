@@ -1,4 +1,4 @@
-package view.director.popup;
+package view.director.popup.loadingRequest;
 
 import java.awt.Dimension;
 import java.awt.Font;

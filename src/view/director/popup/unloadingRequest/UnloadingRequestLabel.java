@@ -1,4 +1,4 @@
-package view.director.popup;
+package view.director.popup.unloadingRequest;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -7,13 +7,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class LoadingRequestLabel extends JLabel {
+public class UnloadingRequestLabel extends JLabel {
 	private static final long serialVersionUID = 1L;
 	
 	private static final Dimension SIZE = new Dimension(200, 50);
 	private static final int FONT_SIZE = 20;
-	
-	public LoadingRequestLabel(String componentName, String labelBody) {
+
+	public UnloadingRequestLabel(String componentName, String labelBody) {
 		super(labelBody, SwingConstants.CENTER);
 		
 		this.setAlignmentX(CENTER_ALIGNMENT);

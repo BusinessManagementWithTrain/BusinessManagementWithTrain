@@ -7,7 +7,8 @@ import javax.swing.JPanel;
 import controller.classes.ManagerImpl;
 import model.interfaces.Factory;
 import model.interfaces.Warehouse;
-import view.director.popup.LoadingRequestPopup;
+import view.director.popup.loadingRequest.LoadingRequestPopup;
+import view.director.popup.unloadingRequest.UnloadingRequestPopup;
 
 public class CentralDirectorPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +34,7 @@ public class CentralDirectorPanel extends JPanel {
 															"Unloading Warehouse",
 															"Create Unloading Request",
 															event -> {
-																
+																new UnloadingRequestPopup(directorName);
 															});
 		
 		this.add(this.leftTinyDirectorPanel, BorderLayout.LINE_START);
