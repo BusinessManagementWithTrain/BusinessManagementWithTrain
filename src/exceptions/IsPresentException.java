@@ -1,9 +1,13 @@
-package exception;
+package exceptions;
 
 public class IsPresentException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public IsPresentException() {
-		// TODO Auto-generated constructor stub
+		this("");
+	}
+	
+	public IsPresentException(String error) {
+		super(error);
 	}
 }

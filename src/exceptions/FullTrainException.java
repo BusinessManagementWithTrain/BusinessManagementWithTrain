@@ -1,9 +1,13 @@
-package exception;
+package exceptions;
 
 public class FullTrainException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public FullTrainException() {
-		// TODO Auto-generated constructor stub
+		this("");
+	}
+	
+	public FullTrainException(String error) {
+		super(error);
 	}
 }

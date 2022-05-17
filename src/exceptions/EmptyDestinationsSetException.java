@@ -1,9 +1,13 @@
-package exception;
+package exceptions;
 
 public class EmptyDestinationsSetException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public EmptyDestinationsSetException() {
-		// TODO Auto-generated constructor stub
+		this("");
+	}
+	
+	public EmptyDestinationsSetException(String error) {
+		super(error);
 	}
 }

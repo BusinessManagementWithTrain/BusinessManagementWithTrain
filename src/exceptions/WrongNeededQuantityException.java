@@ -1,9 +1,13 @@
-package exception;
+package exceptions;
 
 public class WrongNeededQuantityException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public WrongNeededQuantityException() {
-		// TODO Auto-generated constructor stub
+		this("");
+	}
+	
+	public WrongNeededQuantityException(String error) {
+		super(error);
 	}
 }
