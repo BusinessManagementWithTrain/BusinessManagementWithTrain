@@ -17,18 +17,19 @@ import model.interfaces.Store;
 import model.interfaces.Train;
 
 /**
- * Breve descrizione della classe del treno
+ * Classe destinata all'implementazione dell'interfaccia del treno, ovvero l'oggetto
+ * che avr√† come compito quello di caricare e scaricare merce dai magazzini di carico e di
+ * scarico delle aziende
  * 
  * @author Rinaldi Simone
- *
  */
 
 public class TrainImpl implements Train {
 	/*
-	 * Come specificato dalla documentazione, il treno avr‡ rispettivamente un set di richieste 
+	 * Come specificato dalla documentazione, il treno avr√† rispettivamente un set di richieste 
 	 * per caricare il materiale sul treno, un set di richieste per scaricare il materiale dal treno,
-	 * una mappa per tenere traccia della quantit‡ relativa ad ogni materiale caricato sul treno,
-	 * un set per tenere traccia delle varie destinazioni che il treno dovr‡ raggiungere,
+	 * una mappa per tenere traccia della quantit√† relativa ad ogni materiale caricato sul treno,
+	 * un set per tenere traccia delle varie destinazioni che il treno dovr√† raggiungere,
 	 * un riferimento al negozio unico e la capienza massima dello stesso
 	 */
 	private final Set<Request> loadingRequests;
@@ -39,10 +40,10 @@ public class TrainImpl implements Train {
 	private final int maxCapacity;
 	
 	/**
-	 * Il costruttore servir‡ principalmente per associare il negozio e la capienza massima del treno,
+	 * Il costruttore servir√† principalmente per associare il negozio e la capienza massima del treno,
 	 * ma anche per inizializzare tutte le strutture dati
 	 * 
-	 * @param capacit√† massima di spazio del treno
+	 * @param capacit√É¬† massima di spazio del treno
 	 * @param istanza del negozio
 	 */
 	public TrainImpl(final int maxCapacity, final Store store) {
@@ -92,7 +93,7 @@ public class TrainImpl implements Train {
 	}
 	
 	/*
-	 * Metodo che somma e restutisce la quantit‡ totale di materiale da caricare o scaricare
+	 * Metodo che somma e restutisce la quantit√† totale di materiale da caricare o scaricare
 	 * nell'azienda raggiunta
 	 * 
 	 *  @param un set nel quale cercare ed effettuare la somma
@@ -106,10 +107,10 @@ public class TrainImpl implements Train {
 	}	
 	
 	/*
-	 * Metodo che controlla se il treno raggiunge la capacit‡ massima aggiungendo una
-	 * determinata quantit‡
+	 * Metodo che controlla se il treno raggiunge la capacit√† massima aggiungendo una
+	 * determinata quantit√†
 	 * 
-	 * @param la quantit‡ da aggiungere al treno
+	 * @param la quantit√† da aggiungere al treno
 	 * @return true o false in base al controllo
 	 */
 	private boolean isFull(int newLoad){
@@ -117,9 +118,9 @@ public class TrainImpl implements Train {
 	}
 	
 	/*
-	 * Metodo per ottenere la capacit‡ attuale del treno
+	 * Metodo per ottenere la capacit√† attuale del treno
 	 * 
-	 * @return capacit‡†corrente del treno
+	 * @return capacit√†¬†corrente del treno
 	 */
 	private int getCurrentCapacity() {
 		return this.maxCapacity - this.stuffMap.values()
@@ -130,7 +131,7 @@ public class TrainImpl implements Train {
 	
 	/*
 	 * Metodo utilizzato per evitare ridondanza di codice, controlla
-	 * se c'Ë o meno una tappa utile
+	 * se c'√® o meno una tappa utile
 	 */
 	private void checkDestinationSet() {
 		if(this.destinationsSet.isEmpty()) {
@@ -139,16 +140,16 @@ public class TrainImpl implements Train {
 	}
 		
 	/*
-	 * Metodo che viene invocato ad ogni nuova stazione, il suo scopo Ë quello di scaricare la merce
-	 * dal treno caricandola nei magazzini e viceversa, data la complessit‡ del metodo si Ë ritenuto
+	 * Metodo che viene invocato ad ogni nuova stazione, il suo scopo √® quello di scaricare la merce
+	 * dal treno caricandola nei magazzini e viceversa, data la complessit√† del metodo si √® ritenuto
 	 * necessario commentarne il funzionamento dall'interno
 	 */
 	private void cargoManagment() {
 		// Il primo controllo viene effettuato sulla lista di scarico, si verifica che abbia almeno un elemento
 		if(!getUnloadingRequest().isEmpty()) {
 			try {
-				// Se arriva qui vuol dire che c'Ë almeno una richiesta di scarico diretta a questa azienda
-				// Salviamo la quantit‡ di materiale che bisogna scaricare all'interno dell'azienda
+				// Se arriva qui vuol dire che c'√® almeno una richiesta di scarico diretta a questa azienda
+				// Salviamo la quantit√† di materiale che bisogna scaricare all'interno dell'azienda
 				int quantityToManage = getQuantityToManage(this.unloadingRequests, 
 														   r -> r.getReceiverFactory().equals(getCurrentDestination()));
 				
@@ -156,7 +157,7 @@ public class TrainImpl implements Train {
 				getCurrentDestination().getLoadingWarehouse()
 									   .addMaterial(quantityToManage);
 				
-				// Scarichiamo dal treno la quantit‡ di materiale richiesta
+				// Scarichiamo dal treno la quantit√† di materiale richiesta
 				this.stuffMap.merge(getCurrentDestination().getMaterial(),
 									- quantityToManage,
 									Integer::sum);
@@ -166,7 +167,7 @@ public class TrainImpl implements Train {
 				
 			} catch (Exception e/*magazzino pieno*/) {
 				
-				/* Se nel magazzino non c'Ë spazio per scaricare tutta la merce, allora convoglio 
+				/* Se nel magazzino non c'√® spazio per scaricare tutta la merce, allora convoglio 
 				 * tutte le richieste verso il negozio
 				 */
 				getUnloadingRequest().stream()
@@ -178,17 +179,17 @@ public class TrainImpl implements Train {
 		
 		// Il secondo controllo viene effettuato sulla lista di carico, si verifica che abbia almeno un elemento
 		if(!getLoadingRequest().isEmpty()) {
-			// Se arriva qui vuol dire che c'Ë almeno una richiesta di carico in partenza da questa azienda
-			// Salviamo la quantit‡ di materiale che bisogna caricare all'interno del treno
+			// Se arriva qui vuol dire che c'√® almeno una richiesta di carico in partenza da questa azienda
+			// Salviamo la quantit√† di materiale che bisogna caricare all'interno del treno
 			int quantityToManage = getQuantityToManage(this.loadingRequests,
 													   r -> r.getSendingFactory().equals(getCurrentDestination()));
 			
-			// Controlliamo se c'Ë spazio nel treno
+			// Controlliamo se c'√® spazio nel treno
 			if(isFull(quantityToManage)) {
 				
 				/*
-				 *  Se lo spazio non dovesse bastare, verr‡ spostata la tappa attuale
-				 *  in fondo alla lista delle tappe cosÏ da poter riprovare a caricare
+				 *  Se lo spazio non dovesse bastare, verr√† spostata la tappa attuale
+				 *  in fondo alla lista delle tappe cos√¨ da poter riprovare a caricare
 				 *  dopo aver svuotato un po' il treno
 				 */
 				Factory factoryTemp = getCurrentDestination();
@@ -198,7 +199,7 @@ public class TrainImpl implements Train {
 				// GENERA UN'ECCEZIONE PER IL POPUP DELLA VIEW
 			}
 			else {
-				// Se arriva qui vuol dire che ci sono richieste e c'Ë lo spazio nel treno
+				// Se arriva qui vuol dire che ci sono richieste e c'√® lo spazio nel treno
 				// Come prima cosa viene scaricato il materiale dal magazzino dell'azienda
 				getCurrentDestination().getUnloadingWarehouse().addMaterial(- quantityToManage);
 					

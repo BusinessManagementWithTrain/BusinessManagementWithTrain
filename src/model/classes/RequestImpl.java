@@ -41,6 +41,11 @@ public class RequestImpl implements Request {
 	 * @param quantità richiesta
 	 */
 	public RequestImpl(final Factory receiverFactory, final Material sentMaterial, final int sentQuantity) {
+		this(null, receiverFactory, sentMaterial, sentQuantity);
+	}
+	
+	public RequestImpl(final Factory sendingFactory, final Factory receiverFactory, final Material sentMaterial, final int sentQuantity) {
+		this.sendingFactory		= sendingFactory;
 		this.receiverFactory 	= receiverFactory;
 		this.sentMaterial 		= sentMaterial;
 		this.sentQuantity 		= sentQuantity;

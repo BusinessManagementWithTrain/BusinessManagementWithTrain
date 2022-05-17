@@ -1,8 +1,8 @@
 package model.interfaces;
 
 /**
- * Breve descrizione dell'azienda
- * 
+ * Interfaccia dell'azienda, ovvero l'oggetto per il quale saranno usati i magazzini 
+ * per interagire con il treno.
  * @author Rinaldi Simone
  */
 

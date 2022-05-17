@@ -35,4 +35,11 @@ public interface Warehouse {
 	 * @return la capienza corrente del magazzino
 	 */
 	int getCurrentCapacity();
+	
+	/** 
+	 * Consente di avere il riferimento al materiale contenuto nel magazzino
+	 * 
+	 * @return il materiale contenuto nel magazzino
+	 */
+	String getMaterial();
 }
