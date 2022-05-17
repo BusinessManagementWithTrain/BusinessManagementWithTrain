@@ -34,7 +34,7 @@ public class TrainImpl implements Train {
 	 */
 	private final Set<Request> loadingRequests;
 	private final Set<Request> unloadingRequests;
-	private final Map<Material,Integer> stuffMap;
+	private final Map<String,Integer> stuffMap;
 	private final Set<Factory> destinationsSet;
 	private final Store store;
 	private final int maxCapacity;
@@ -145,6 +145,10 @@ public class TrainImpl implements Train {
 	 */
 	private void cargoManagment() {
 		
+		if(getCurrentDestination()==store) {
+			
+			
+		}
 		// Il primo controllo viene effettuato sulla lista di scarico, si verifica che abbia almeno un elemento
 		if(!getUnloadingRequest().isEmpty()) {
 			try {
@@ -154,7 +158,7 @@ public class TrainImpl implements Train {
 														   r -> r.getReceiverFactory().equals(getCurrentDestination()));
 				
 				if(getCurrentDestination().equals(store)) {
-					this.stuffMap.merge(getCurrentDestination().getMaterial(),-quantityToManage, Integer::sum);
+					this.stuffMap.merge(getCurrentDestination().get,-quantityToManage, Integer::sum);
 				    
 				}
 				
