@@ -1,9 +1,14 @@
 package controller.classes;
 
 import java.util.LinkedHashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import controller.interfaces.Manager;
+import exceptions.LowTrainCapacityException;
+import exceptions.FullTrainException;
+import exceptions.FullWarehouseException;
+import exceptions.NullManagerException;
 import model.interfaces.*;
 import model.classes.*;
 
@@ -15,12 +20,12 @@ public class ManagerImpl implements Manager {
 	 * un set di tutti i direttori assunti, un set di tutte le richieste sottisfabili unicamente dal manager,
 	 * un set di tutte le richieste attive attualmente, il riferimento al negozio ed il riferimento al treno
 	 */
-	private static ManagerImpl manager = null;
+	private static final int MIN_QUANTITY = 100;
+	private static ManagerImpl manager    = null;
 	
 	private Set<Director> linkDirectors;
 	private Set<Request> linkRequestsManager;
 	private Set<Request> linkGlobalRequests;
-	private Store store; 
 	private Train train;
 	
 	/**
@@ -34,8 +39,7 @@ public class ManagerImpl implements Manager {
 		this.linkDirectors			= new LinkedHashSet<Director>();
 		this.linkRequestsManager	= new LinkedHashSet<Request>();
 		this.linkGlobalRequests 	= new LinkedHashSet<Request>();
-		this.store 					= new StoreImpl();
-		this.train 					= new TrainImpl(trainCapacity,this.store);
+		this.train 					= new TrainImpl(trainCapacity, StoreImpl.getStoreInstance());
 	}
 	
 	/*
@@ -45,10 +49,21 @@ public class ManagerImpl implements Manager {
 	 *
 	 * @param la capacità del treno
 	 */
-	public static ManagerImpl getManager(int trainCapacity) {
+	public static ManagerImpl getManager(int trainCapacity) throws LowTrainCapacityException{
+		if(trainCapacity < MIN_QUANTITY) {
+			throw new LowTrainCapacityException("Low train capacity, please increase it.");
+		}
+		
 		if(manager == null) {
 			manager = new ManagerImpl(trainCapacity);
 		}
+		return manager;
+	}
+	
+	
+	public static ManagerImpl getManager() throws NullManagerException{
+		if(manager == null)
+			throw new NullManagerException("Instance Manager is null");
 		return manager;
 	}
 	
@@ -112,7 +127,7 @@ public class ManagerImpl implements Manager {
 	 * @param richiesta soddisfatta
 	 */
 	@Override
-	public void satisfiesRequest(Request requestApproved, String directorName) {
+	public void satisfiesRequestDirector(Request requestApproved, String directorName) {
 		requestApproved.setSendingFactory(getDirectorByName(directorName).getFactory());
 		
 		this.train.addRequest(requestApproved);
@@ -123,13 +138,24 @@ public class ManagerImpl implements Manager {
 	}
 	
 	/*
+	 * Viene passata una richiesta al Manager che verrà subito soddisfatta senza passare per il treno
+	 * Successivamente verrà eliminata dalle richieste del Manager
+	 * @param richiesta soddisfatta
+	 */
+	public void satisfiesRequestManager(Request requestApproved) throws FullWarehouseException{
+		requestApproved.getSendingFactory().getLoadingWarehouse().addMaterial(requestApproved.getSentQuantity());
+		linkRequestsManager.remove(requestApproved);
+	}
+	
+		
+	/*
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
 	@Override
 	public void nextDestination() {
 		this.train.nextDestination();		
 	}
-	
+
 	/*
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
 	 * 
@@ -140,7 +166,18 @@ public class ManagerImpl implements Manager {
 	public void createNewRequest(int quantity, String directorName) {
 		sendRequest(getDirectorByName(directorName).newRequest(quantity));
 	}
+
 	
+	/*
+	 * Metodo che permette di svuotare il magazzino con il materiale lavorato tramite il nome di un direttore
+	 * 
+	 * @param nome del direttore
+	 */
+	@Override
+	public void emptyWarehouse(String directorName){
+		this.getDirectorByName(directorName).emptyWarehouse();
+	}
+
 	/*
 	 * Metodo che visualizza le informazioni riguardanti un direttore
 	 * 
@@ -169,11 +206,13 @@ public class ManagerImpl implements Manager {
 	 * 
 	 * @return il treno
 	 */
+	
 	@Override
+
 	public Train showTrainInfo() {
 		return this.train;
 	}
-	
+
 	/*
 	 * Metodo che visualizza le informazioni di una richiesta
 	 * 
@@ -182,9 +221,24 @@ public class ManagerImpl implements Manager {
 	 */
 	@Override
 	public Request showRequestInfo(int id){
-		return this.linkGlobalRequests.stream()
-									  .filter(r ->r.getRequestId() == (id))
-									  .findFirst()
-									  .get();
+		try {
+			return this.show(id, this.linkGlobalRequests);
+		} catch(NoSuchElementException e){
+			return this.show(id, this.linkRequestsManager);
+		}
+	}
+	
+	/*
+	 *  Metodo che ritorna una richiesta in base all'id e al set di richieste che gli viene passato
+	 * 
+	 *  @param ID della richiesta
+	 *  @param set con le richieste
+	 *  @return richiesta associata all'id e al tipo di set passatogli 
+	 */
+	private Request show(int id, Set<Request> set) throws NoSuchElementException{
+		return set.stream()
+				  .filter(r ->r.getRequestId() == (id))
+				  .findFirst()
+				  .get();		
 	}
 }
