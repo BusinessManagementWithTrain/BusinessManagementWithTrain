@@ -9,7 +9,6 @@ import java.util.Set;
 
 import model.interfaces.Director;
 import model.interfaces.Request;
-import model.interfaces.Store;
 
 /**
 * Classe destinata all'implementazione dell'interfaccia del direttore, ovvero l'oggetto
@@ -51,7 +50,7 @@ public class DirectorImpl implements Director {
 	@Override
 	public Request newRequest(int neededQuantity) {
 		return new RequestImpl(this.factory,
-							   /*this.factory.getMaterial()*/"",
+							   this.factory.getLoadingWarehouse().getMaterial(),
 							   neededQuantity);
 	}
 	//DA GESTIRE L'ECCEZIONE IN CASO DI QUANTITA' TROPPO GRANDE O NEGATIVA
@@ -64,7 +63,7 @@ public class DirectorImpl implements Director {
 	@Override
 	public Request emptyWarehouse() {
 		return new RequestImpl(this.factory,
-							   /*StoreImpl.getInstance()*/null,
+							   StoreImpl.getStoreInstance(),
 							   /*this.factory.getMaterial()*/"",
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
 	}																				

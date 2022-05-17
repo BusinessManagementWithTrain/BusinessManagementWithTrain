@@ -1,13 +1,13 @@
 package view.director;
 
 import java.awt.Dimension;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.classes.ManagerImpl;
-import exception.EmptyDestinationsSetException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
 import model.classes.MaterialImpl;
@@ -28,8 +28,8 @@ public class DirectorFrame extends JFrame {
 	
 	
 	
-	public static void main(String[] args) throws EmptyDestinationsSetException {
-		ManagerImpl.getManager(100).hireDirector(new DirectorImpl("Gigio", new FactoryImpl("Azienda 1", new MaterialImpl("Ferro", "Acciaio"), 6, 600, 500)));
+	public static void main(String[] args) {
+		ManagerImpl.getManager(0).hireDirector(new DirectorImpl("Gigio", new FactoryImpl("Azienda 1", new MaterialImpl("Pietra", "Sassi"), 4, 400, 600)));
 		new DirectorFrame("Gigio");
 	}
 	

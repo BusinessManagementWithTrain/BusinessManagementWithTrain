@@ -34,7 +34,6 @@ public class ManagerImpl implements Manager {
 		this.linkDirectors			= new LinkedHashSet<Director>();
 		this.linkRequestsManager	= new LinkedHashSet<Request>();
 		this.linkGlobalRequests 	= new LinkedHashSet<Request>();
-		this.store 					= new StoreImpl();
 		this.train 					= new TrainImpl(trainCapacity,this.store);
 	}
 	
