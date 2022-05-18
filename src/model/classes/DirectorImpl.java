@@ -7,8 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import exceptions.IsNotPresentException;
-import exceptions.IsPresentException;
 import model.interfaces.Director;
 import model.interfaces.Request;
 
@@ -77,10 +75,7 @@ public class DirectorImpl implements Director {
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override
-	public void addRequestToSatisfy(Request requestToSatisfy) throws IsPresentException {
-		if(this.requestsToSatisfy.contains(requestToSatisfy)) {
-			throw new IsPresentException("This request is already present!");
-		}
+	public void addRequestToSatisfy(Request requestToSatisfy){
 		this.requestsToSatisfy.add(requestToSatisfy);
 	}
 	
@@ -91,11 +86,7 @@ public class DirectorImpl implements Director {
 	 * @param richiestaSoddisfatta
 	 */
 	@Override
-	public void removeRequestToSatisfy(Request requestToBeRemoved) throws IsNotPresentException{
-		if(!this.requestsToSatisfy.contains(requestToBeRemoved)) {
-			throw new IsNotPresentException("This request is not present!");
-		}
-		
+	public void removeRequestToSatisfy(Request requestToBeRemoved){
 		this.requestsToSatisfy.remove(requestToBeRemoved);
 	}
 	
