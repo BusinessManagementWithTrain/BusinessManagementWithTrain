@@ -39,7 +39,6 @@ public class TrainImpl implements Train {
 	private final Set<Request> unloadingRequests;
 	private final Map<String,Integer> stuffMap;
 	private final Set<Factory> destinationsSet;
-	private final Store store;
 	private final int maxCapacity;
 	
 	/**
@@ -49,12 +48,11 @@ public class TrainImpl implements Train {
 	 * @param capacitÃ  massima di spazio del treno
 	 * @param istanza del negozio
 	 */
-	public TrainImpl(final int maxCapacity, final Store store) {
+	public TrainImpl(final int maxCapacity) {
 		this.loadingRequests 		= new LinkedHashSet<>();
 		this.unloadingRequests		= new LinkedHashSet<>();
 		this.stuffMap 				= new LinkedHashMap<>();
 		this.destinationsSet		= new LinkedHashSet<>();
-		this.store 					= store;
 		this.maxCapacity			= maxCapacity;
 	}		
 	
@@ -148,10 +146,7 @@ public class TrainImpl implements Train {
 	 */
 	private void cargoManagment() throws FullWarehouseException,FullTrainException{
 		
-		if(getCurrentDestination()==store) {
-			
-			
-		}
+		
 		// Il primo controllo viene effettuato sulla lista di scarico, si verifica che abbia almeno un elemento
 		if(!getUnloadingRequest().isEmpty()) {
 			try {
@@ -160,8 +155,9 @@ public class TrainImpl implements Train {
 				int quantityToManage = getQuantityToManage(this.unloadingRequests, 
 														   r -> r.getReceiverFactory().equals(getCurrentDestination()));
 				
-				if(getCurrentDestination().equals(store)) {
+				if(getCurrentDestination().equals(StoreImpl.getStoreInstance())) {
 					this.stuffMap.merge(getCurrentDestination().getLoadingWarehouse().getMaterial(),-quantityToManage, Integer::sum);
+					
 				}
 				
 				else {
@@ -185,7 +181,7 @@ public class TrainImpl implements Train {
 				 * tutte le richieste verso il negozio
 				 */
 				getUnloadingRequest().stream()
-									 .forEach(r -> r.setSendingFactory(this.store));
+									 .forEach(r -> r.setSendingFactory(StoreImpl.getStoreInstance()));
 				
 				throw e;
 				// GENERA UN'ECCEZIONE PER IL POPUP DELLA VIEW
@@ -210,7 +206,7 @@ public class TrainImpl implements Train {
 				Factory factoryTemp = getCurrentDestination();
 				this.destinationsSet.remove(factoryTemp);
 				this.destinationsSet.add(factoryTemp);
-				 new FullTrainException("WARNING: your train is full, you can load stuff");
+				new FullTrainException("WARNING: the train is full, you can't load stuff");
 				
 				// GENERA UN'ECCEZIONE PER IL POPUP DELLA VIEW
 			}
