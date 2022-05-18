@@ -16,7 +16,6 @@ import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Factory;
 import model.interfaces.Request;
-import model.interfaces.Store;
 import model.interfaces.Train;
 
 /**

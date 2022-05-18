@@ -39,7 +39,7 @@ public class ManagerImpl implements Manager {
 		this.linkDirectors			= new LinkedHashSet<Director>();
 		this.linkRequestsManager	= new LinkedHashSet<Request>();
 		this.linkGlobalRequests 	= new LinkedHashSet<Request>();
-		this.train 					= new TrainImpl(trainCapacity, StoreImpl.getStoreInstance());
+		this.train 					= new TrainImpl(trainCapacity);
 	}
 	
 	/*
