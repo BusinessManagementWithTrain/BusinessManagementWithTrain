@@ -18,7 +18,7 @@ public class PopupButtonPanel extends JPanel {
 	private JButton cancelButton;
 	
 	public PopupButtonPanel(final String directorName, final JTextField requiredAmount) {
-		//JDialog requestPopup = (JDialog)this.get;
+	/*	//JDialog requestPopup = (JDialog)this.get;
 		
 		this.createPopupButtonPanel(requestPopup, event -> {
 			try {
@@ -30,7 +30,7 @@ public class PopupButtonPanel extends JPanel {
 				JOptionPane.showMessageDialog(requestPopup, "The entered value is not an integer!");
 			}
 		});
-		
+	*/	
 	}
 	
 	public PopupButtonPanel(final String directorName) {
