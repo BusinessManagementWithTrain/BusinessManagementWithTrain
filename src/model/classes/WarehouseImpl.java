@@ -1,5 +1,7 @@
 package model.classes;
 
+import exceptions.EmptyWarehouseException;
+import exceptions.FullWarehouseException;
 import model.interfaces.Warehouse;
 
 /**
@@ -38,9 +40,10 @@ public class WarehouseImpl implements Warehouse {
 	 * @param quantità da inserire nel magazzino
 	 */
 	@Override
-	public void addMaterial(int quantity) {
+	public void addMaterial(int quantity) throws FullWarehouseException {
 		if(!(this.currentCapacity + quantity <= this.totalCapacity)){
-			//genero eccezione
+			
+			throw new FullWarehouseException("The warehouse is full!");
 		}
 		this.currentCapacity += quantity;
 	}
@@ -51,9 +54,10 @@ public class WarehouseImpl implements Warehouse {
 	 * @param la quantità da rimuovere dal magazzino
 	 */
 	@Override
-	public void removeMaterial(int quantity) {
+	public void removeMaterial(int quantity) throws EmptyWarehouseException {
 		if(!(this.currentCapacity - quantity >= 0)){
-			//genero l'eccezione
+			
+			throw new EmptyWarehouseException("The warehouse is empty!");
 		}
 		this.currentCapacity -= quantity;
 	}
