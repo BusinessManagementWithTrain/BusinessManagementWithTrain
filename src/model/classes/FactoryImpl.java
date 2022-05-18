@@ -41,6 +41,7 @@ public class FactoryImpl implements Factory {
 		this.material 				= material;
 		this.loadingWarehouse 		= new WarehouseImpl(material.getRawMaterial(), loadingSize);
 		this.unloadingWarehouse		= new WarehouseImpl(material.getProcessedMaterial(), unloadingSize);
+
 		this.staff 					= new StaffImpl(staffSize, this.loadingWarehouse, this.unloadingWarehouse);
 	}
 

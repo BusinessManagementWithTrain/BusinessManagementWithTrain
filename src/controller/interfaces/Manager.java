@@ -1,5 +1,6 @@
 package controller.interfaces;
 
+import exceptions.FullWarehouseException;
 import model.interfaces.Director;
 import model.interfaces.Factory;
 import model.interfaces.Request;
@@ -33,8 +34,17 @@ public interface Manager {
 	 * 
 	 * @param richiesta soddisfatta
 	 */
-	void satisfiesRequest(Request requestApproved, String directorName);
+	void satisfiesRequestDirector(Request requestApproved, String directorName);
 
+	/**
+	 * Questo metodo permette al Manager di soddisfare le richieste che non possono soddisfare i direttori
+	 * @throws FullWarehouseException 
+	 * 
+	 * 
+	 */
+	void satisfiesRequestManager(Request requestApproved) throws FullWarehouseException;
+
+	
 	/**
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
@@ -47,6 +57,13 @@ public interface Manager {
 	 * @param nome del direttore
 	 */
 	void createNewRequest(int quantity, String directorName);
+	
+	/**
+	 * Metodo che permette di svuotare il magazzino con il materiale lavorato tramite il nome di un direttore
+	 * 
+	 * @param nome del direttore
+	 */
+	public void emptyWarehouse(String directorName);
 	
 	/**
 	 * Metodo che visualizza le informazioni riguardanti un direttore

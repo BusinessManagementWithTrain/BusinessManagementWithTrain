@@ -2,6 +2,9 @@ package model.interfaces;
 
 import java.util.Map;
 
+import exceptions.FullTrainException;
+import exceptions.FullWarehouseException;
+
 /**
  * Interfaccia del treno, ovvero l'oggetto che gestirà
  * il carico e lo scarico merci tra i magazzini delle aziende
@@ -14,7 +17,7 @@ public interface Train {
 	/**
 	 * Metodo che invia il treno alla prossima tappa utile
 	 */
-	void nextDestination();
+	void nextDestination() throws FullWarehouseException,FullTrainException;
 	
 	/**
 	 * metodo per aggiungere richieste alla lista di richieste di carico
@@ -27,7 +30,7 @@ public interface Train {
 	 * 
 	 * @return la mappa della merce
 	 */
-	Map<Material, Integer> getStuffMap();
+	Map<String, Integer> getStuffMap();
 
 	/**
 	 * Metodo che consente di avere il riferimento alla tappa attuale del treno

@@ -1,53 +1,69 @@
 package controller.classes;
 
 import java.util.LinkedHashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import controller.interfaces.Manager;
+import exceptions.LowTrainCapacityException;
+import exceptions.FullTrainException;
+import exceptions.FullWarehouseException;
+import exceptions.NullManagerException;
 import model.interfaces.*;
 import model.classes.*;
 
 public class ManagerImpl implements Manager {
 	
 	/*
-	 * Come specificato nella documentazione, la classe manager conterr‡, rispettivamente, in primis il 
-	 * riferimento alla classe stessa per poter sfruttare il SingleTon Design Pattern, dopodichË conterr‡
+	 * Come specificato nella documentazione, la classe manager conterr√†, rispettivamente, in primis il 
+	 * riferimento alla classe stessa per poter sfruttare il SingleTon Design Pattern, dopodich√® conterr√†
 	 * un set di tutti i direttori assunti, un set di tutte le richieste sottisfabili unicamente dal manager,
 	 * un set di tutte le richieste attive attualmente, il riferimento al negozio ed il riferimento al treno
 	 */
-	private static ManagerImpl manager = null;
+	private static final int MIN_QUANTITY = 100;
+	private static ManagerImpl manager    = null;
 	
 	private Set<Director> linkDirectors;
 	private Set<Request> linkRequestsManager;
 	private Set<Request> linkGlobalRequests;
-	private Store store; 
 	private Train train;
 	
 	/**
-	 * Il costruttore servir‡ principalmente a creare il treno con la capienza segnalata dall'utente
-	 * ed inoltre servir‡ per inizializzare tutti i vari campi sopracitati.
-	 * Il costruttore Ë inoltre privato per consentire l'utilizzo del SingleTon Design Pattern
+	 * Il costruttore servir√† principalmente a creare il treno con la capienza segnalata dall'utente
+	 * ed inoltre servir√† per inizializzare tutti i vari campi sopracitati.
+	 * Il costruttore √® inoltre privato per consentire l'utilizzo del SingleTon Design Pattern
 	 * 
-	 * @param la capacit‡ del treno
+	 * @param la capacit√† del treno
 	 */
 	private ManagerImpl(int trainCapacity) {
 		this.linkDirectors			= new LinkedHashSet<Director>();
 		this.linkRequestsManager	= new LinkedHashSet<Request>();
 		this.linkGlobalRequests 	= new LinkedHashSet<Request>();
-		this.train 					= new TrainImpl(trainCapacity,this.store);
+		this.train 					= new TrainImpl(trainCapacity, StoreImpl.getStoreInstance());
 	}
 	
 	/*
 	 * Sfruttando il SingleTon Design Pattern, necessiteremo di un metodo statico
 	 * per l'allocazione della classe del manager e, dalla seconda invocazione, il metodo
-	 * statico ci permetter‡ di avere il riferimento all'unica istanza del manager
+	 * statico ci permetter√† di avere il riferimento all'unica istanza del manager
 	 *
-	 * @param la capacit‡ del treno
+	 * @param la capacit√† del treno
 	 */
-	public static ManagerImpl getManager(int trainCapacity) {
+	public static ManagerImpl getManager(int trainCapacity) throws LowTrainCapacityException{
+		if(trainCapacity < MIN_QUANTITY) {
+			throw new LowTrainCapacityException("Low train capacity, please increase it.");
+		}
+		
 		if(manager == null) {
 			manager = new ManagerImpl(trainCapacity);
 		}
+		return manager;
+	}
+	
+	
+	public static ManagerImpl getManager() throws NullManagerException{
+		if(manager == null)
+			throw new NullManagerException("Instance Manager is null");
 		return manager;
 	}
 	
@@ -67,7 +83,7 @@ public class ManagerImpl implements Manager {
 	/*
 	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
 	 * 
-	 * @param quantit‡ di materiale richiesto dall'utente
+	 * @param quantit√† di materiale richiesto dall'utente
 	 */
 	private void sendRequest(Request request) {
 		boolean satisfy = false;
@@ -105,13 +121,13 @@ public class ManagerImpl implements Manager {
 	}
 
 	/*
-	 * Viene passata una richiesta che verr‡ successivamente inviata al treno 
-	 * come carico merce e verr‡ rimossa da tutti i direttori che hanno tale richiesta
+	 * Viene passata una richiesta che verr√† successivamente inviata al treno 
+	 * come carico merce e verr√† rimossa da tutti i direttori che hanno tale richiesta
 	 * 
 	 * @param richiesta soddisfatta
 	 */
 	@Override
-	public void satisfiesRequest(Request requestApproved, String directorName) {
+	public void satisfiesRequestDirector(Request requestApproved, String directorName) {
 		requestApproved.setSendingFactory(getDirectorByName(directorName).getFactory());
 		
 		this.train.addRequest(requestApproved);
@@ -122,24 +138,46 @@ public class ManagerImpl implements Manager {
 	}
 	
 	/*
+	 * Viene passata una richiesta al Manager che verr√† subito soddisfatta senza passare per il treno
+	 * Successivamente verr√† eliminata dalle richieste del Manager
+	 * @param richiesta soddisfatta
+	 */
+	public void satisfiesRequestManager(Request requestApproved) throws FullWarehouseException{
+		requestApproved.getSendingFactory().getLoadingWarehouse().addMaterial(requestApproved.getSentQuantity());
+		linkRequestsManager.remove(requestApproved);
+	}
+	
+		
+	/*
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
 	@Override
 	public void nextDestination() {
 		this.train.nextDestination();		
 	}
-	
+
 	/*
-	 * Metodo che servir‡ per creare una nuova richiesta grazie al direttore specificato
+	 * Metodo che servir√† per creare una nuova richiesta grazie al direttore specificato
 	 * 
-	 * @param quantit‡ di metariale richiesta
+	 * @param quantit√† di metariale richiesta
 	 * @param nome del direttore
 	 */
 	@Override
 	public void createNewRequest(int quantity, String directorName) {
 		sendRequest(getDirectorByName(directorName).newRequest(quantity));
 	}
+
 	
+	/*
+	 * Metodo che permette di svuotare il magazzino con il materiale lavorato tramite il nome di un direttore
+	 * 
+	 * @param nome del direttore
+	 */
+	@Override
+	public void emptyWarehouse(String directorName){
+		this.getDirectorByName(directorName).emptyWarehouse();
+	}
+
 	/*
 	 * Metodo che visualizza le informazioni riguardanti un direttore
 	 * 
@@ -153,7 +191,7 @@ public class ManagerImpl implements Manager {
 	
 	/*
 	 * Viene passato come parametro il nome di un direttore,
-	 * verr‡ restituita l'azienda del direttore
+	 * verr√† restituita l'azienda del direttore
 	 * 
 	 * @param nome del direttore da cui prendere l'azienda
 	 * @return l'azienda associata al direttore
@@ -168,11 +206,13 @@ public class ManagerImpl implements Manager {
 	 * 
 	 * @return il treno
 	 */
+	
 	@Override
+
 	public Train showTrainInfo() {
 		return this.train;
 	}
-	
+
 	/*
 	 * Metodo che visualizza le informazioni di una richiesta
 	 * 
@@ -181,9 +221,24 @@ public class ManagerImpl implements Manager {
 	 */
 	@Override
 	public Request showRequestInfo(int id){
-		return this.linkGlobalRequests.stream()
-									  .filter(r ->r.getRequestId() == (id))
-									  .findFirst()
-									  .get();
+		try {
+			return this.show(id, this.linkGlobalRequests);
+		} catch(NoSuchElementException e){
+			return this.show(id, this.linkRequestsManager);
+		}
+	}
+	
+	/*
+	 *  Metodo che ritorna una richiesta in base all'id e al set di richieste che gli viene passato
+	 * 
+	 *  @param ID della richiesta
+	 *  @param set con le richieste
+	 *  @return richiesta associata all'id e al tipo di set passatogli 
+	 */
+	private Request show(int id, Set<Request> set) throws NoSuchElementException{
+		return set.stream()
+				  .filter(r ->r.getRequestId() == (id))
+				  .findFirst()
+				  .get();		
 	}
 }
