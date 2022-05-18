@@ -152,7 +152,7 @@ public class ManagerImpl implements Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
 	@Override
-	public void nextDestination() {
+	public void nextDestination() throws FullWarehouseException, FullTrainException {
 		this.train.nextDestination();		
 	}
 

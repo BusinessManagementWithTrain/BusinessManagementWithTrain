@@ -1,5 +1,6 @@
 package controller.interfaces;
 
+import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Director;
 import model.interfaces.Factory;
@@ -48,7 +49,7 @@ public interface Manager {
 	/**
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
-	void nextDestination();
+	void nextDestination() throws FullWarehouseException, FullTrainException;
 	
 	/**
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
