@@ -7,9 +7,10 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import exceptions.IsNotPresentException;
+import exceptions.IsPresentException;
 import model.interfaces.Director;
 import model.interfaces.Request;
-import model.interfaces.Store;
 
 /**
 * Classe destinata all'implementazione dell'interfaccia del direttore, ovvero l'oggetto
@@ -28,7 +29,6 @@ public class DirectorImpl implements Director {
 	private final String name;
 	private final Factory factory;
 	private final Set<Request> requestsToSatisfy;
-	private final Store store;
 	
 	/**
 	 * Il costruttore servirà principalmente ad associare il nome e
@@ -36,11 +36,10 @@ public class DirectorImpl implements Director {
 	 * 
 	 * @param azienda
 	 */
-	public DirectorImpl(final String name, final Factory factory, final Store store) {
+	public DirectorImpl(final String name, final Factory factory) {
 		this.name 				= name;
 		this.factory 			= factory;
 		this.requestsToSatisfy	= new LinkedHashSet<>();
-		this.store 				= store;
 	}
 
 	/*
@@ -53,7 +52,7 @@ public class DirectorImpl implements Director {
 	@Override
 	public Request newRequest(int neededQuantity) {
 		return new RequestImpl(this.factory,
-							   this.factory.getMaterial(),
+							   this.factory.getLoadingWarehouse().getMaterial(),
 							   neededQuantity);
 	}
 	//DA GESTIRE L'ECCEZIONE IN CASO DI QUANTITA' TROPPO GRANDE O NEGATIVA
@@ -66,12 +65,10 @@ public class DirectorImpl implements Director {
 	@Override
 	public Request emptyWarehouse() {
 		return new RequestImpl(this.factory,
-							   this.store,
-							   this.factory.getMaterial(),
+							   StoreImpl.getStoreInstance(),
+							   this.factory.getLoadingWarehouse().getMaterial(),
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
 	}																				
-	//DA GESTIRE L'ECCEZIONE IN CASO DI MAGAZZINO VUOTO
-	
 	
 	/*
 	 * Consente al dirigente di aggiungere una richiesta al set delle
@@ -80,11 +77,13 @@ public class DirectorImpl implements Director {
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override
-	public void addRequestToSatisfy(Request requestToSatisfy) {
+	public void addRequestToSatisfy(Request requestToSatisfy) throws IsPresentException {
+		if(this.requestsToSatisfy.contains(requestToSatisfy)) {
+			throw new IsPresentException("This request is already present!");
+		}
 		this.requestsToSatisfy.add(requestToSatisfy);
 	}
-	//DA GESTIRE L'ECCEZIONE IN CASO DI RICHIESTA GIA' PRESENTE
-
+	
 	/*
 	 * Consente al dirigente di rimuovere una richiesta dalla lista delle
 	 * richieste soddisfabili poichè già soddisfatta da un altro direttore
@@ -92,11 +91,14 @@ public class DirectorImpl implements Director {
 	 * @param richiestaSoddisfatta
 	 */
 	@Override
-	public void removeRequestToSatisfy(Request requestToBeRemoved) {
+	public void removeRequestToSatisfy(Request requestToBeRemoved) throws IsNotPresentException{
+		if(!this.requestsToSatisfy.contains(requestToBeRemoved)) {
+			throw new IsNotPresentException("This request is not present!");
+		}
+		
 		this.requestsToSatisfy.remove(requestToBeRemoved);
 	}
-	//DA GESTIRE L'ECCEZIONE IN CASO DI RICHIESTA NON PRESENTE
-
+	
 	/*
 	 * Consente al direttore di soddisfare una richiesta
 	 * precedentemente inviata da un altro direttore 

@@ -28,7 +28,7 @@ public interface Request {
 	 * 
 	 * @return il tipo di materiale spedito/da spedire
 	 */
-	Material getSentMaterial();
+	String getSentMaterial();
 	
 	/**
 	 * Consente di avere il riferimento alla quantità di materiale spedito 

@@ -1,7 +1,6 @@
 package model.classes;
 
 import model.interfaces.Factory;
-import model.interfaces.Material;
 import model.interfaces.Request;
 
 /**
@@ -22,7 +21,7 @@ public class RequestImpl implements Request {
 	 */
 	private Factory sendingFactory;
 	private final Factory receiverFactory;
-	private final Material sentMaterial;
+	private final String sentMaterial;
 	private final int sentQuantity;
 	private final int requestId;
 	
@@ -40,11 +39,11 @@ public class RequestImpl implements Request {
 	 * @param materiale richiesto
 	 * @param quantità richiesta
 	 */
-	public RequestImpl(final Factory receiverFactory, final Material sentMaterial, final int sentQuantity) {
+	public RequestImpl(final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
 		this(null, receiverFactory, sentMaterial, sentQuantity);
 	}
 	
-	public RequestImpl(final Factory sendingFactory, final Factory receiverFactory, final Material sentMaterial, final int sentQuantity) {
+	public RequestImpl(final Factory sendingFactory, final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
 		this.sendingFactory		= sendingFactory;
 		this.receiverFactory 	= receiverFactory;
 		this.sentMaterial 		= sentMaterial;
@@ -78,7 +77,7 @@ public class RequestImpl implements Request {
 	 * @return il tipo di materiale
 	 */
 	@Override
-	public Material getSentMaterial() {
+	public String getSentMaterial() {
 		return this.sentMaterial;
 	}
 
