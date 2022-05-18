@@ -2,6 +2,9 @@ package model.interfaces;
 
 import java.util.Set;
 
+import exceptions.IsNotPresentException;
+import exceptions.IsPresentException;
+
 /**
  * Interfaccia del direttore, ovvero l'oggetto che gestirà
  * un'azienda e comunicherà con gli altri direttori all'atto dell'utilizzo del programma.
@@ -33,7 +36,7 @@ public interface Director {
 	 * 
 	 * @param nuova richiesta da soddisfare
 	 */
-	void addRequestToSatisfy(Request requestToSatisfy);
+	void addRequestToSatisfy(Request requestToSatisfy) throws IsPresentException;
 	
 	/**
 	 * Consente al dirigente di rimuovere una richiesta dal set delle
@@ -41,7 +44,7 @@ public interface Director {
 	 * 
 	 * @param richiesta soddisfatta da rimuovere
 	 */
-	void removeRequestToSatisfy(Request requestToBeRemoved);
+	void removeRequestToSatisfy(Request requestToBeRemoved) throws IsNotPresentException;
 	
 	/**
 	 * Consente al direttore di soddisfare una richiesta
