@@ -8,7 +8,6 @@ import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
-import exceptions.NullManagerException;
 import model.interfaces.*;
 import model.classes.*;
 
@@ -54,16 +53,11 @@ public class ManagerImpl implements Manager {
 			throw new LowTrainCapacityException("Low train capacity, please increase it.");
 		}
 		
-		if(manager == null) {
-			manager = new ManagerImpl(trainCapacity);
-		}
 		return manager;
 	}
 	
 	
-	public static ManagerImpl getManager() throws NullManagerException{
-		if(manager == null)
-			throw new NullManagerException("Instance Manager is null");
+	public static ManagerImpl getManager() {
 		return manager;
 	}
 	
