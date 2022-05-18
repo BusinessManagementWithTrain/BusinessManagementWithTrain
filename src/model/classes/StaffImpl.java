@@ -1,5 +1,9 @@
 package model.classes;
 
+import exceptions.EmptyWarehouseException;
+import exceptions.FullWarehouseException;
+import exceptions.StaffIsAlreadyNotWorkingException;
+import exceptions.StaffIsAlreadyWorkingException;
 import model.interfaces.Staff;
 import model.interfaces.Warehouse;
 
@@ -37,9 +41,9 @@ public class StaffImpl implements Staff {
 	 * Consente di iniziare a lavorare il materiale dal magazzino di carico
 	 */
 	@Override
-	public void startWorking() {
+	public void startWorking() throws EmptyWarehouseException, StaffIsAlreadyWorkingException  {
 		if(this.isStaffWorking){
-			//genero eccezione
+			throw new StaffIsAlreadyWorkingException("Staff is already working!");
 		}
 
 		this.receiverWarehouse.removeMaterial(this.staffNumber);
@@ -50,9 +54,10 @@ public class StaffImpl implements Staff {
 	 * Consente di finire di lavorare il materiale e di posizionarlo nel magazzino di scarico
 	 */
 	@Override
-	public void stopWorking() {
+	public void stopWorking() throws FullWarehouseException, StaffIsAlreadyNotWorkingException {
 		if(!this.isStaffWorking){
-			//genero eccezione
+			throw new StaffIsAlreadyNotWorkingException("Staff is not already working!");
+
 		}
 		
 		this.sendingWarehouse.addMaterial(this.staffNumber);
