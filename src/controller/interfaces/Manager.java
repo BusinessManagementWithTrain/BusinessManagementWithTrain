@@ -1,5 +1,7 @@
 package controller.interfaces;
 
+import java.util.Set;
+
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Director;
@@ -30,8 +32,8 @@ public interface Manager {
 	void fireDirector(String directorName);
 
 	/**
-	 * Viene passata una richiesta che verrà successivamente inviata al treno 
-	 * come carico merce e verrà rimossa da tutti i direttori che hanno tale richiesta
+	 * Viene passata una richiesta che verrï¿½ successivamente inviata al treno 
+	 * come carico merce e verrï¿½ rimossa da tutti i direttori che hanno tale richiesta
 	 * 
 	 * @param richiesta soddisfatta
 	 */
@@ -52,9 +54,9 @@ public interface Manager {
 	void nextDestination() throws FullWarehouseException, FullTrainException;
 	
 	/**
-	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
+	 * Metodo che servirï¿½ per creare una nuova richiesta grazie al direttore specificato
 	 * 
-	 * @param quantità di metariale richiesta
+	 * @param quantitï¿½ di metariale richiesta
 	 * @param nome del direttore
 	 */
 	void createNewRequest(int quantity, String directorName);
@@ -76,7 +78,7 @@ public interface Manager {
 	
 	/**
 	 * Viene passato come parametro il nome di un direttore,
-	 * verrà restituita l'azienda del direttore
+	 * verrï¿½ restituita l'azienda del direttore
 	 * 
 	 * @param nome del direttore da cui prendere l'azienda
 	 * @return l'azienda associata al direttore
@@ -97,4 +99,20 @@ public interface Manager {
 	 * @return richiesta associata all'id
 	 */
 	Request showRequestInfo(int id);
+	
+	/**
+	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
+	 * 
+	 * @return la lista di Direttori
+	 */
+	public Set<Director> getLinkDirectors();
+	
+	/**
+	 *  Metodo che ritorna la lista delle richieste accettabili esclusivamente manager
+	 * 
+	 *  @return la lista di richieste del Manager
+	 */
+	public Set<Request> getlinkRequestsManager();
+	
+	public Director getDirectorByFactory(Factory factory);
 }
