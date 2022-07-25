@@ -2,9 +2,12 @@ package model.interfaces;
 
 import java.util.Set;
 
+import exceptions.AnotherAcceptedRequestException;
+import exceptions.WrongNeededQuantityException;
+
 /**
- * Interfaccia del direttore, ovvero l'oggetto che gestirà
- * un'azienda e comunicherà con gli altri direttori all'atto dell'utilizzo del programma.
+ * Interfaccia del direttore, ovvero l'oggetto che gestirï¿½
+ * un'azienda e comunicherï¿½ con gli altri direttori all'atto dell'utilizzo del programma.
  * 
  * @author Grasso Emanuele
  */
@@ -15,17 +18,19 @@ public interface Director {
 	 * Consente al direttore di creare una richiesta per ricevere il materiale
 	 * da lavorare
 	 * 
-	 * @param la quantità specificata dall'utente
+	 * @param la quantitï¿½ specificata dall'utente
 	 * @return la richiesta per ricevere il materiale
+	 * @throws WrongNeededQuantityException 
 	 */
-	Request newRequest(int neededQuantity);
+	Request newRequest(int neededQuantity) throws WrongNeededQuantityException;
 
 	/**
 	 * Crea la richiesta per svuotare il magazzino di prodotti lavorati
 	 * 
 	 * @return la richiesta per svuotare
+	 * @throws WrongNeededQuantityException 
 	 */
-	Request emptyWarehouse(); 
+	Request emptyWarehouse() throws WrongNeededQuantityException; 
 	
 	/**
 	 * Consente al dirigente di aggiungere una richiesta al set delle
@@ -37,7 +42,7 @@ public interface Director {
 	
 	/**
 	 * Consente al dirigente di rimuovere una richiesta dal set delle
-	 * richieste soddisfabili poichè già soddisfatta da un altro direttore
+	 * richieste soddisfabili poichï¿½ giï¿½ soddisfatta da un altro direttore
 	 * 
 	 * @param richiesta soddisfatta da rimuovere
 	 */
@@ -48,8 +53,14 @@ public interface Director {
 	 * precedentemente inviata da un altro direttore 
 	 * 
 	 * @param richiesta soddisfatta
+	 * @throws AnotherAcceptedRequestException 
 	 */
-	void satisfyRequest(Request requestFulfilled);
+	void satisfyRequest(Request requestFulfilled) throws AnotherAcceptedRequestException;
+	
+	/**
+	 * Consente al treno di resettare la richiesta del direttore in quanto soddisfatta
+	 */
+	void setAcceptedRequestToNull();
 	
 	/**
 	 * Consente di avere il riferimento al set delle richieste da soddisfare
@@ -57,6 +68,14 @@ public interface Director {
 	 * @return lista delle richieste
 	 */
 	Set<Request> getRequestsToSatisfy();
+	
+	/**
+	 * Consente di avere il riferimento alla richiesta attualmente accettata o null in
+	 * caso questa non sia presente
+	 * 
+	 * @return richiesta accettata
+	 */
+	Request getAcceptedRequest();
 	
 	/**
 	 * Consente di avere il riferimento all'azienda gestita dal direttore
