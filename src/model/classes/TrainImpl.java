@@ -11,12 +11,17 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import controller.classes.ManagerImpl;
 import exceptions.EmptyDestinationsSetException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Factory;
+import model.interfaces.Material;
 import model.interfaces.Request;
+import model.interfaces.Staff;
+import model.interfaces.Store;
 import model.interfaces.Train;
+import model.interfaces.Warehouse;
 
 /**
  * Classe destinata all'implementazione dell'interfaccia del treno, ovvero l'oggetto
@@ -38,8 +43,10 @@ public class TrainImpl implements Train {
 	private final Set<Request> unloadingRequests;
 	private final Map<String,Integer> stuffMap;
 	private final Set<Factory> destinationsSet;
+	private Factory currentDestination;
 	private final int maxCapacity;
-	
+	private int quantitytoLoad;
+	private int quantitytoUnLoad;
 	/**
 	 * Il costruttore servirà principalmente per associare il negozio e la capienza massima del treno,
 	 * ma anche per inizializzare tutte le strutture dati
@@ -53,10 +60,15 @@ public class TrainImpl implements Train {
 		this.stuffMap 				= new LinkedHashMap<>();
 		this.destinationsSet		= new LinkedHashSet<>();
 		this.maxCapacity			= maxCapacity;
+		
+		
+		
+		
+		
 	}		
 	
 	/*
-	 * Metodo utilizzato per evitare ridondanza di codice, preso un set in input, preso un set in input
+	 * Metodo utilizzato per evitare ridondanza di codice, preso un set in input
 	 * questo viene filtrato attraverso il predicato e restituito sotto forma di set
 	 * 
 	 * @param un set da filtrare
@@ -121,20 +133,20 @@ public class TrainImpl implements Train {
 	 * 
 	 * @return capacità corrente del treno
 	 */
-	private int getCurrentCapacity() {
-		return this.maxCapacity - this.stuffMap.values()
-										  	   .stream()
-										  	   .mapToInt(Integer::intValue)
-										  	   .sum();
+	public int getCurrentCapacity() {
+		return this.stuffMap.values()
+							.stream()
+							.mapToInt(Integer::intValue)
+							.sum();
 	}
 	
 	/*
 	 * Metodo utilizzato per evitare ridondanza di codice, controlla
 	 * se c'è o meno una tappa utile
 	 */
-	private void checkDestinationSet() {
+	private void checkDestinationSet() throws EmptyDestinationsSetException {
 		if(this.destinationsSet.isEmpty()) {
-			new EmptyDestinationsSetException("Destinations set empty, no destinations");
+			throw new EmptyDestinationsSetException("Destinations set empty, no destinations");
 		}
 	}
 		
@@ -148,27 +160,38 @@ public class TrainImpl implements Train {
 		
 		// Il primo controllo viene effettuato sulla lista di scarico, si verifica che abbia almeno un elemento
 		if(!getUnloadingRequest().isEmpty()) {
+			
+		
 			try {
+				
 				// Se arriva qui vuol dire che c'è almeno una richiesta di scarico diretta a questa azienda
 				// Salviamo la quantità di materiale che bisogna scaricare all'interno dell'azienda
-				int quantityToManage = getQuantityToManage(this.unloadingRequests, 
+				this.quantitytoUnLoad = getQuantityToManage(this.unloadingRequests, 
 														   r -> r.getReceiverFactory().equals(getCurrentDestination()));
 				
+				
+				//se la destinazione attuale è il negozio,scarico nel negozio
 				if(getCurrentDestination().equals(StoreImpl.getStoreInstance())) {
-					this.stuffMap.merge(getCurrentDestination().getLoadingWarehouse().getMaterial(),-quantityToManage, Integer::sum);
+					for (Request r : this.unloadingRequests) {
+						
+						if(r.getReceiverFactory().equals(getCurrentDestination())) {
+							this.stuffMap.merge(r.getSentMaterial(),-quantitytoUnLoad, Integer::sum);	
+						}
+						
+					}
 					
 				}
 				
 				else {
-				
 					// Riempiamo il magazzino di carico dell'azienda
 					getCurrentDestination().getLoadingWarehouse()
-										   .addMaterial(quantityToManage);
+										   .addMaterial(quantitytoUnLoad);
+					
 					
 					// Scarichiamo dal treno la quantità di materiale richiesta
-					//ricorda che non prendi il materiale direttamente dall'azeinda ma dai magazzini della medesima
-					this.stuffMap.merge(getCurrentDestination().getUnloadingWarehouse().getMaterial(),
-										- quantityToManage,
+					//ricorda che non prendi il materiale direttamente dall'azienda ma dai magazzini della medesima
+					this.stuffMap.merge(getCurrentDestination().getLoadingWarehouse().getMaterial(),
+										- quantitytoUnLoad,
 										Integer::sum);
 					
 					// Rimuovo tutte le richieste soddisfatte
@@ -191,11 +214,11 @@ public class TrainImpl implements Train {
 		if(!getLoadingRequest().isEmpty()) {
 			// Se arriva qui vuol dire che c'è almeno una richiesta di carico in partenza da questa azienda
 			// Salviamo la quantità di materiale che bisogna caricare all'interno del treno
-			int quantityToManage = getQuantityToManage(this.loadingRequests,
+			this.quantitytoLoad = getQuantityToManage(this.loadingRequests,
 													   r -> r.getSendingFactory().equals(getCurrentDestination()));
 			
 			// Controlliamo se c'è spazio nel treno
-			if(isFull(quantityToManage)) {
+			if(isFull(this.quantitytoLoad)) {
 				
 				/*
 				 *  Se lo spazio non dovesse bastare, verrà spostata la tappa attuale
@@ -210,20 +233,21 @@ public class TrainImpl implements Train {
 				// GENERA UN'ECCEZIONE PER IL POPUP DELLA VIEW
 			}
 			else {
+				
 				// Se arriva qui vuol dire che ci sono richieste e c'è lo spazio nel treno
 				// Come prima cosa viene scaricato il materiale dal magazzino dell'azienda
-				getCurrentDestination().getUnloadingWarehouse().addMaterial(- quantityToManage);
+				getCurrentDestination().getUnloadingWarehouse().addMaterial(- this.quantitytoLoad);
 					
 				// Successivamente viene caricato il materiale nel treno aggiornando la mappa dei materiali
-				this.stuffMap.merge(getCurrentDestination().getUnloadingWarehouse().getMaterial(), quantityToManage, Integer::sum);
+				this.stuffMap.merge(getCurrentDestination().getUnloadingWarehouse().getMaterial(), this.quantitytoLoad, Integer::sum);
 				
 				// Aggiorno il set delle tappe aggiungendo tutte le aziende di destinazione non presenti
 				getLoadingRequest().stream()
-								   .forEach(r -> this.destinationsSet.add(r.getReceiverFactory()));
-					
-				// Infine sposto tutte le richieste nel set delle richieste di scarico
-				getLoadingRequest().stream()
-								   .forEach(r -> this.unloadingRequests.add(r));
+								   .forEach(r ->{
+									   this.destinationsSet.add(r.getReceiverFactory());
+				 					   this.unloadingRequests.add(r);
+				 					   ManagerImpl.getManager().getDirectorByFactory(r.getSendingFactory()).setAcceptedRequestToNull();						   
+				}); 
 			}
 		}
 	}
@@ -232,10 +256,12 @@ public class TrainImpl implements Train {
 	 * Metodo che invia il treno alla prossima tappa utile
 	 */
 	@Override
-	public void nextDestination() throws FullWarehouseException,FullTrainException{
-		this.destinationsSet.remove(List.copyOf(this.destinationsSet).get(0));
+	public void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException{
+		
 		checkDestinationSet();
+		currentDestination = List.copyOf(this.destinationsSet).get(0);
 		cargoManagment();
+		this.destinationsSet.remove(currentDestination);
 	}
 	
 	/*
@@ -266,9 +292,8 @@ public class TrainImpl implements Train {
 	 * @return la tappa attuale del treno
 	 */
 	@Override
-	public Factory getCurrentDestination() {
-		checkDestinationSet();
-		return List.copyOf(this.destinationsSet).get(0);
+	public Factory getCurrentDestination(){
+		return currentDestination;
 	}
 	
 	/*
@@ -279,5 +304,18 @@ public class TrainImpl implements Train {
 	@Override
 	public int getMaxCapacity() {
 		return this.maxCapacity;
+		
 	}
+	
+	@Override
+	public int getQuantitytoLoad() {
+		return quantitytoLoad;
+	}
+	
+	@Override
+	public int getQuantitytoUnLoad() {
+		return quantitytoUnLoad;
+	}
+	
+	
 }

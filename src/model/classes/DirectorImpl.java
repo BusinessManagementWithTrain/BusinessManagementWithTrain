@@ -12,7 +12,7 @@ import model.interfaces.Request;
 
 /**
 * Classe destinata all'implementazione dell'interfaccia del direttore, ovvero l'oggetto
-* che gestirà un'azienda e comunicherà con gli altri direttori all'atto dell'utilizzo del programma.
+* che gestirï¿½ un'azienda e comunicherï¿½ con gli altri direttori all'atto dell'utilizzo del programma.
 * 
 * @author Grasso Emanuele
 *
@@ -21,7 +21,7 @@ import model.interfaces.Request;
 public class DirectorImpl implements Director {
 	
 	/* 
-	 * Come specificato dalla documentazione, ogni direttore avrà un nome,
+	 * Come specificato dalla documentazione, ogni direttore avrï¿½ un nome,
 	 * un'unica azienda da gestire e un set di richieste da poter soddisfare
 	 */
 	private final String name;
@@ -29,7 +29,7 @@ public class DirectorImpl implements Director {
 	private final Set<Request> requestsToSatisfy;
 	
 	/**
-	 * Il costruttore servirà principalmente ad associare il nome e
+	 * Il costruttore servirï¿½ principalmente ad associare il nome e
 	 * l'azienda al corrispettivo direttore
 	 * 
 	 * @param azienda
@@ -44,7 +44,7 @@ public class DirectorImpl implements Director {
 	 * Consente al direttore di creare una richiesta per ricevere il materiale
 	 * da lavorare
 	 * 
-	 * @param la quantità specificata dall'utente
+	 * @param la quantitï¿½ specificata dall'utente
 	 * @return la richiesta per ricevere il materiale 
 	 */
 	@Override
@@ -81,7 +81,7 @@ public class DirectorImpl implements Director {
 	
 	/*
 	 * Consente al dirigente di rimuovere una richiesta dalla lista delle
-	 * richieste soddisfabili poichè già soddisfatta da un altro direttore
+	 * richieste soddisfabili poichï¿½ giï¿½ soddisfatta da un altro direttore
 	 * 
 	 * @param richiestaSoddisfatta
 	 */

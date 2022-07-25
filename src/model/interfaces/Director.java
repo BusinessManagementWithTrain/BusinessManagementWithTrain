@@ -3,8 +3,8 @@ package model.interfaces;
 import java.util.Set;
 
 /**
- * Interfaccia del direttore, ovvero l'oggetto che gestirà
- * un'azienda e comunicherà con gli altri direttori all'atto dell'utilizzo del programma.
+ * Interfaccia del direttore, ovvero l'oggetto che gestirï¿½
+ * un'azienda e comunicherï¿½ con gli altri direttori all'atto dell'utilizzo del programma.
  * 
  * @author Grasso Emanuele
  */
@@ -15,7 +15,7 @@ public interface Director {
 	 * Consente al direttore di creare una richiesta per ricevere il materiale
 	 * da lavorare
 	 * 
-	 * @param la quantità specificata dall'utente
+	 * @param la quantitï¿½ specificata dall'utente
 	 * @return la richiesta per ricevere il materiale
 	 */
 	Request newRequest(int neededQuantity);
@@ -37,7 +37,7 @@ public interface Director {
 	
 	/**
 	 * Consente al dirigente di rimuovere una richiesta dal set delle
-	 * richieste soddisfabili poichè già soddisfatta da un altro direttore
+	 * richieste soddisfabili poichï¿½ giï¿½ soddisfatta da un altro direttore
 	 * 
 	 * @param richiesta soddisfatta da rimuovere
 	 */
