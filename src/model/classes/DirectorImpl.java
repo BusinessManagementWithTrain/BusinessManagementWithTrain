@@ -23,7 +23,7 @@ import model.interfaces.Request;
 public class DirectorImpl implements Director {
 	
 	/* 
-	 * Come specificato dalla documentazione, ogni direttore avr� un nome,
+	 * Come specificato dalla documentazione, ogni direttore avrà un nome,
 	 * un'unica azienda da gestire, un set di richieste da poter soddisfare
 	 * e la richiesta da completare attualmente accettata
 	 */
@@ -33,7 +33,7 @@ public class DirectorImpl implements Director {
 	private Request acceptedRequest;
 	
 	/**
-	 * Il costruttore servir� principalmente ad associare il nome e
+	 * Il costruttore servirà principalmente ad associare il nome e
 	 * l'azienda al corrispettivo direttore
 	 * 
 	 * @param azienda
@@ -48,7 +48,7 @@ public class DirectorImpl implements Director {
 	 * Consente al direttore di creare una richiesta per ricevere il materiale
 	 * da lavorare
 	 * 
-	 * @param la quantit� specificata dall'utente
+	 * @param la quantità specificata dall'utente
 	 * @return la richiesta per ricevere il materiale 
 	 */
 	@Override
@@ -75,14 +75,13 @@ public class DirectorImpl implements Director {
 		
 		return new RequestImpl(this.factory,
 							   StoreImpl.getStoreInstance(),
-							   this.factory.getLoadingWarehouse().getMaterial(),
+							   this.factory.getUnloadingWarehouse().getMaterial(),
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
 	}																				
 	
 	/*
 	 * Consente al dirigente di aggiungere una richiesta al set delle
 	 * richieste soddisfabili dal direttore
-	 * 
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override

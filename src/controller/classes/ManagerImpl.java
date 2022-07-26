@@ -6,6 +6,7 @@ import java.util.Set;
 
 import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
+import exceptions.EmptyDestinationsSetException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.*;
@@ -146,7 +147,7 @@ public class ManagerImpl implements Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
 	@Override
-	public void nextDestination() throws FullWarehouseException, FullTrainException {
+	public void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException {
 		this.train.nextDestination();		
 	}
 
