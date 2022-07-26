@@ -3,6 +3,7 @@ package model.interfaces;
 import java.util.Map;
 
 import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 
@@ -18,8 +19,9 @@ public interface Train {
 	/**
 	 * Metodo che invia il treno alla prossima tappa utile
 	 * @throws EmptyDestinationsSetException 
+	 * @throws EmptyWarehouseException 
 	 */
-	void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException;
+	void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException;
 	
 	/**
 	 * metodo per aggiungere richieste alla lista di richieste di carico

@@ -2,7 +2,7 @@ package model.interfaces;
 
 /**
  * Interfaccia della richiesta, oggetto fondamentale sul quale tutto il programma grava,
- * questa consentirà ai vari direttori e al dirigente di poter richiedere e/o spedire del materiale.
+ * questa consentirï¿½ ai vari direttori e al dirigente di poter richiedere e/o spedire del materiale.
  * 
  * @author Grasso Emanuele
  */
@@ -31,22 +31,15 @@ public interface Request {
 	String getSentMaterial();
 	
 	/**
-	 * Consente di avere il riferimento alla quantità di materiale spedito 
+	 * Consente di avere il riferimento alla quantitï¿½ di materiale spedito 
 	 * 
-	 * @return quantità di materiale spedito/da spedire
+	 * @return quantitï¿½ di materiale spedito/da spedire
 	 */
 	int getSentQuantity();
 	
 	/**
-	 * Consente di avere il riferimento all'id univoco della richiesta
-	 * 
-	 * @return id univoco della richiesta
-	 */
-	int getRequestId();
-	
-	/**
 	 * Consente di impostare il parametro dell'azienda mittente, solo dopo che questa
-	 * avrà accettato la richiesta
+	 * avrï¿½ accettato la richiesta
 	 * 
 	 * @param azienda mittente
 	 */

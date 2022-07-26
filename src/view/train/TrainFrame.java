@@ -14,6 +14,7 @@ import javax.swing.table.*;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import exceptions.LowTrainCapacityException;
@@ -127,6 +128,9 @@ public class TrainFrame {
 				}
 				catch (EmptyDestinationsSetException e1) {
 					JOptionPane.showMessageDialog(frame, "there isn't a next destination...");
+				} catch (EmptyWarehouseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				} 
 			}
 		});

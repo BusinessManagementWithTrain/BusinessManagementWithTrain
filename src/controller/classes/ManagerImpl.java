@@ -9,6 +9,7 @@ import exceptions.LowTrainCapacityException;
 import exceptions.WrongNeededQuantityException;
 import exceptions.AnotherAcceptedRequestException;
 import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.*;
@@ -154,7 +155,7 @@ public class ManagerImpl implements Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
 	@Override
-	public void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException {
+	public void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException {
 		this.train.nextDestination();		
 	}
 
@@ -215,34 +216,7 @@ public class ManagerImpl implements Manager {
 		return this.train;
 	}
 
-	/*
-	 * Metodo che visualizza le informazioni di una richiesta
-	 * 
-	 * @param ID della richiesta
-	 * @return richiesta associata all'id
-	 */
-	@Override
-	public Request showRequestInfo(int id){
-		try {
-			return this.show(id, this.linkGlobalRequests);
-		} catch(NoSuchElementException e){
-			return this.show(id, this.linkRequestsManager);
-		}
-	}
 	
-	/*
-	 *  Metodo che ritorna una richiesta in base all'id e al set di richieste che gli viene passato
-	 * 
-	 *  @param ID della richiesta
-	 *  @param set con le richieste
-	 *  @return richiesta associata all'id e al tipo di set passatogli 
-	 */
-	private Request show(int id, Set<Request> set) throws NoSuchElementException{
-		return set.stream()
-				  .filter(r ->r.getRequestId() == (id))
-				  .findFirst()
-				  .get();		
-	}
 
 	/*
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
