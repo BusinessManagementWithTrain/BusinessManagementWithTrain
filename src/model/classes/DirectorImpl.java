@@ -64,14 +64,13 @@ public class DirectorImpl implements Director {
 	public Request emptyWarehouse() {
 		return new RequestImpl(this.factory,
 							   StoreImpl.getStoreInstance(),
-							   this.factory.getLoadingWarehouse().getMaterial(),
+							   this.factory.getUnloadingWarehouse().getMaterial(),
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
 	}																				
 	
 	/*
 	 * Consente al dirigente di aggiungere una richiesta al set delle
 	 * richieste soddisfabili dal direttore
-	 * 
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override

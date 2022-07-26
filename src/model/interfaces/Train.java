@@ -38,10 +38,7 @@ public interface Train {
 	 * Metodo che consente di avere il riferimento alla tappa attuale del treno
 	 * 
 	 * @return la tappa attuale del treno
-	 * 
 	 */
-	
-	
 	Factory getCurrentDestination();
 
 	/**
@@ -50,16 +47,25 @@ public interface Train {
 	 * @return la capienza massima del treno
 	 */
 	int getMaxCapacity();
-	
-	/**
-	 * Metodo che consente di avere un riferimento della capienza corrente del treno
-	 * 
-	 * @return capienza corrente
-	 * */
-	int getCurrentCapacity();
 
+	/**
+	 * Metodo che consente di avere il riferimento della quantità da scaricare dal treno
+	 *
+	 * @return la quantità da scaricare dal treno
+	 */
+	int getQuantitytoUnLoad();
+
+	/**
+	 * Metodo che consente di avere il riferimento alla capienza massima del treno 
+	 *
+	 * @return la quantità da caricare nel treno
+	 */
 	int getQuantitytoLoad();
 
-	int getQuantitytoUnLoad();
-	
+	/**
+	 * Metodo che consente di avere il riferimento alla capienza corrente del treno 
+	 *
+	 * @return la capienza corrente del treno
+	 */
+	int getCurrentCapacity();
 }

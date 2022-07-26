@@ -60,11 +60,8 @@ public class TrainImpl implements Train {
 		this.stuffMap 				= new LinkedHashMap<>();
 		this.destinationsSet		= new LinkedHashSet<>();
 		this.maxCapacity			= maxCapacity;
-		
-		
-		
-		
-		
+		this.quantitytoLoad			= 0;
+		this.quantitytoUnLoad		= 0; 
 	}		
 	
 	/*
@@ -133,6 +130,8 @@ public class TrainImpl implements Train {
 	 * 
 	 * @return capacità corrente del treno
 	 */
+	
+	@Override
 	public int getCurrentCapacity() {
 		return this.stuffMap.values()
 							.stream()
@@ -306,12 +305,21 @@ public class TrainImpl implements Train {
 		return this.maxCapacity;
 		
 	}
-	
+	/**
+	 * Metodo che consente di avere il riferimento della quantità da caricare nel treno
+	 *
+	 * @return la quantità da caricare nel treno
+	 */
 	@Override
 	public int getQuantitytoLoad() {
 		return quantitytoLoad;
 	}
 	
+	/**
+	 * Metodo che consente di avere il riferimento della quantità da scaricare dal treno
+	 *
+	 * @return la quantità da scaricare dal treno
+	 */
 	@Override
 	public int getQuantitytoUnLoad() {
 		return quantitytoUnLoad;

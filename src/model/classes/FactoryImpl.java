@@ -37,16 +37,23 @@ public class FactoryImpl implements Factory {
 	 * @param la capienza del magazzino di scarico
 	 */
 	public FactoryImpl(final String name, final Material material, final int staffSize, final int loadingSize, final int unloadingSize) {
+		//se la lunghezza del nome ha meno di 1 carattere allora lancio un'eccezione
 		if(name.length() < 1) 
 			throw new EmptyFieldException();
+		
+		//se il nome dell'azienda contiene più di 12 caratteri allora lancio un'eccezione
 		else if(name.length()>12)
 			throw new MaximumCharactersException();
 		
-		this.name 					= name;
-		this.material 				= material;
-		this.loadingWarehouse 		= new WarehouseImpl(material.getRawMaterial(), loadingSize);
-		this.unloadingWarehouse		= new WarehouseImpl(material.getProcessedMaterial(), unloadingSize);
-		this.staff 					= new StaffImpl(staffSize, this.loadingWarehouse, this.unloadingWarehouse);
+		else {
+			this.name 					= name;
+			this.material 				= material;
+			this.loadingWarehouse 		= new WarehouseImpl(material.getRawMaterial(), loadingSize);
+			this.unloadingWarehouse		= new WarehouseImpl(material.getProcessedMaterial(), unloadingSize);
+			this.staff 					= new StaffImpl(staffSize, this.loadingWarehouse, this.unloadingWarehouse);
+		}
+		
+		
 	}
 
 	/*

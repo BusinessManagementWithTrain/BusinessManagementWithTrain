@@ -55,8 +55,8 @@ import javax.swing.SwingConstants;
 public class TrainFrame {
 
 	private JFrame frame;
-	private JTextField currentDestianationTxt;
-	private JTextField txtTrainCurrentCapacity;
+	private JTextField currentDestinationLabel;
+	private JTextField TrainCurrentCapacitytxt;
 	
 	
 
@@ -95,19 +95,19 @@ public class TrainFrame {
 		frame.getContentPane().setLayout(null);
 		
 		//Casella di testo della capacità corrente/totale
-		txtTrainCurrentCapacity = new JTextField();
-		txtTrainCurrentCapacity.setEditable(false);
-		txtTrainCurrentCapacity.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtTrainCurrentCapacity.setBounds(449, 48, 229, 47);
-		txtTrainCurrentCapacity.setText(Integer.toString(ManagerImpl.getManager().showTrainInfo().getCurrentCapacity()) 
+		TrainCurrentCapacitytxt = new JTextField();
+		TrainCurrentCapacitytxt.setEditable(false);
+		TrainCurrentCapacitytxt.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		TrainCurrentCapacitytxt.setBounds(449, 48, 229, 47);
+		TrainCurrentCapacitytxt.setText(Integer.toString(ManagerImpl.getManager().showTrainInfo().getCurrentCapacity()) 
 										+ "/" + 
 										Integer.toString(ManagerImpl.getManager().showTrainInfo().getMaxCapacity())
 										+ " [Kg]");
 		
-		frame.getContentPane().add(txtTrainCurrentCapacity);
-		txtTrainCurrentCapacity.setColumns(10);
+		frame.getContentPane().add(TrainCurrentCapacitytxt);
+		TrainCurrentCapacitytxt.setColumns(10);
 		try {
-			txtTrainCurrentCapacity.setText(Integer.toString(ManagerImpl.getManager().showTrainInfo().getCurrentCapacity()) 
+			TrainCurrentCapacitytxt.setText(Integer.toString(ManagerImpl.getManager().showTrainInfo().getCurrentCapacity()) 
 											+ "/" + 
 											Integer.toString(ManagerImpl.getManager().showTrainInfo().getMaxCapacity())
 											+ " [Kg]");
@@ -117,17 +117,17 @@ public class TrainFrame {
 		}
 		
 		//casella di testo destinazione corrente
-		currentDestianationTxt = new JTextField();
-		currentDestianationTxt.setEditable(false);
+		currentDestinationLabel = new JTextField();
+		currentDestinationLabel.setEditable(false);
 		try {
-			currentDestianationTxt.setText(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().getName());
+			currentDestinationLabel.setText(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().getName());
 		} catch (NullPointerException e) {
-			currentDestianationTxt.setText(null);
+			currentDestinationLabel.setText(null);
 		}
 		
-		currentDestianationTxt.setBounds(459, 166, 213, 69);
-		frame.getContentPane().add(currentDestianationTxt);
-		currentDestianationTxt.setColumns(10);
+		currentDestinationLabel.setBounds(459, 166, 213, 69);
+		frame.getContentPane().add(currentDestinationLabel);
+		currentDestinationLabel.setColumns(10);
 		
 		
 		//Bottone della prossima destinazione
@@ -152,13 +152,15 @@ public class TrainFrame {
 					JOptionPane.showMessageDialog(frame, "the warehouse is full...");
 				} catch (FullTrainException e1) {
 					JOptionPane.showMessageDialog(frame, "the train is full...");
-				} catch (NullManagerException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (EmptyDestinationsSetException e1) {
+				}
+				catch (EmptyDestinationsSetException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(frame, "there isn't a next destination...");
 				}
+				catch (NullManagerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
 			}
 			
 			
@@ -183,10 +185,10 @@ public class TrainFrame {
 		
 		
 		//label destinazione corrente
-		JLabel lblNewLabel = new JLabel("Current Destination\r\n\r\n");
-		lblNewLabel.setBounds(459, 138, 159, 28);
-		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		frame.getContentPane().add(lblNewLabel);
+		JLabel CurrDestLabel = new JLabel("Current Destination\r\n\r\n");
+		CurrDestLabel.setBounds(459, 138, 159, 28);
+		CurrDestLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		frame.getContentPane().add(CurrDestLabel);
 		
 		
 		
@@ -198,10 +200,10 @@ public class TrainFrame {
 		
 		
 		//label mappa del treno
-		JLabel lblNewLabel_1 = new JLabel("Stuff Table");
-		lblNewLabel_1.setBounds(10, 28, 129, 20);
-		lblNewLabel_1.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		frame.getContentPane().add(lblNewLabel_1);
+		JLabel tableLabel = new JLabel("Stuff Table");
+		tableLabel.setBounds(10, 28, 129, 20);
+		tableLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		frame.getContentPane().add(tableLabel);
 		
 		
 		
@@ -217,12 +219,12 @@ public class TrainFrame {
 		  i++;
 		}
 		
-		JTable table = new JTable(data, columnNames);
-		table.setFillsViewportHeight(true);
-		table.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		JTable trainMaterialsTable = new JTable(data, columnNames);
+		trainMaterialsTable.setFillsViewportHeight(true);
+		trainMaterialsTable.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		table.setDefaultRenderer(String.class, centerRenderer);
+		trainMaterialsTable.setDefaultRenderer(String.class, centerRenderer);
 		DefaultTableModel tableModel = new DefaultTableModel(data, columnNames) {
 
 		    /**
@@ -237,12 +239,12 @@ public class TrainFrame {
 		    }
 		};
 		
-		table.setModel(tableModel);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(10, 58, 255, 228);
-		frame.getContentPane().add(scrollPane);
+		trainMaterialsTable.setModel(tableModel);
+		JScrollPane tableScrollPane = new JScrollPane(trainMaterialsTable);
+		tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		tableScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		tableScrollPane.setBounds(10, 58, 255, 228);
+		frame.getContentPane().add(tableScrollPane);
 		//Fine costruzione Tabella del treno
 	    
 	    
