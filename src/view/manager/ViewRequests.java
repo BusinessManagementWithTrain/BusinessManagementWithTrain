@@ -3,19 +3,15 @@ package view.manager;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 
 import controller.classes.ManagerImpl;
 import exceptions.FullWarehouseException;
-import model.interfaces.Director;
 import model.interfaces.Request;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
-import java.awt.BorderLayout;
-import java.awt.Choice;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -58,6 +54,8 @@ public class ViewRequests {
 		frmViewRequests.setTitle("View Requests");
 		frmViewRequests.setBounds(100, 100, 490, 350);
 		frmViewRequests.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmViewRequests.setLocationRelativeTo(null);
+		frmViewRequests.setResizable(false);
 		
 		JButton btnNewButton_2 = new JButton("Back");
 		btnNewButton_2.setBounds(10, 282, 85, 21);

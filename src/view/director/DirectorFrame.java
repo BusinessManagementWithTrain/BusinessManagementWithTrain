@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 
 import controller.classes.ManagerImpl;
+import exceptions.EmptyWarehouseException;
+import exceptions.FullWarehouseException;
 import model.interfaces.Factory;
 import view.manager.ManagerFrame;
 import view.staff.StaffFrame;
@@ -240,8 +242,20 @@ public class DirectorFrame {
 		openOperatorsButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		openOperatorsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		openOperatorsButton.addActionListener(e -> {
-			directorFrame.dispose();
-			new StaffFrame();
+//			directorFrame.dispose();
+//			new StaffFrame();
+			try {
+				ManagerImpl.getManager().showFactoryInfo(directorName).getLoadingWarehouse().removeMaterial(ManagerImpl.getManager().showFactoryInfo(directorName).getStuffMembers().getNumber());
+				ManagerImpl.getManager().showFactoryInfo(directorName).getUnloadingWarehouse().addMaterial(ManagerImpl.getManager().showFactoryInfo(directorName).getStuffMembers().getNumber());
+				new DirectorFrame(directorName);
+				directorFrame.dispose();
+			} catch (FullWarehouseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (EmptyWarehouseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		operatorsPanel.add(openOperatorsButton);
 		

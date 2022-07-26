@@ -57,11 +57,13 @@ public class FirstPage {
 		initialPage.setBounds(100, 100, 450, 300);
 		initialPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initialPage.getContentPane().setLayout(null);
+		initialPage.setLocationRelativeTo(null);
+		initialPage.setResizable(false);
 		
 		JLabel lblNewLabel = new JLabel("Please, enter the maximum train capacity (Kg >= 100)");
 		lblNewLabel.setToolTipText("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(66, 40, 300, 31);
+		lblNewLabel.setBounds(66, 40, 320, 31);
 		initialPage.getContentPane().add(lblNewLabel);
 		
 		textField = new JTextField();

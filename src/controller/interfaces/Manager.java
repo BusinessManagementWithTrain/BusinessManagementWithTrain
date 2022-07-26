@@ -2,8 +2,11 @@ package controller.interfaces;
 
 import java.util.Set;
 
+import exceptions.AnotherAcceptedRequestException;
+import exceptions.EmptyDestinationsSetException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
+import exceptions.WrongNeededQuantityException;
 import model.interfaces.Director;
 import model.interfaces.Factory;
 import model.interfaces.Request;
@@ -36,8 +39,9 @@ public interface Manager {
 	 * come carico merce e verrà rimossa da tutti i direttori che hanno tale richiesta
 	 * 
 	 * @param richiesta soddisfatta
+	 * @throws AnotherAcceptedRequestException 
 	 */
-	void satisfiesRequestDirector(Request requestApproved, String directorName);
+	void satisfiesRequestDirector(Request requestApproved, String directorName) throws AnotherAcceptedRequestException;
 
 	/**
 	 * Questo metodo permette al Manager di soddisfare le richieste che non possono soddisfare i direttori
@@ -52,22 +56,24 @@ public interface Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 * @throws EmptyDestinationsSetException 
 	 */
-	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException;
+	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException;
 	
 	/**
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
 	 * 
 	 * @param quantità di metariale richiesta
 	 * @param nome del direttore
+	 * @throws WrongNeededQuantityException 
 	 */
-	void createNewRequest(int quantity, String directorName);
+	void createNewRequest(int quantity, String directorName) throws WrongNeededQuantityException;
 	
 	/**
 	 * Metodo che permette di svuotare il magazzino con il materiale lavorato tramite il nome di un direttore
 	 * 
 	 * @param nome del direttore
+	 * @throws WrongNeededQuantityException 
 	 */
-	public void emptyWarehouse(String directorName);
+	public void emptyWarehouse(String directorName) throws WrongNeededQuantityException;
 	
 	/**
 	 * Metodo che visualizza le informazioni riguardanti un direttore

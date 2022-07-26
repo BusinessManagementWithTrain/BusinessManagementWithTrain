@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import exceptions.AnotherAcceptedRequestException;
+import exceptions.EmptyFieldException;
+import exceptions.MaximumCharactersException;
 import exceptions.WrongNeededQuantityException;
 import model.interfaces.Director;
 import model.interfaces.Request;
@@ -40,8 +42,10 @@ public class DirectorImpl implements Director {
 	 * l'azienda al corrispettivo direttore
 	 * 
 	 * @param azienda
+	 * @throws MaximumCharactersException 
+	 * @throws EmptyFieldException 
 	 */
-	public DirectorImpl(final String name, final Factory factory) {
+	public DirectorImpl(final String name, final Factory factory) throws MaximumCharactersException, EmptyFieldException {
 		if(name.length() < MIN_NAME_CHAR) {
 			throw new EmptyFieldException();
 		} else if(name.length() > MAX_NAME_CHAR) {

@@ -3,13 +3,11 @@ package view.manager;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.Choice;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
-import java.awt.Scrollbar;
 import javax.swing.JScrollPane;
 
 import controller.classes.ManagerImpl;
@@ -56,6 +54,8 @@ public class Factory {
 		frmFactory.setTitle("Factory");
 		frmFactory.setBounds(100, 100, 490, 350);
 		frmFactory.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmFactory.setLocationRelativeTo(null);
+		frmFactory.setResizable(false);
 		
 		JButton btnNewButton_2 = new JButton("Back");
 		btnNewButton_2.setBounds(10, 282, 85, 21);

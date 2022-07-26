@@ -1,52 +1,31 @@
 package view.train;
 
 import java.awt.EventQueue;
-import java.awt.Frame;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.BorderLayout;
 import javax.swing.JButton;
-import javax.swing.JSplitPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextPane;
-import javax.swing.Popup;
 
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.DropMode;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.table.*;
 
 import controller.classes.ManagerImpl;
-import controller.interfaces.Manager;
 import exceptions.EmptyDestinationsSetException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import exceptions.LowTrainCapacityException;
-import exceptions.NullManagerException;
+import view.manager.ManagerFrame;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import model.classes.TrainImpl;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.font.TransformAttribute;
 import java.util.Map;
-import java.util.stream.Stream;
 
-import javax.swing.JComboBox;
-import javax.swing.Box;
-import javax.swing.JSpinner;
-import javax.swing.JFormattedTextField;
 import java.awt.Font;
-import java.awt.Dimension;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
@@ -58,14 +37,11 @@ public class TrainFrame {
 	private JTextField currentDestinationLabel;
 	private JTextField TrainCurrentCapacitytxt;
 	
-	
-
 	/**
-	 * Create the application.
-	 * @throws NullManagerException 
+	 * Create the application. 
 	 * @throws LowTrainCapacityException 
 	 */
-	public TrainFrame() throws NullManagerException{
+	public TrainFrame() {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -83,16 +59,17 @@ public class TrainFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 * @return 
-	 * @throws NullManagerException 
 	 * @throws LowTrainCapacityException 
 	 */
-	private TrainFrame initialize() throws NullManagerException{
+	private TrainFrame initialize() {
 		
 		//Frame dell'interfaccia
 		frame = new JFrame();
 		frame.setBounds(100, 100, 703, 460);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
 		
 		//Casella di testo della capacità corrente/totale
 		TrainCurrentCapacitytxt = new JTextField();
@@ -106,15 +83,10 @@ public class TrainFrame {
 		
 		frame.getContentPane().add(TrainCurrentCapacitytxt);
 		TrainCurrentCapacitytxt.setColumns(10);
-		try {
-			TrainCurrentCapacitytxt.setText(Integer.toString(ManagerImpl.getManager().showTrainInfo().getCurrentCapacity()) 
-											+ "/" + 
-											Integer.toString(ManagerImpl.getManager().showTrainInfo().getMaxCapacity())
-											+ " [Kg]");
-		} catch (NullManagerException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		TrainCurrentCapacitytxt.setText(Integer.toString(ManagerImpl.getManager().showTrainInfo().getCurrentCapacity()) 
+										+ "/" + 
+										Integer.toString(ManagerImpl.getManager().showTrainInfo().getMaxCapacity())
+										+ " [Kg]");
 		
 		//casella di testo destinazione corrente
 		currentDestinationLabel = new JTextField();
@@ -154,16 +126,9 @@ public class TrainFrame {
 					JOptionPane.showMessageDialog(frame, "the train is full...");
 				}
 				catch (EmptyDestinationsSetException e1) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(frame, "there isn't a next destination...");
-				}
-				catch (NullManagerException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				} 
 			}
-			
-			
 		});
 		
 		
@@ -172,7 +137,10 @@ public class TrainFrame {
 		//back button
 		JButton backButton = new JButton("Back");
 		backButton.setBounds(501, 372, 177, 41);
-		backButton.addActionListener(e-> frame.dispose());
+		backButton.addActionListener(e-> {
+			frame.dispose();
+			new ManagerFrame();
+		});
 		frame.getContentPane().add(backButton);
 		 
 		//label capacità corrente treno
@@ -189,13 +157,6 @@ public class TrainFrame {
 		CurrDestLabel.setBounds(459, 138, 159, 28);
 		CurrDestLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		frame.getContentPane().add(CurrDestLabel);
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		

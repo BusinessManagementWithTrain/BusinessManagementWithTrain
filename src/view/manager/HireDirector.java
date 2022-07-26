@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
+import exceptions.MaximumCharactersException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
 import model.classes.MaterialImpl;
@@ -28,7 +29,7 @@ public class HireDirector {
 
 	private JFrame frmHireDirector;
 	private JTextField rawMaterialTextField;
-	private JTextField finiteMaterialTextField;
+	private JTextField processedMaterialTextField;
 	private JTextField directorNameTextField;
 	private JTextField loadingWarehouseSizeTextField;
 	private JTextField unloadingWarehouseSizeTextField;
@@ -60,6 +61,8 @@ public class HireDirector {
 		frmHireDirector.setTitle("Hire director");
 		frmHireDirector.setBounds(100, 100, 450, 320);
 		frmHireDirector.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmHireDirector.setLocationRelativeTo(null);
+	 	frmHireDirector.setResizable(false);
 		
 		JPanel labelPanel = new JPanel();
 		labelPanel.setPreferredSize(new Dimension(220, 10));
@@ -72,7 +75,7 @@ public class HireDirector {
 		labelPanel.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 		
-		JLabel rawMaterialLabel = new JLabel("Type of raw matherial");
+		JLabel rawMaterialLabel = new JLabel("Type of raw material");
 		rawMaterialLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		rawMaterialLabel.setMinimumSize(new Dimension(150, 25));
 		rawMaterialLabel.setToolTipText("\r\n");
@@ -83,11 +86,11 @@ public class HireDirector {
 		Component rigidArea_4 = Box.createRigidArea(new Dimension(20, 10));
 		labelPanel.add(rigidArea_4);
 		
-		JLabel finiteMaterialLabel = new JLabel("Type of finite matter");
+		JLabel finiteMaterialLabel = new JLabel("Type of processed material");
 		finiteMaterialLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		finiteMaterialLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		finiteMaterialLabel.setMinimumSize(new Dimension(150, 25));
-		finiteMaterialLabel.setMaximumSize(new Dimension(150, 20));
+		finiteMaterialLabel.setMinimumSize(new Dimension(170, 25));
+		finiteMaterialLabel.setMaximumSize(new Dimension(170, 20));
 		labelPanel.add(finiteMaterialLabel);
 		
 		Component rigidArea_6 = Box.createRigidArea(new Dimension(20, 10));
@@ -121,7 +124,7 @@ public class HireDirector {
 		Component rigidArea_9 = Box.createRigidArea(new Dimension(20, 10));
 		labelPanel.add(rigidArea_9);
 		
-		JLabel numberOperatorsLabel = new JLabel("Number operators");
+		JLabel numberOperatorsLabel = new JLabel("Staff size");
 		numberOperatorsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		numberOperatorsLabel.setMaximumSize(new Dimension(150, 20));
 		numberOperatorsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -151,10 +154,10 @@ public class HireDirector {
 		Component rigidArea_5 = Box.createRigidArea(new Dimension(20, 10));
 		textBoxPanel.add(rigidArea_5);
 		
-		finiteMaterialTextField = new JTextField();
-		finiteMaterialTextField.setMaximumSize(new Dimension(150, 20));
-		textBoxPanel.add(finiteMaterialTextField);
-		finiteMaterialTextField.setColumns(10);
+		processedMaterialTextField = new JTextField();
+		processedMaterialTextField.setMaximumSize(new Dimension(150, 20));
+		textBoxPanel.add(processedMaterialTextField);
+		processedMaterialTextField.setColumns(10);
 		
 		Component rigidArea_7 = Box.createRigidArea(new Dimension(20, 10));
 		textBoxPanel.add(rigidArea_7);
@@ -216,17 +219,28 @@ public class HireDirector {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//try {
+				try {
 					ManagerImpl.getManager().hireDirector(new DirectorImpl(directorNameTextField.getText(), new FactoryImpl(factoryNameTextField.getText(),
-																														new MaterialImpl(rawMaterialTextField.getText(),finiteMaterialTextField.getText()),
+																														new MaterialImpl(rawMaterialTextField.getText(),processedMaterialTextField.getText()),
 																														Integer.valueOf(numberOperatorsTextField.getText()),
 																														Integer.valueOf(loadingWarehouseSizeTextField.getText()),
 																														Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (MaximumCharactersException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (EmptyFieldException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
-					frmHireDirector.dispose();
-					new ManagerFrame();
+				frmHireDirector.dispose();
+				new ManagerFrame();
 			}
 		});
+		
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		textBoxPanel.add(btnNewButton_1);

@@ -6,6 +6,8 @@ import java.util.Set;
 
 import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
+import exceptions.WrongNeededQuantityException;
+import exceptions.AnotherAcceptedRequestException;
 import exceptions.EmptyDestinationsSetException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
@@ -127,7 +129,7 @@ public class ManagerImpl implements Manager {
 	 * @param richiesta soddisfatta
 	 */
 	@Override
-	public void satisfiesRequestDirector(Request requestApproved, String directorName) {
+	public void satisfiesRequestDirector(Request requestApproved, String directorName) throws AnotherAcceptedRequestException {
 		getDirectorByName(directorName).satisfyRequest(requestApproved);
 		
 		this.train.addRequest(requestApproved);
@@ -143,7 +145,7 @@ public class ManagerImpl implements Manager {
 	 * @param richiesta soddisfatta
 	 */
 	public void satisfiesRequestManager(Request requestApproved) throws FullWarehouseException{
-		requestApproved.getSendingFactory().getLoadingWarehouse().addMaterial(requestApproved.getSentQuantity());
+		requestApproved.getReceiverFactory().getLoadingWarehouse().addMaterial(requestApproved.getSentQuantity());
 		linkRequestsManager.remove(requestApproved);
 	}
 	
@@ -163,7 +165,7 @@ public class ManagerImpl implements Manager {
 	 * @param nome del direttore
 	 */
 	@Override
-	public void createNewRequest(int quantity, String directorName) {
+	public void createNewRequest(int quantity, String directorName) throws WrongNeededQuantityException {
 		sendRequest(getDirectorByName(directorName).newRequest(quantity));
 	}
 
@@ -174,7 +176,7 @@ public class ManagerImpl implements Manager {
 	 * @param nome del direttore
 	 */
 	@Override
-	public void emptyWarehouse(String directorName){
+	public void emptyWarehouse(String directorName) throws WrongNeededQuantityException{
 		this.train.addRequest(this.getDirectorByName(directorName).emptyWarehouse());
 	}
 

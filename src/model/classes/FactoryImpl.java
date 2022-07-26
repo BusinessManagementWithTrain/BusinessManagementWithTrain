@@ -2,6 +2,8 @@ package model.classes;
 
 import java.util.Objects;
 
+import exceptions.EmptyFieldException;
+import exceptions.MaximumCharactersException;
 import model.interfaces.Factory;
 import model.interfaces.Material;
 import model.interfaces.Staff;
@@ -35,8 +37,10 @@ public class FactoryImpl implements Factory {
 	 * @param il numero dei dipendenti
 	 * @param la capienza del magazzino di carico
 	 * @param la capienza del magazzino di scarico
+	 * @throws EmptyFieldException 
+	 * @throws MaximumCharactersException 
 	 */
-	public FactoryImpl(final String name, final Material material, final int staffSize, final int loadingSize, final int unloadingSize) {
+	public FactoryImpl(final String name, final Material material, final int staffSize, final int loadingSize, final int unloadingSize) throws EmptyFieldException, MaximumCharactersException {
 		//se la lunghezza del nome ha meno di 1 carattere allora lancio un'eccezione
 		if(name.length() < 1) 
 			throw new EmptyFieldException();

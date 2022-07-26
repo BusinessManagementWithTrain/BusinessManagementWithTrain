@@ -12,8 +12,6 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.SwingConstants;
 
-import controller.classes.ManagerImpl;
-import exceptions.LowTrainCapacityException;
 import view.train.TrainFrame;
 
 import java.awt.event.ActionListener;
@@ -49,6 +47,8 @@ public class ManagerFrame {
 		frmManager.setTitle("Manager");
 		frmManager.setBounds(100, 100, 450, 300);
 		frmManager.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmManager.setLocationRelativeTo(null);
+		frmManager.setResizable(false);
 		
 		JPanel panel = new JPanel();
 		frmManager.getContentPane().add(panel, BorderLayout.CENTER);
