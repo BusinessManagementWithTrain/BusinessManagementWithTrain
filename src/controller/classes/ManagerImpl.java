@@ -54,11 +54,16 @@ public class ManagerImpl implements Manager {
 			throw new LowTrainCapacityException("Low train capacity, please increase it.");
 		}
 		
+		if(manager == null) {
+			manager = new ManagerImpl(trainCapacity);
+		}
+		
 		return manager;
 	}
 	
 	
 	public static ManagerImpl getManager() {
+		
 		return manager;
 	}
 	
@@ -80,10 +85,10 @@ public class ManagerImpl implements Manager {
 	 * 
 	 * @param quantità di materiale richiesto dall'utente
 	 */
-	private void sendRequest(Request request) {
+	public void sendRequest(Request request) {
 		boolean satisfy = false;
 		for (Director d : this.linkDirectors) {
-			if(request.getSentMaterial().equals(/*d.getFactory().getMaterial()*/"llllll")) {
+			if(request.getSentMaterial().equals(d.getFactory().getMaterial().getProcessedMaterial())) {
 				d.addRequestToSatisfy(request);
 				satisfy = true;
 			}
@@ -123,7 +128,7 @@ public class ManagerImpl implements Manager {
 	 */
 	@Override
 	public void satisfiesRequestDirector(Request requestApproved, String directorName) {
-		requestApproved.setSendingFactory(getDirectorByName(directorName).getFactory());
+		getDirectorByName(directorName).satisfyRequest(requestApproved);
 		
 		this.train.addRequest(requestApproved);
 		
@@ -170,7 +175,7 @@ public class ManagerImpl implements Manager {
 	 */
 	@Override
 	public void emptyWarehouse(String directorName){
-		this.getDirectorByName(directorName).emptyWarehouse();
+		this.train.addRequest(this.getDirectorByName(directorName).emptyWarehouse());
 	}
 
 	/*
@@ -236,4 +241,36 @@ public class ManagerImpl implements Manager {
 				  .findFirst()
 				  .get();		
 	}
+
+	/*
+	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
+	 * 
+	 *  @return la lista di Direttori
+	 */
+	public Set<Director> getLinkDirectors() {
+		return linkDirectors;
+	}
+	
+	/*
+	 *  Metodo che ritorna la lista delle richieste accettabili esclusivamente manager
+	 * 
+	 *  @return la lista di richieste del Manager
+	 */
+	public Set<Request> getlinkRequestsManager() {
+		return linkRequestsManager;
+	}
+
+	/**
+	 *  Metodo che ritorna il direttore data una specifica azienda
+	 * 
+	 *  @param Factory
+	 *  @return il Direttore associato
+	 */
+	public Director getDirectorByFactory(Factory factory) {
+		return this.linkDirectors.stream()
+				 .filter(d -> d.getFactory().equals(factory))
+				 .findFirst()
+				 .get();
+	}
+		
 }

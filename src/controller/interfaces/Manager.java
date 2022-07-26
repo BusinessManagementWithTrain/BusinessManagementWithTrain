@@ -1,6 +1,7 @@
 package controller.interfaces;
 
-import exceptions.EmptyDestinationsSetException;
+import java.util.Set;
+
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Director;
@@ -99,4 +100,26 @@ public interface Manager {
 	 * @return richiesta associata all'id
 	 */
 	Request showRequestInfo(int id);
+	
+	/**
+	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
+	 * 
+	 * @return la lista di Direttori
+	 */
+	public Set<Director> getLinkDirectors();
+	
+	/**
+	 *  Metodo che ritorna la lista delle richieste accettabili esclusivamente manager
+	 * 
+	 *  @return la lista di richieste del Manager
+	 */
+	public Set<Request> getlinkRequestsManager();
+	
+	/**
+	 *  Metodo che ritorna il direttore data una specifica azienda
+	 * 
+	 *  @param Factory
+	 *  @return il Direttore associato
+	 */
+	public Director getDirectorByFactory(Factory factory);
 }
