@@ -258,5 +258,18 @@ public class ManagerImpl implements Manager {
 	public Set<Request> getlinkRequestsManager() {
 		return linkRequestsManager;
 	}
+
+	/**
+	 *  Metodo che ritorna il direttore data una specifica azienda
+	 * 
+	 *  @param Factory
+	 *  @return il Direttore associato
+	 */
+	public Director getDirectorByFactory(Factory factory) {
+		return this.linkDirectors.stream()
+				 .filter(d -> d.getFactory().equals(factory))
+				 .findFirst()
+				 .get();
+	}
 		
 }

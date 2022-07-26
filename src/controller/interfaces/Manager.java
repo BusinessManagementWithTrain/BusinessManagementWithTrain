@@ -114,5 +114,11 @@ public interface Manager {
 	 */
 	public Set<Request> getlinkRequestsManager();
 	
+	/**
+	 *  Metodo che ritorna il direttore data una specifica azienda
+	 * 
+	 *  @param Factory
+	 *  @return il Direttore associato
+	 */
 	public Director getDirectorByFactory(Factory factory);
 }
