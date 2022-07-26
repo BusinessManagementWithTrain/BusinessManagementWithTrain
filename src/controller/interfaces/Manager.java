@@ -31,8 +31,8 @@ public interface Manager {
 	void fireDirector(String directorName);
 
 	/**
-	 * Viene passata una richiesta che verr� successivamente inviata al treno 
-	 * come carico merce e verr� rimossa da tutti i direttori che hanno tale richiesta
+	 * Viene passata una richiesta che verrà successivamente inviata al treno 
+	 * come carico merce e verrà rimossa da tutti i direttori che hanno tale richiesta
 	 * 
 	 * @param richiesta soddisfatta
 	 */
@@ -54,9 +54,9 @@ public interface Manager {
 	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException;
 	
 	/**
-	 * Metodo che servir� per creare una nuova richiesta grazie al direttore specificato
+	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
 	 * 
-	 * @param quantit� di metariale richiesta
+	 * @param quantità di metariale richiesta
 	 * @param nome del direttore
 	 */
 	void createNewRequest(int quantity, String directorName);
@@ -78,7 +78,7 @@ public interface Manager {
 	
 	/**
 	 * Viene passato come parametro il nome di un direttore,
-	 * verr� restituita l'azienda del direttore
+	 * verrà restituita l'azienda del direttore
 	 * 
 	 * @param nome del direttore da cui prendere l'azienda
 	 * @return l'azienda associata al direttore

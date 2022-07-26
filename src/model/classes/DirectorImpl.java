@@ -7,6 +7,8 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import exceptions.AnotherAcceptedRequestException;
+import exceptions.WrongNeededQuantityException;
 import model.interfaces.Director;
 import model.interfaces.Request;
 
@@ -21,15 +23,17 @@ import model.interfaces.Request;
 public class DirectorImpl implements Director {
 	
 	/* 
-	 * Come specificato dalla documentazione, ogni direttore avr� un nome,
-	 * un'unica azienda da gestire e un set di richieste da poter soddisfare
+	 * Come specificato dalla documentazione, ogni direttore avrà un nome,
+	 * un'unica azienda da gestire, un set di richieste da poter soddisfare
+	 * e la richiesta da completare attualmente accettata
 	 */
 	private final String name;
 	private final Factory factory;
 	private final Set<Request> requestsToSatisfy;
+	private Request acceptedRequest;
 	
 	/**
-	 * Il costruttore servir� principalmente ad associare il nome e
+	 * Il costruttore servirà principalmente ad associare il nome e
 	 * l'azienda al corrispettivo direttore
 	 * 
 	 * @param azienda
@@ -44,16 +48,19 @@ public class DirectorImpl implements Director {
 	 * Consente al direttore di creare una richiesta per ricevere il materiale
 	 * da lavorare
 	 * 
-	 * @param la quantit� specificata dall'utente
+	 * @param la quantità specificata dall'utente
 	 * @return la richiesta per ricevere il materiale 
 	 */
 	@Override
-	public Request newRequest(int neededQuantity) {
+	public Request newRequest(int neededQuantity) throws WrongNeededQuantityException {
+		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
+			throw new WrongNeededQuantityException();
+		}
+			
 		return new RequestImpl(this.factory,
 							   this.factory.getLoadingWarehouse().getMaterial(),
 							   neededQuantity);
 	}
-	//DA GESTIRE L'ECCEZIONE IN CASO DI QUANTITA' TROPPO GRANDE O NEGATIVA
 	
 	/*
 	 * Crea la richiesta per svuotare il magazzino di prodotti lavorati
@@ -61,7 +68,11 @@ public class DirectorImpl implements Director {
 	 * @return la richiesta per svuotare
 	 */
 	@Override
-	public Request emptyWarehouse() {
+	public Request emptyWarehouse() throws WrongNeededQuantityException {
+		if(this.factory.getUnloadingWarehouse().getCurrentCapacity() == 0) {
+			throw new WrongNeededQuantityException();
+		}
+		
 		return new RequestImpl(this.factory,
 							   StoreImpl.getStoreInstance(),
 							   this.factory.getUnloadingWarehouse().getMaterial(),
@@ -96,8 +107,21 @@ public class DirectorImpl implements Director {
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override
-	public void satisfyRequest(Request requestFulfilled) {
+	public void satisfyRequest(Request requestFulfilled) throws AnotherAcceptedRequestException {
+		if(this.acceptedRequest != null) {
+			throw new AnotherAcceptedRequestException();
+		}
+		
 		requestFulfilled.setSendingFactory(factory);
+		this.acceptedRequest = requestFulfilled;
+	}
+	
+	/*
+	 * Consente al treno di resettare la richiesta del direttore in quanto soddisfatta
+	 */
+	@Override
+	public void setAcceptedRequestToNull() {
+		this.acceptedRequest = null;
 	}
 
 	/*
@@ -108,6 +132,17 @@ public class DirectorImpl implements Director {
 	@Override
 	public Set<Request> getRequestsToSatisfy() {
 		return Collections.unmodifiableSet(this.requestsToSatisfy);
+	}
+	
+	/*
+	 * Consente di avere il riferimento alla richiesta attualmente accettata o null in
+	 * caso questa non sia presente
+	 * 
+	 * @return richiesta accettata
+	 */
+	@Override
+	public Request getAcceptedRequest() {
+		return this.acceptedRequest;
 	}
 
 	/*
