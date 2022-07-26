@@ -22,6 +22,9 @@ import model.interfaces.Request;
 
 public class DirectorImpl implements Director {
 	
+	private final static int MIN_NAME_CHAR = 1;
+	private final static int MAX_NAME_CHAR = 12;
+	
 	/* 
 	 * Come specificato dalla documentazione, ogni direttore avr� un nome,
 	 * un'unica azienda da gestire, un set di richieste da poter soddisfare
@@ -39,6 +42,12 @@ public class DirectorImpl implements Director {
 	 * @param azienda
 	 */
 	public DirectorImpl(final String name, final Factory factory) {
+		if(name.length() < MIN_NAME_CHAR) {
+			throw new EmptyFieldException();
+		} else if(name.length() > MAX_NAME_CHAR) {
+			throw new MaximumCharactersException();
+		}
+		
 		this.name 				= name;
 		this.factory 			= factory;
 		this.requestsToSatisfy	= new LinkedHashSet<>();
@@ -75,7 +84,7 @@ public class DirectorImpl implements Director {
 		
 		return new RequestImpl(this.factory,
 							   StoreImpl.getStoreInstance(),
-							   this.factory.getLoadingWarehouse().getMaterial(),
+							   this.factory.getUnloadingWarehouse().getMaterial(),
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
 	}																				
 	

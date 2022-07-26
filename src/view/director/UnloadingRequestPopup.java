@@ -117,6 +117,7 @@ public class UnloadingRequestPopup {
 			
 			try {
 				ManagerImpl.getManager().emptyWarehouse(directorName);
+				JOptionPane.showMessageDialog(loadingRequestDialogPopup, "Unloading Request Create Succesfully!");
 				unloadingRequestDialogPopup.dispose();
 			} catch(WrongNeededQuantityException exc) {
 				JOptionPane.showMessageDialog(unloadingRequestDialogPopup, "The unloading warehouse is already empty!");

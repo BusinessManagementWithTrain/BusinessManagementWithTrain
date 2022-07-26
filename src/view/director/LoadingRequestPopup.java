@@ -119,6 +119,7 @@ public class LoadingRequestPopup {
 		createButton.addActionListener(e -> {
 			try {
 				ManagerImpl.getManager().createNewRequest(Integer.valueOf(requiredAmountTextField.getText()), directorName);
+				JOptionPane.showMessageDialog(loadingRequestDialogPopup, "Loading Request Create Succesfully!");
 				loadingRequestDialogPopup.dispose();
 			} catch(NumberFormatException exc) {
 				JOptionPane.showMessageDialog(loadingRequestDialogPopup, "The entered value is not an integer!");
