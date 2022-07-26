@@ -2,6 +2,7 @@ package model.interfaces;
 
 import java.util.Map;
 
+import exceptions.EmptyDestinationsSetException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 
@@ -16,8 +17,9 @@ public interface Train {
 	
 	/**
 	 * Metodo che invia il treno alla prossima tappa utile
+	 * @throws EmptyDestinationsSetException 
 	 */
-	void nextDestination() throws FullWarehouseException,FullTrainException;
+	void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException;
 	
 	/**
 	 * metodo per aggiungere richieste alla lista di richieste di carico
@@ -45,4 +47,25 @@ public interface Train {
 	 * @return la capienza massima del treno
 	 */
 	int getMaxCapacity();
+
+	/**
+	 * Metodo che consente di avere il riferimento della quantità da scaricare dal treno
+	 *
+	 * @return la quantità da scaricare dal treno
+	 */
+	int getQuantitytoUnLoad();
+
+	/**
+	 * Metodo che consente di avere il riferimento alla capienza massima del treno 
+	 *
+	 * @return la quantità da caricare nel treno
+	 */
+	int getQuantitytoLoad();
+
+	/**
+	 * Metodo che consente di avere il riferimento alla capienza corrente del treno 
+	 *
+	 * @return la capienza corrente del treno
+	 */
+	int getCurrentCapacity();
 }

@@ -7,12 +7,14 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import exceptions.AnotherAcceptedRequestException;
+import exceptions.WrongNeededQuantityException;
 import model.interfaces.Director;
 import model.interfaces.Request;
 
 /**
 * Classe destinata all'implementazione dell'interfaccia del direttore, ovvero l'oggetto
-* che gestirà un'azienda e comunicherà con gli altri direttori all'atto dell'utilizzo del programma.
+* che gestirï¿½ un'azienda e comunicherï¿½ con gli altri direttori all'atto dell'utilizzo del programma.
 * 
 * @author Grasso Emanuele
 *
@@ -20,21 +22,32 @@ import model.interfaces.Request;
 
 public class DirectorImpl implements Director {
 	
+	private final static int MIN_NAME_CHAR = 1;
+	private final static int MAX_NAME_CHAR = 12;
+	
 	/* 
-	 * Come specificato dalla documentazione, ogni direttore avrà un nome,
-	 * un'unica azienda da gestire e un set di richieste da poter soddisfare
+	 * Come specificato dalla documentazione, ogni direttore avrÃ  un nome,
+	 * un'unica azienda da gestire, un set di richieste da poter soddisfare
+	 * e la richiesta da completare attualmente accettata
 	 */
 	private final String name;
 	private final Factory factory;
 	private final Set<Request> requestsToSatisfy;
+	private Request acceptedRequest;
 	
 	/**
-	 * Il costruttore servirà principalmente ad associare il nome e
+	 * Il costruttore servirÃ  principalmente ad associare il nome e
 	 * l'azienda al corrispettivo direttore
 	 * 
 	 * @param azienda
 	 */
 	public DirectorImpl(final String name, final Factory factory) {
+		if(name.length() < MIN_NAME_CHAR) {
+			throw new EmptyFieldException();
+		} else if(name.length() > MAX_NAME_CHAR) {
+			throw new MaximumCharactersException();
+		}
+		
 		this.name 				= name;
 		this.factory 			= factory;
 		this.requestsToSatisfy	= new LinkedHashSet<>();
@@ -44,16 +57,19 @@ public class DirectorImpl implements Director {
 	 * Consente al direttore di creare una richiesta per ricevere il materiale
 	 * da lavorare
 	 * 
-	 * @param la quantità specificata dall'utente
+	 * @param la quantitÃ  specificata dall'utente
 	 * @return la richiesta per ricevere il materiale 
 	 */
 	@Override
-	public Request newRequest(int neededQuantity) {
+	public Request newRequest(int neededQuantity) throws WrongNeededQuantityException {
+		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
+			throw new WrongNeededQuantityException();
+		}
+			
 		return new RequestImpl(this.factory,
 							   this.factory.getLoadingWarehouse().getMaterial(),
 							   neededQuantity);
 	}
-	//DA GESTIRE L'ECCEZIONE IN CASO DI QUANTITA' TROPPO GRANDE O NEGATIVA
 	
 	/*
 	 * Crea la richiesta per svuotare il magazzino di prodotti lavorati
@@ -61,17 +77,20 @@ public class DirectorImpl implements Director {
 	 * @return la richiesta per svuotare
 	 */
 	@Override
-	public Request emptyWarehouse() {
+	public Request emptyWarehouse() throws WrongNeededQuantityException {
+		if(this.factory.getUnloadingWarehouse().getCurrentCapacity() == 0) {
+			throw new WrongNeededQuantityException();
+		}
+		
 		return new RequestImpl(this.factory,
 							   StoreImpl.getStoreInstance(),
-							   this.factory.getLoadingWarehouse().getMaterial(),
+							   this.factory.getUnloadingWarehouse().getMaterial(),
 							   this.factory.getUnloadingWarehouse().getCurrentCapacity());
 	}																				
 	
 	/*
 	 * Consente al dirigente di aggiungere una richiesta al set delle
 	 * richieste soddisfabili dal direttore
-	 * 
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override
@@ -81,7 +100,7 @@ public class DirectorImpl implements Director {
 	
 	/*
 	 * Consente al dirigente di rimuovere una richiesta dalla lista delle
-	 * richieste soddisfabili poichè già soddisfatta da un altro direttore
+	 * richieste soddisfabili poichï¿½ giï¿½ soddisfatta da un altro direttore
 	 * 
 	 * @param richiestaSoddisfatta
 	 */
@@ -97,8 +116,21 @@ public class DirectorImpl implements Director {
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override
-	public void satisfyRequest(Request requestFulfilled) {
+	public void satisfyRequest(Request requestFulfilled) throws AnotherAcceptedRequestException {
+		if(this.acceptedRequest != null) {
+			throw new AnotherAcceptedRequestException();
+		}
+		
 		requestFulfilled.setSendingFactory(factory);
+		this.acceptedRequest = requestFulfilled;
+	}
+	
+	/*
+	 * Consente al treno di resettare la richiesta del direttore in quanto soddisfatta
+	 */
+	@Override
+	public void setAcceptedRequestToNull() {
+		this.acceptedRequest = null;
 	}
 
 	/*
@@ -109,6 +141,17 @@ public class DirectorImpl implements Director {
 	@Override
 	public Set<Request> getRequestsToSatisfy() {
 		return Collections.unmodifiableSet(this.requestsToSatisfy);
+	}
+	
+	/*
+	 * Consente di avere il riferimento alla richiesta attualmente accettata o null in
+	 * caso questa non sia presente
+	 * 
+	 * @return richiesta accettata
+	 */
+	@Override
+	public Request getAcceptedRequest() {
+		return this.acceptedRequest;
 	}
 
 	/*
