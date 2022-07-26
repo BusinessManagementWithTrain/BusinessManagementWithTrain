@@ -5,7 +5,7 @@ import model.interfaces.Request;
 
 /**
 * Classe destinata all'implementazione dell'interfaccia della richiesta, oggetto fondamentale
-* sul quale tutto il programma grava, questa consentirà ai vari direttori e al dirigente di poter 
+* sul quale tutto il programma grava, questa consentirï¿½ ai vari direttori e al dirigente di poter 
 * richiedere e/o spedire del materiale.
 * 
 * @author Grasso Emanuele
@@ -14,9 +14,9 @@ import model.interfaces.Request;
 public class RequestImpl implements Request {
 
 	/*
-	 * Come indicato dalla documentazione, ogni richiesta conterrà le informazioni relative
-	 * alle aziende mittenti e destinatarie, al tipo e alla quantità di materiale richiesto
-	 * e all'id univoco di ogni richiesta che verrà sfruttato per controllare l'uguaglianza
+	 * Come indicato dalla documentazione, ogni richiesta conterrï¿½ le informazioni relative
+	 * alle aziende mittenti e destinatarie, al tipo e alla quantitï¿½ di materiale richiesto
+	 * e all'id univoco di ogni richiesta che verrï¿½ sfruttato per controllare l'uguaglianza
 	 * tra due richieste
 	 */
 	private Factory sendingFactory;
@@ -29,15 +29,15 @@ public class RequestImpl implements Request {
 
 	
 	/**
-	 * Il costruttore servirà per prendere in input tutti i dati al fine di poter
+	 * Il costruttore servirï¿½ per prendere in input tutti i dati al fine di poter
 	 * creare una richiesta vera e propria.
-	 * Inotre servirà ad associare l'id univoco della richiesta che verrà gestito
+	 * Inotre servirï¿½ ad associare l'id univoco della richiesta che verrï¿½ gestito
 	 * ed aggiornato ad ogni nuova richiesta
 	 * 
 	 * @param azienda mittente
 	 * @param azienda destinatario
 	 * @param materiale richiesto
-	 * @param quantità richiesta
+	 * @param quantitï¿½ richiesta
 	 */
 	public RequestImpl(final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
 		this(null, receiverFactory, sentMaterial, sentQuantity);
@@ -82,9 +82,9 @@ public class RequestImpl implements Request {
 	}
 
 	/*
-	 * Consente di avere il riferimento alla quantità di materiale spedito 
+	 * Consente di avere il riferimento alla quantitï¿½ di materiale spedito 
 	 * 
-	 * @return quantità di materiale
+	 * @return quantitï¿½ di materiale
 	 */
 	@Override
 	public int getSentQuantity() {
@@ -103,7 +103,7 @@ public class RequestImpl implements Request {
 
 	/*
 	 * Consente di impostare il parametro dell'azienda mittente, solo dopo che questa
-	 * avrà accettato la richiesta
+	 * avrï¿½ accettato la richiesta
 	 * 
 	 * @param aziendaMittente
 	 */
@@ -113,8 +113,8 @@ public class RequestImpl implements Request {
 	}
 
 	/*
-	 * Come precedentemente specificato, l'uguaglianza tra due richieste sarà effettiva
-	 * quando il loro codice univoco sarà uguale
+	 * Come precedentemente specificato, l'uguaglianza tra due richieste sarï¿½ effettiva
+	 * quando il loro codice univoco sarï¿½ uguale
 	 * 
 	 * @param obj
 	 */
