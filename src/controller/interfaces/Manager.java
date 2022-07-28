@@ -4,6 +4,7 @@ import java.util.Set;
 
 import exceptions.AnotherAcceptedRequestException;
 import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import exceptions.WrongNeededQuantityException;
@@ -55,8 +56,9 @@ public interface Manager {
 	/**
 	 * Prossima destinazione da raggiungere con il treno  
 	 * @throws EmptyDestinationsSetException 
+	 * @throws EmptyWarehouseException 
 	 */
-	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException;
+	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException, EmptyWarehouseException;
 	
 	/**
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
@@ -98,14 +100,6 @@ public interface Manager {
 	 * @return il treno
 	 */
 	Train showTrainInfo();
-	
-	/**
-	 * Metodo che visualizza le informazioni di una richiesta
-	 * 
-	 * @param ID della richiesta
-	 * @return richiesta associata all'id
-	 */
-	Request showRequestInfo(int id);
 	
 	/**
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager

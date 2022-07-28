@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Factory;
@@ -115,10 +116,11 @@ public class TrainImpl implements Train {
 	 * determinata quantità
 	 * 
 	 * @param la quantità da aggiungere al treno
-	 * @return true o false in base al controllo
 	 */
-	private boolean isFull(int newLoad){
-		return(getCurrentCapacity() + newLoad > this.maxCapacity);
+	private void isFull(int newLoad) throws FullTrainException{
+		if(getCurrentCapacity() + newLoad > this.maxCapacity) {
+			throw new FullTrainException();
+		}
 	}
 	
 	/*
@@ -150,7 +152,7 @@ public class TrainImpl implements Train {
 	 * dal treno caricandola nei magazzini e viceversa, data la complessità del metodo si è ritenuto
 	 * necessario commentarne il funzionamento dall'interno
 	 */
-	private void cargoManagment() throws FullWarehouseException,FullTrainException{
+	private void cargoManagment() throws EmptyWarehouseException, FullTrainException, FullWarehouseException{
 		
 		
 		// Il primo controllo viene effettuato sulla lista di scarico, si verifica che abbia almeno un elemento
@@ -201,7 +203,6 @@ public class TrainImpl implements Train {
 									 .forEach(r -> r.setSendingFactory(StoreImpl.getStoreInstance()));
 				
 				throw e;
-				// GENERA UN'ECCEZIONE PER IL POPUP DELLA VIEW
 			}
 		}
 		
@@ -213,37 +214,34 @@ public class TrainImpl implements Train {
 													   r -> r.getSendingFactory().equals(getCurrentDestination()));
 			
 			// Controlliamo se c'è spazio nel treno
-			if(isFull(this.quantitytoLoad)) {
-				
 				/*
 				 *  Se lo spazio non dovesse bastare, verrà spostata la tappa attuale
 				 *  in fondo alla lista delle tappe così da poter riprovare a caricare
 				 *  dopo aver svuotato un po' il treno
 				 */
-				Factory factoryTemp = getCurrentDestination();
-				this.destinationsSet.remove(factoryTemp);
-				this.destinationsSet.add(factoryTemp);
-				new FullTrainException("WARNING: the train is full, you can't load stuff");
 				
-				// GENERA UN'ECCEZIONE PER IL POPUP DELLA VIEW
+			try {
+				
+				isFull(this.quantitytoLoad);
+				getCurrentDestination().getUnloadingWarehouse().removeMaterial(this.quantitytoLoad);
+				
+			} catch(EmptyWarehouseException | FullTrainException exc) {
+				
+				this.destinationsSet.remove(currentDestination);
+				this.destinationsSet.add(currentDestination);
+				throw exc;
 			}
-			else {
-				
-				// Se arriva qui vuol dire che ci sono richieste e c'è lo spazio nel treno
-				// Come prima cosa viene scaricato il materiale dal magazzino dell'azienda
-				getCurrentDestination().getUnloadingWarehouse().addMaterial(- this.quantitytoLoad);
 					
-				// Successivamente viene caricato il materiale nel treno aggiornando la mappa dei materiali
-				this.stuffMap.merge(getCurrentDestination().getUnloadingWarehouse().getMaterial(), this.quantitytoLoad, Integer::sum);
+			// Successivamente viene caricato il materiale nel treno aggiornando la mappa dei materiali
+			this.stuffMap.merge(getCurrentDestination().getUnloadingWarehouse().getMaterial(), this.quantitytoLoad, Integer::sum);
 				
-				// Aggiorno il set delle tappe aggiungendo tutte le aziende di destinazione non presenti
-				getLoadingRequest().stream()
-								   .forEach(r ->{
-									   this.destinationsSet.add(r.getReceiverFactory());
-				 					   this.unloadingRequests.add(r);
-				 					   ManagerImpl.getManager().getDirectorByFactory(r.getSendingFactory()).setAcceptedRequestToNull();						   
-				}); 
-			}
+			// Aggiorno il set delle tappe aggiungendo tutte le aziende di destinazione non presenti
+			getLoadingRequest().stream()
+							   .forEach(r ->{
+								   this.destinationsSet.add(r.getReceiverFactory());
+			 					   this.unloadingRequests.add(r);
+			 					   ManagerImpl.getManager().getDirectorByFactory(r.getSendingFactory()).setAcceptedRequestToNull();						   
+			}); 
 		}
 	}
 	
@@ -251,7 +249,7 @@ public class TrainImpl implements Train {
 	 * Metodo che invia il treno alla prossima tappa utile
 	 */
 	@Override
-	public void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException{
+	public void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException{
 		
 		checkDestinationSet();
 		currentDestination = List.copyOf(this.destinationsSet).get(0);

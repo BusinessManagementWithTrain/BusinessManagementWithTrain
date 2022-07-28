@@ -1,5 +1,7 @@
 package model.classes;
 
+import java.util.Objects;
+
 import model.interfaces.Factory;
 import model.interfaces.Request;
 
@@ -23,9 +25,6 @@ public class RequestImpl implements Request {
 	private final Factory receiverFactory;
 	private final String sentMaterial;
 	private final int sentQuantity;
-	private final int requestId;
-	
-	private static int newRequestId = 0;
 
 	
 	/**
@@ -48,7 +47,6 @@ public class RequestImpl implements Request {
 		this.receiverFactory 	= receiverFactory;
 		this.sentMaterial 		= sentMaterial;
 		this.sentQuantity 		= sentQuantity;
-		this.requestId 			= RequestImpl.newRequestId++;
 	}
 
 	/*
@@ -92,16 +90,6 @@ public class RequestImpl implements Request {
 	}
 
 	/*
-	 * Consente di avere il riferimento all'id univoco della richiesta
-	 * 
-	 * @return id univoco della richiesta
-	 */
-	@Override
-	public int getRequestId() {
-		return this.requestId;
-	}
-
-	/*
 	 * Consente di impostare il parametro dell'azienda mittente, solo dopo che questa
 	 * avr� accettato la richiesta
 	 * 
@@ -113,8 +101,8 @@ public class RequestImpl implements Request {
 	}
 
 	/*
-	 * Come precedentemente specificato, l'uguaglianza tra due richieste sar� effettiva
-	 * quando il loro codice univoco sar� uguale
+	 * Come precedentemente specificato, l'uguaglianza tra due richieste sarà effettiva
+	 * quando le loro aziende mittenti saranno uguali e lo saranno anche le aziende destinatarie
 	 * 
 	 * @param obj
 	 */
@@ -127,6 +115,9 @@ public class RequestImpl implements Request {
 		if (getClass() != obj.getClass())
 			return false;
 		RequestImpl other = (RequestImpl) obj;
-		return this.requestId == other.requestId;
+		return Objects.equals(this.receiverFactory, other.receiverFactory)
+				&& Objects.equals(this.sendingFactory, other.sendingFactory);
 	}
+	
+	
 }
