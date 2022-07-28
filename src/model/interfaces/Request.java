@@ -38,6 +38,13 @@ public interface Request {
 	int getSentQuantity();
 	
 	/**
+	 * Consente di avere il riferimento all'id univoco della richiesta
+	 * 
+	 * @return id univoco della richiesta
+	 */
+	int getRequestId();
+	
+	/**
 	 * Consente di impostare il parametro dell'azienda mittente, solo dopo che questa
 	 * avr� accettato la richiesta
 	 * 
