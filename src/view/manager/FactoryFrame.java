@@ -22,7 +22,7 @@ import java.awt.Component;
 import javax.swing.Box;
 
 
-public class Factory {
+public class FactoryFrame {
 
 	private JFrame frmFactory;
 	private JPanel panel = new JPanel();
@@ -31,12 +31,12 @@ public class Factory {
 	/**
 	 * Create the application.
 	 */
-	public Factory() {
+	public FactoryFrame() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					
-					Factory window = initialize();
+					FactoryFrame window = initialize();
 					window.frmFactory.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,7 +49,7 @@ public class Factory {
 	 * Initialize the contents of the frame.
 	 * @return 
 	 */
-	private Factory initialize() {
+	private FactoryFrame initialize() {
 		frmFactory = new JFrame();
 		frmFactory.setTitle("Factory");
 		frmFactory.setBounds(100, 100, 490, 350);
@@ -122,7 +122,7 @@ public class Factory {
 			public void actionPerformed(ActionEvent e) {
 				ManagerImpl.getManager().fireDirector(director.getName());
 				frmFactory.dispose();
-				new Factory();
+				new FactoryFrame();
 			}
 		});
 		remove.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

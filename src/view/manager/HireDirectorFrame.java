@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
 
-public class HireDirector {
+public class HireDirectorFrame {
 
 	private JFrame frmHireDirector;
 	private JTextField rawMaterialTextField;
@@ -41,11 +41,11 @@ public class HireDirector {
 	/**
 	 * Create the application.
 	 */
-	public HireDirector() {
+	public HireDirectorFrame() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HireDirector window = initialize();
+					HireDirectorFrame window = initialize();
 					window.frmHireDirector.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class HireDirector {
 	 * Initialize the contents of the frame.
 	 * @return 
 	 */
-	private HireDirector initialize() {
+	private HireDirectorFrame initialize() {
 		frmHireDirector = new JFrame();
 		frmHireDirector.setTitle("Hire director");
 		frmHireDirector.setBounds(100, 100, 450, 320);

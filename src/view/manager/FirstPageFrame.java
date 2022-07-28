@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Cursor;
 import java.awt.Font;
 
-public class FirstPage {
+public class FirstPageFrame {
 
 	private JFrame initialPage;
 	private JTextField textField;
@@ -31,7 +31,7 @@ public class FirstPage {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FirstPage window = new FirstPage();
+					FirstPageFrame window = new FirstPageFrame();
 					window.initialPage.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +43,7 @@ public class FirstPage {
 	/**
 	 * Create the application.
 	 */
-	public FirstPage() {
+	public FirstPageFrame() {
 		initialize();
 	}
 

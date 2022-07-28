@@ -24,7 +24,7 @@ import java.awt.Cursor;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 
-public class ViewRequests {
+public class ViewRequestsFrame {
 
 	private JFrame frmViewRequests;
 	private JPanel panel = new JPanel();
@@ -32,11 +32,11 @@ public class ViewRequests {
 	/**
 	 * Create the application.
 	 */
-	public ViewRequests() {
+	public ViewRequestsFrame() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ViewRequests window = initialize();
+					ViewRequestsFrame window = initialize();
 					window.frmViewRequests.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,7 +49,7 @@ public class ViewRequests {
 	 * Initialize the contents of the frame.
 	 * @return 
 	 */
-	private ViewRequests initialize() {
+	private ViewRequestsFrame initialize() {
 		frmViewRequests = new JFrame();
 		frmViewRequests.setTitle("View Requests");
 		frmViewRequests.setBounds(100, 100, 490, 350);
@@ -148,7 +148,7 @@ public class ViewRequests {
 					JOptionPane.showMessageDialog(panel_1,"The loading Warehouse of \""+request.getReceiverFactory().getName()+"\" is full");
 				}
 				frmViewRequests.dispose();
-				new ViewRequests();
+				new ViewRequestsFrame();
 			}
 		});
 		accept.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
