@@ -22,6 +22,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
 
@@ -225,19 +227,17 @@ public class HireDirector {
 																														Integer.valueOf(numberOperatorsTextField.getText()),
 																														Integer.valueOf(loadingWarehouseSizeTextField.getText()),
 																														Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
-				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (MaximumCharactersException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					frmHireDirector.dispose();
+					new ManagerFrame();
 				} catch (EmptyFieldException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in");
+				} catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(frmHireDirector,"Enter numeric values ​​in full format");
+				} catch (MaximumCharactersException e1) {
+					JOptionPane.showMessageDialog(frmHireDirector,"The director name entered is too long, max 12 characters.");
 				}
 				
-				frmHireDirector.dispose();
-				new ManagerFrame();
+				
 			}
 		});
 		
