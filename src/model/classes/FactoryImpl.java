@@ -107,7 +107,7 @@ public class FactoryImpl implements Factory {
 	 * @return lo staff dell'azienda
 	 */
 	@Override
-	public Staff getStuffMembers() {
+	public Staff getStaffMembers() {
 		return this.staff;
 	}
 	

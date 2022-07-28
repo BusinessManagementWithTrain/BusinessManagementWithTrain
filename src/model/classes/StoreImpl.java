@@ -6,7 +6,7 @@ import model.interfaces.Store;
 import model.interfaces.Warehouse;
 
 /**
- * Il negozio permetterà di scaricare materiale inutilizzato senza limiti
+ * Il negozio permetterï¿½di scaricare materiale inutilizzato senza limiti
  * 
  * @author Scaramuzzino Elia
  */
@@ -14,20 +14,20 @@ import model.interfaces.Warehouse;
 public class StoreImpl implements Store {
 
 	/*
-	 * Come specificato nella documentazione, il negozio sarà una particolare azienda
+	 * Come specificato nella documentazione, il negozio sarï¿½ una particolare azienda
 	 * con l'unico dettaglio di fungere da enorme "discarica", infatti l'unico riferimento
-	 * di cui avrà bisogno sarà quello relativo al magazzino di carico della merce che
-	 * verrà appositamente trattato ed utilizzato ad hoc
+	 * di cui avrï¿½ bisogno sarï¿½ quello relativo al magazzino di carico della merce che
+	 * verrï¿½ appositamente trattato ed utilizzato ad hoc
 	 */
 	private Warehouse loadingWarehouse;	
 	
 
 	
 	/**
-	 * Il costruttore servirà unicamente per riscrivere il funzionamento del magazzino di carico
-	 * dal quale verranno tolti tutti i controlli e non verrà utilizzato neanche un metodo, questo
-	 * ci consentirà di utilizzare il negozio come un'azienda ma che all'effettivo non farà nulla.
-	 * Il costruttore sarà privato per consentire l'utilizzo del Singleton Pattern
+	 * Il costruttore servirï¿½ unicamente per riscrivere il funzionamento del magazzino di carico
+	 * dal quale verranno tolti tutti i controlli e non verrï¿½ utilizzato neanche un metodo, questo
+	 * ci consentirï¿½ di utilizzare il negozio come un'azienda ma che all'effettivo non farï¿½ nulla.
+	 * Il costruttore sarï¿½ privato per consentire l'utilizzo del Singleton Pattern
 	 */
 	private StoreImpl() {
 		this.loadingWarehouse = new Warehouse(){
@@ -59,7 +59,7 @@ public class StoreImpl implements Store {
 	 * La scelta di questo stile risiede nelli0deologia dei puntare ad una soluzione comoda non solo
 	 * nell'implementazione, ma anche a livello hardware;
 	 * il riferimento alla classe StoreImpl e l'allocazione della stessa all'interno della memoria
-	 * avverrà solo dopo la prima invocazione del metodo getStore()
+	 * avverrï¿½ solo dopo la prima invocazione del metodo getStore()
 	 */
 	private static class SingletonHelper {
         private static final StoreImpl STORE = new StoreImpl();
@@ -121,7 +121,7 @@ public class StoreImpl implements Store {
 	 * @return null
 	 */
 	@Override
-	public Staff getStuffMembers() {
+	public Staff getStaffMembers() {
 		return null;
 	}
 }
