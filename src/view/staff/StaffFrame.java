@@ -57,7 +57,7 @@ public class StaffFrame {
 		startWorkingBtn.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		startWorkingBtn.addActionListener(e -> {
 			try {
-				ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStuffMembers().startWorking();
+				ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStaffMembers().startWorking();
 				frame.dispose();
 				new StaffFrame(internalDirectorName);
 				
@@ -74,7 +74,7 @@ public class StaffFrame {
 		stopWorkingBtn.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		stopWorkingBtn.addActionListener(e -> {
 			try {
-				ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStuffMembers().stopWorking();
+				ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStaffMembers().stopWorking();
 				frame.dispose();
 				new StaffFrame(internalDirectorName);
 				
@@ -121,7 +121,7 @@ public class StaffFrame {
 		lblNewLabel_3.setBounds(62, 134, 45, 13);
 		frame.getContentPane().add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_4 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStuffMembers().getNumber() + "");
+		JLabel lblNewLabel_4 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStaffMembers().getNumber() + "");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setBounds(199, 134, 45, 13);
 		frame.getContentPane().add(lblNewLabel_4);

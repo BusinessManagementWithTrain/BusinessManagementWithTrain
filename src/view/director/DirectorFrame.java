@@ -228,7 +228,7 @@ public class DirectorFrame {
 		bottomDirectorPanel.add(operatorsPanel);
 		operatorsPanel.setLayout(new BoxLayout(operatorsPanel, BoxLayout.Y_AXIS));
 		
-		JLabel operatorsNumberLabel = new JLabel("Operators Number: " + Factory().getStuffMembers().getNumber());
+		JLabel operatorsNumberLabel = new JLabel("Operators Number: " + Factory().getStaffMembers().getNumber());
 		operatorsNumberLabel.setFont(new Font("Book Antiqua", Font.PLAIN, 12));
 		operatorsNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		operatorsNumberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
