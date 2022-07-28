@@ -16,12 +16,8 @@ import exceptions.EmptyDestinationsSetException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Factory;
-import model.interfaces.Material;
 import model.interfaces.Request;
-import model.interfaces.Staff;
-import model.interfaces.Store;
 import model.interfaces.Train;
-import model.interfaces.Warehouse;
 
 /**
  * Classe destinata all'implementazione dell'interfaccia del treno, ovvero l'oggetto

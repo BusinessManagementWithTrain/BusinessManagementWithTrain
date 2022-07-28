@@ -2,39 +2,33 @@ package view.staff;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullWarehouseException;
-import exceptions.LowTrainCapacityException;
-import exceptions.NullManagerException;
 import exceptions.StaffIsAlreadyNotWorkingException;
 import exceptions.StaffIsAlreadyWorkingException;
 
 import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Font;
-import javax.swing.JToggleButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import model.interfaces.Factory;
 import view.director.DirectorFrame;
+
 public class StaffFrame {
 
 	private JFrame frame;
-	private String internalFactoryName;
+	private String internalDirectorName;
 	
 
 	/**
 	 * Create the application.
 	 */
-	public StaffFrame(String factoryName) {
-		this.internalFactoryName = factoryName;
+	public StaffFrame(String directorName) {
+		this.internalDirectorName = directorName;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -55,15 +49,17 @@ public class StaffFrame {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		JButton startWorkingBtn = new JButton("Start Working");
 		startWorkingBtn.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		startWorkingBtn.addActionListener(e -> {
 			try {
-				ManagerImpl.getManager().showFactoryInfo(internalFactoryName).getStuffMembers().startWorking();
+				ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStuffMembers().startWorking();
 				frame.dispose();
-				new StaffFrame(internalFactoryName);
+				new StaffFrame(internalDirectorName);
 				
 			} catch (EmptyWarehouseException e1) {
 				JOptionPane.showMessageDialog(frame, "The loading Warehouse has not enough materials!");
@@ -78,9 +74,9 @@ public class StaffFrame {
 		stopWorkingBtn.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		stopWorkingBtn.addActionListener(e -> {
 			try {
-				ManagerImpl.getManager().showFactoryInfo(internalFactoryName).getStuffMembers().stopWorking();
+				ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStuffMembers().stopWorking();
 				frame.dispose();
-				new StaffFrame(internalFactoryName);
+				new StaffFrame(internalDirectorName);
 				
 			} catch (FullWarehouseException e1) {
 				JOptionPane.showMessageDialog(frame, "The unloading Warehouse has not enough space!");
@@ -97,7 +93,7 @@ public class StaffFrame {
 		backBtn.setBounds(341, 232, 85, 21);
 		backBtn.addActionListener(e -> {
 			frame.dispose();
-			new DirectorFrame(ManagerImpl.getManager().getDirectorByFactory(ManagerImpl.getManager().showFactoryInfo(internalFactoryName)).getName());
+			new DirectorFrame(internalDirectorName);
 		});
 		frame.getContentPane().add(backBtn);
 		
@@ -119,19 +115,19 @@ public class StaffFrame {
 		lblNewLabel_2.setBounds(300, 120, 126, 13);
 		frame.getContentPane().add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalFactoryName).getLoadingWarehouse().getCurrentCapacity() + "/" +
-									      ManagerImpl.getManager().showFactoryInfo(internalFactoryName).getLoadingWarehouse().getTotalCapacity());
+		JLabel lblNewLabel_3 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getLoadingWarehouse().getCurrentCapacity() + "/" +
+									      ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getLoadingWarehouse().getTotalCapacity());
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setBounds(62, 134, 45, 13);
 		frame.getContentPane().add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_4 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalFactoryName).getStuffMembers().getNumber() + "");
+		JLabel lblNewLabel_4 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getStuffMembers().getNumber() + "");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setBounds(199, 134, 45, 13);
 		frame.getContentPane().add(lblNewLabel_4);
 		
-		JLabel lblNewLabel_5 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalFactoryName).getUnloadingWarehouse().getCurrentCapacity() + "/" +
-			      						  ManagerImpl.getManager().showFactoryInfo(internalFactoryName).getUnloadingWarehouse().getTotalCapacity());
+		JLabel lblNewLabel_5 = new JLabel(ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getUnloadingWarehouse().getCurrentCapacity() + "/" +
+			      						  ManagerImpl.getManager().showFactoryInfo(internalDirectorName).getUnloadingWarehouse().getTotalCapacity());
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5.setBounds(343, 134, 45, 13);
 		frame.getContentPane().add(lblNewLabel_5);
