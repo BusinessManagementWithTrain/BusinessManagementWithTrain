@@ -119,7 +119,7 @@ public interface Manager {
 	/**
 	 *  Metodo che ritorna il direttore data una specifica azienda
 	 * 
-	 *  @param Factory
+	 *  @param FactoryFrame
 	 *  @return il Direttore associato
 	 */
 	public Director getDirectorByFactory(Factory factory);
