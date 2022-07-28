@@ -29,6 +29,7 @@ public interface Manager {
 
 	/**
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
+	 * e vengono eliminate le richieste precedentemente create dal direttore passato
 	 * 
 	 * @param nome del direttore licenziato
 	 */

@@ -1,8 +1,11 @@
 package controller.classes;
 
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
@@ -114,12 +117,31 @@ public class ManagerImpl implements Manager {
 	
 	/*
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
+	 * e vengono eliminate le richieste precedentemente create dal direttore passato
 	 * 
 	 * @param nome del direttore licenziato
 	 */
 	@Override
-	public void fireDirector (String directorName) {
-		this.linkDirectors.remove(getDirectorByName(directorName));		
+	public void fireDirector (String directorName) {	
+		this.linkRequestsManager.stream().filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory())).forEach(r -> linkRequestsManager.remove(r));
+		this.linkGlobalRequests.stream().filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory())).forEach(r -> linkGlobalRequests.remove(r));
+		/* 
+		 * prendiamo i direttori
+		 * cerchiamo i direttori che hanno almeno una richiesta da inviare all'azienda del directorName
+		 * rimuoviamo tutti le richieste dai direttori */
+		this.linkDirectors.stream()
+						  .filter(d -> !d.getRequestsToSatisfy().stream()
+								  							    .filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+								  							    .collect(Collectors.toSet())
+								  							    .isEmpty())
+						  .forEach(d -> d.getRequestsToSatisfy().stream()
+								  								.filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+								  								.forEach(r -> d.removeRequestToSatisfy(r)));
+		this.linkDirectors.stream()
+		  				  .filter(d -> d.getAcceptedRequest()!=null && d.getAcceptedRequest().getReceiverFactory()== showFactoryInfo(directorName))
+		  				  .forEach(Director::setAcceptedRequestToNull);
+		
+		this.linkDirectors.remove(getDirectorByName(directorName));										
 	}
 
 	/*
