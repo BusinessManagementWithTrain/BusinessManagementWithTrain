@@ -16,15 +16,18 @@ import model.interfaces.Request;
 public class RequestImpl implements Request {
 
 	/*
-	 * Come indicato dalla documentazione, ogni richiesta conterr� le informazioni relative
-	 * alle aziende mittenti e destinatarie, al tipo e alla quantit� di materiale richiesto
-	 * e all'id univoco di ogni richiesta che verr� sfruttato per controllare l'uguaglianza
+	 * Come indicato dalla documentazione, ogni richiesta conterrà le informazioni relative
+	 * alle aziende mittenti e destinatarie, al tipo e alla quantità di materiale richiesto
+	 * e all'id univoco di ogni richiesta che verrà sfruttato per controllare l'uguaglianza
 	 * tra due richieste
 	 */
 	private Factory sendingFactory;
 	private final Factory receiverFactory;
 	private final String sentMaterial;
 	private final int sentQuantity;
+	private final int requestId;
+
+	private static int newRequestId = 0;
 
 	
 	/**
@@ -47,6 +50,7 @@ public class RequestImpl implements Request {
 		this.receiverFactory 	= receiverFactory;
 		this.sentMaterial 		= sentMaterial;
 		this.sentQuantity 		= sentQuantity;
+		this.requestId = RequestImpl.newRequestId++;
 	}
 
 	/*
@@ -99,6 +103,16 @@ public class RequestImpl implements Request {
 	public void setSendingFactory(Factory sendingFactory) {
 		this.sendingFactory = sendingFactory;
 	}
+	
+	/*
+	 * Consente di avere il riferimento all'id univoco della richiesta
+	 * 
+	 * @return id univoco della richiesta
+	 */
+	@Override
+	public int getRequestId() {
+		return this.requestId;
+	}
 
 	/*
 	 * Come precedentemente specificato, l'uguaglianza tra due richieste sarà effettiva
@@ -115,8 +129,9 @@ public class RequestImpl implements Request {
 		if (getClass() != obj.getClass())
 			return false;
 		RequestImpl other = (RequestImpl) obj;
-		return Objects.equals(this.receiverFactory, other.receiverFactory)
-				&& Objects.equals(this.sendingFactory, other.sendingFactory);
+		return Objects.equals(this.requestId, other.requestId) ||
+			   Objects.equals(this.receiverFactory, other.receiverFactory)
+			   && Objects.equals(this.sendingFactory, StoreImpl.getStoreInstance());
 	}
 	
 	

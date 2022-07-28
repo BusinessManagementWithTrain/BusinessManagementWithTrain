@@ -177,7 +177,7 @@ public class DirectorImpl implements Director {
 	public Factory getFactory() {
 		return this.factory;
 	}
-	
+
 	/*
 	 * Come specificato nella documentazione, due direttori sono considerati
 	 * uguali se gestiscono la stessa azienda o hanno lo stesso nome
