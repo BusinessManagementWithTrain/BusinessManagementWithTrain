@@ -114,6 +114,18 @@ public class ManagerImpl implements Manager {
 	@Override
 	public void hireDirector(Director hiredDirector) {
 		this.linkDirectors.add(hiredDirector);
+		this.linkGlobalRequests.stream()
+							   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+							   .forEach(r -> hiredDirector.addRequestToSatisfy(r));
+		this.linkRequestsManager.stream()
+							    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+							    .forEach(r -> hiredDirector.addRequestToSatisfy(r));
+		this.linkRequestsManager.stream()
+	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+	    					    .forEach(r -> linkRequestsManager.remove(r));
+		
+		// Quando crei un direttore con HireDirector devi aggiungergli le richieste che può soddisfare presenti in globalRequest
+		
 	}
 	
 	/*
