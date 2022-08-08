@@ -1,8 +1,9 @@
 package controller.classes;
 
 import java.util.LinkedHashSet;
-import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 
 import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
@@ -48,7 +49,9 @@ public class ManagerImpl implements Manager {
 	/*
 	 * Sfruttando il SingleTon Design Pattern, necessiteremo di un metodo statico
 	 * per l'allocazione della classe del manager e, dalla seconda invocazione, il metodo
-	 * statico ci permetterà di avere il riferimento all'unica istanza del manager
+	 * statico ci permetterà di avere il riferimento all'unica istanza del manager.
+	 * Ad eccezione delle invocazioni effettuate passando un nuovo valore intero che questo
+	 * andrà a creare un nuovo manager resettando le variabili
 	 *
 	 * @param la capacità del treno
 	 */
@@ -57,9 +60,7 @@ public class ManagerImpl implements Manager {
 			throw new LowTrainCapacityException("Low train capacity, please increase it.");
 		}
 		
-		if(manager == null) {
-			manager = new ManagerImpl(trainCapacity);
-		}
+		manager = new ManagerImpl(trainCapacity);
 		
 		return manager;
 	}
@@ -88,7 +89,8 @@ public class ManagerImpl implements Manager {
 	 * 
 	 * @param quantità di materiale richiesto dall'utente
 	 */
-	public void sendRequest(Request request) {
+	@Override
+	public void sendRequest(Request request) throws WrongNeededQuantityException {
 		boolean satisfy = false;
 		for (Director d : this.linkDirectors) {
 			if(request.getSentMaterial().equals(d.getFactory().getMaterial().getProcessedMaterial())) {
@@ -131,8 +133,35 @@ public class ManagerImpl implements Manager {
 	 * @param nome del direttore licenziato
 	 */
 	@Override
-	public void fireDirector (String directorName) {
-		this.linkDirectors.remove(getDirectorByName(directorName));		
+	public void fireDirector (String directorName) {	
+		this.linkRequestsManager.stream()
+								.filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
+								.collect(Collectors.toSet())
+								.stream()
+								.forEach(r -> linkRequestsManager.remove(r));
+		
+		this.linkGlobalRequests.stream()
+							   .filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
+							   .collect(Collectors.toSet())
+							   .stream()
+							   .forEach(r -> linkGlobalRequests.remove(r));
+		/* 
+		 * prendiamo i direttori
+		 * cerchiamo i direttori che hanno almeno una richiesta da inviare all'azienda del directorName
+		 * rimuoviamo tutti le richieste dai direttori */
+		this.linkDirectors.stream()
+						  .filter(d -> !d.getRequestsToSatisfy().stream()
+								  							    .filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+								  							    .collect(Collectors.toSet())
+								  							    .isEmpty())
+						  .forEach(d -> d.getRequestsToSatisfy().stream()
+								  								.filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+								  								.forEach(r -> d.removeRequestToSatisfy(r)));
+		this.linkDirectors.stream()
+		  				  .filter(d -> d.getAcceptedRequest()!=null && d.getAcceptedRequest().getReceiverFactory()== showFactoryInfo(directorName))
+		  				  .forEach(Director::setAcceptedRequestToNull);
+		
+		this.linkDirectors.remove(getDirectorByName(directorName));										
 	}
 
 	/*
@@ -229,35 +258,6 @@ public class ManagerImpl implements Manager {
 	}
 
 	/*
-	 * Metodo che visualizza le informazioni di una richiesta
-	 * 
-	 * @param ID della richiesta
-	 * @return richiesta associata all'id
-	 */
-	@Override
-	public Request showRequestInfo(int id){
-		try {
-			return this.show(id, this.linkGlobalRequests);
-		} catch(NoSuchElementException e){
-			return this.show(id, this.linkRequestsManager);
-		}
-	}
-	
-	/*
-	 *  Metodo che ritorna una richiesta in base all'id e al set di richieste che gli viene passato
-	 * 
-	 *  @param ID della richiesta
-	 *  @param set con le richieste
-	 *  @return richiesta associata all'id e al tipo di set passatogli 
-	 */
-	private Request show(int id, Set<Request> set) throws NoSuchElementException{
-		return set.stream()
-				  .filter(r ->r.getRequestId() == (id))
-				  .findFirst()
-				  .get();		
-	}
-
-	/*
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
 	 * 
 	 *  @return la lista di Direttori
@@ -275,7 +275,7 @@ public class ManagerImpl implements Manager {
 		return linkRequestsManager;
 	}
 
-	/**
+	/*
 	 *  Metodo che ritorna il direttore data una specifica azienda
 	 * 
 	 *  @param Factory

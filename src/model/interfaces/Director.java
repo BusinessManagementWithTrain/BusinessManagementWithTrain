@@ -37,8 +37,9 @@ public interface Director {
 	 * richieste soddisfabili dal direttore
 	 * 
 	 * @param nuova richiesta da soddisfare
+	 * @throws WrongNeededQuantityException 
 	 */
-	void addRequestToSatisfy(Request requestToSatisfy);
+	void addRequestToSatisfy(Request requestToSatisfy) throws WrongNeededQuantityException;
 	
 	/**
 	 * Consente al dirigente di rimuovere una richiesta dal set delle

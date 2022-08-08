@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
+import exceptions.EqualMaterialException;
 import exceptions.MaximumCharactersException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
@@ -225,16 +226,19 @@ public class HireDirector {
 																														Integer.valueOf(numberOperatorsTextField.getText()),
 																														Integer.valueOf(loadingWarehouseSizeTextField.getText()),
 																														Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
+					frmHireDirector.dispose();
+					new ManagerFrame();
+				} catch (EqualMaterialException e1) {
+					JOptionPane.showMessageDialog(frmHireDirector,"The materials are equals");
+				} catch (EmptyFieldException e1) {
+					JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in");
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (MaximumCharactersException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (EmptyFieldException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        }
 				
 				frmHireDirector.dispose();
 				new ManagerFrame();
