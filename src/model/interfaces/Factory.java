@@ -41,5 +41,5 @@ public interface Factory {
 	 * 
 	 * @return lo staff dell'azienda
 	 */
-	Staff getStaffMembers();
+	Staff getStuffMembers();
 }

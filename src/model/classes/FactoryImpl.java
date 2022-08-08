@@ -28,6 +28,8 @@ public class FactoryImpl implements Factory {
 	private final Warehouse unloadingWarehouse;
 	private final Staff staff;
 	
+	
+
 	/**
 	 * Il costruttore servirà principalmente ad associare i vari valori di riferimento passati
 	 * dal controller, ed inoltre creerà i magazzini e i dipendenti ad essi collegati
@@ -107,7 +109,7 @@ public class FactoryImpl implements Factory {
 	 * @return lo staff dell'azienda
 	 */
 	@Override
-	public Staff getStaffMembers() {
+	public Staff getStuffMembers() {
 		return this.staff;
 	}
 	
@@ -128,4 +130,13 @@ public class FactoryImpl implements Factory {
 		FactoryImpl other = (FactoryImpl) obj;
 		return Objects.equals(name, other.name);
 	}
+
+	@Override
+	public String toString() {
+		return "FactoryImpl [name=" + name + ", material=" + material + ", loadingWarehouse=" + loadingWarehouse
+				+ ", unloadingWarehouse=" + unloadingWarehouse + ", staff=" + staff + "]";
+	}
+	
+	
+	
 }

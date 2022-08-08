@@ -5,7 +5,7 @@ import model.interfaces.Material;
 
 /**
  * Classe destinata all'implementazione del materiale, oggetto utilizzato 
- * principalmente per indicare la produzione delle varie aziende, così da 
+ * principalmente per indicare la produzione delle varie aziende, cosï¿½ da 
  * semplificare la richiesta e l'invio dello stesso
  * 
  * @author Grasso Emanuele
@@ -14,14 +14,14 @@ import model.interfaces.Material;
 public class MaterialImpl implements Material {
 
 	/*
-	 * Come indicato dalla documentazione, ogni materiale conterrà le informazioni relative
+	 * Come indicato dalla documentazione, ogni materiale conterrï¿½ le informazioni relative
 	 * al nome, due materiali verranno considerati uguali quando avranno lo stesso nome
 	 */
 	private final String rawMaterial;
 	private final String processedMaterial;
 	
 	/**
-	 * Il costruttore servirà per prendere in input il nome del materiale, al fine di 
+	 * Il costruttore servirï¿½ per prendere in input il nome del materiale, al fine di 
 	 * poter creare un materiale completo.
 	 * 
 	 * @param name
@@ -69,4 +69,12 @@ public class MaterialImpl implements Material {
 		return (this.processedMaterial.equals(other.rawMaterial) ||
 				this.rawMaterial.equals(other.processedMaterial));
 	}
+
+	@Override
+	public String toString() {
+		return "MaterialImpl: "  + rawMaterial + " " + processedMaterial;
+	}
+	
+	
+	
 }
