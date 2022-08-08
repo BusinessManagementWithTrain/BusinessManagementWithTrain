@@ -13,7 +13,7 @@ import model.interfaces.Warehouse;
 public class WarehouseImpl implements Warehouse {
 
 	/*
-	 * Come specificato nella documentazione, ogni magazzino conterrà, rispettivamente,
+	 * Come specificato nella documentazione, ogni magazzino conterrï¿½, rispettivamente,
 	 * la capienza totale dello stesso e la capienza corrente dello stesso
 	 */
 	private final String material;
@@ -21,7 +21,7 @@ public class WarehouseImpl implements Warehouse {
 	private int currentCapacity;
 
 	/**
-	 * Il costruttore servirà unicamente ad associare il materiale contenuto nel magazzino e
+	 * Il costruttore servirï¿½ unicamente ad associare il materiale contenuto nel magazzino e
 	 * la capienza totale al magazzino in questione
 	 * 
 	 * @param il nome del materiale
@@ -37,7 +37,7 @@ public class WarehouseImpl implements Warehouse {
 	/*
 	 * Incrementa il numero di materiale all'interno del magazzino
 	 * 
-	 * @param quantità da inserire nel magazzino
+	 * @param quantitï¿½ da inserire nel magazzino
 	 */
 	@Override
 	public void addMaterial(int quantity) throws FullWarehouseException {
@@ -51,7 +51,7 @@ public class WarehouseImpl implements Warehouse {
 	/*
 	 * Decrementa il numero di materiale all'interno del magazzino
 	 * 
-	 * @param la quantità da rimuovere dal magazzino
+	 * @param la quantitï¿½ da rimuovere dal magazzino
 	 */
 	@Override
 	public void removeMaterial(int quantity) throws EmptyWarehouseException {
@@ -96,4 +96,12 @@ public class WarehouseImpl implements Warehouse {
 		return this.material;
 		
 	}
+
+	@Override
+	public String toString() {
+		return "WarehouseImpl: " + material + " " + totalCapacity + " " + currentCapacity;
+	}
+	
+	
+	
 }

@@ -20,8 +20,9 @@ public interface Train {
 	 * Metodo che invia il treno alla prossima tappa utile
 	 * @throws EmptyDestinationsSetException 
 	 * @throws EmptyWarehouseException 
+	 * @throws Exception 
 	 */
-	void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException;
+	void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException, Exception;
 	
 	/**
 	 * metodo per aggiungere richieste alla lista di richieste di carico

@@ -30,7 +30,6 @@ public interface Manager {
 
 	/**
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
-	 * e vengono eliminate le richieste precedentemente create dal direttore passato
 	 * 
 	 * @param nome del direttore licenziato
 	 */
@@ -58,8 +57,9 @@ public interface Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 * @throws EmptyDestinationsSetException 
 	 * @throws EmptyWarehouseException 
+	 * @throws Exception 
 	 */
-	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException, EmptyWarehouseException;
+	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException, EmptyWarehouseException, Exception;
 	
 	/**
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
@@ -103,6 +103,14 @@ public interface Manager {
 	Train showTrainInfo();
 	
 	/**
+	 * Metodo che visualizza le informazioni di una richiesta
+	 * 
+	 * @param ID della richiesta
+	 * @return richiesta associata all'id
+	 */
+	Request showRequestInfo(int id);
+	
+	/**
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
 	 * 
 	 * @return la lista di Direttori
@@ -119,7 +127,7 @@ public interface Manager {
 	/**
 	 *  Metodo che ritorna il direttore data una specifica azienda
 	 * 
-	 *  @param FactoryFrame
+	 *  @param Factory
 	 *  @return il Direttore associato
 	 */
 	public Director getDirectorByFactory(Factory factory);
