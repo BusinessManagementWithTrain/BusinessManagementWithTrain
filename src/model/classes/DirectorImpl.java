@@ -66,10 +66,9 @@ public class DirectorImpl implements Director {
 	 */
 	@Override
 	public Request newRequest(int neededQuantity) throws WrongNeededQuantityException {
-		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
-			throw new WrongNeededQuantityException();
-		}
-			
+		
+		checkWarehouseCapacity(neededQuantity);
+		
 		return new RequestImpl(this.factory,
 							   this.factory.getLoadingWarehouse().getMaterial(),
 							   neededQuantity);
@@ -98,7 +97,9 @@ public class DirectorImpl implements Director {
 	 * @param richiestaDaSoddisfare
 	 */
 	@Override
-	public void addRequestToSatisfy(Request requestToSatisfy){
+	public void addRequestToSatisfy(Request requestToSatisfy) throws WrongNeededQuantityException {
+		checkWarehouseCapacity(requestToSatisfy.getSentQuantity());
+		
 		this.requestsToSatisfy.add(requestToSatisfy);
 	}
 	
@@ -109,7 +110,7 @@ public class DirectorImpl implements Director {
 	 * @param richiestaSoddisfatta
 	 */
 	@Override
-	public void removeRequestToSatisfy(Request requestToBeRemoved){
+	public void removeRequestToSatisfy(Request requestToBeRemoved) {
 		this.requestsToSatisfy.remove(requestToBeRemoved);
 	}
 	
@@ -195,5 +196,11 @@ public class DirectorImpl implements Director {
 		DirectorImpl other = (DirectorImpl) obj;
 		return Objects.equals(this.factory, other.factory) ||
 			   Objects.equals(this.name, other.name);
+	}
+	
+	private void checkWarehouseCapacity(int neededQuantity) throws WrongNeededQuantityException {
+		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
+			throw new WrongNeededQuantityException();
+		}
 	}
 }
