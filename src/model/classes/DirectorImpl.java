@@ -178,7 +178,7 @@ public class DirectorImpl implements Director {
 	public Factory getFactory() {
 		return this.factory;
 	}
-
+	
 	/*
 	 * Come specificato nella documentazione, due direttori sono considerati
 	 * uguali se gestiscono la stessa azienda o hanno lo stesso nome
@@ -197,7 +197,15 @@ public class DirectorImpl implements Director {
 		return Objects.equals(this.factory, other.factory) ||
 			   Objects.equals(this.name, other.name);
 	}
-	
+  
+  /*
+   * Questo metodo permette di fare un controllo sulla capacità del magazzino
+   * di carico prima di far girare le varie richieste, così da garantire solo
+   * le richieste soddisfabili
+   *
+   * @param la quantità della richiesta da verificare
+   * @throws WrongNeededQuantityException
+   */
 	private void checkWarehouseCapacity(int neededQuantity) throws WrongNeededQuantityException {
 		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
 			throw new WrongNeededQuantityException();

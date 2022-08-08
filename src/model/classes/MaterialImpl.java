@@ -75,4 +75,12 @@ public class MaterialImpl implements Material {
 		return (this.processedMaterial.equals(other.rawMaterial) ||
 				this.rawMaterial.equals(other.processedMaterial));
 	}
+
+	@Override
+	public String toString() {
+		return "MaterialImpl: "  + rawMaterial + " " + processedMaterial;
+	}
+	
+	
+	
 }

@@ -7,7 +7,6 @@ import javax.swing.JTextField;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
-import exceptions.EqualMaterialException;
 import exceptions.MaximumCharactersException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
@@ -23,10 +22,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
 
-public class HireDirector {
+public class HireDirectorFrame {
 
 	private JFrame frmHireDirector;
 	private JTextField rawMaterialTextField;
@@ -40,11 +41,11 @@ public class HireDirector {
 	/**
 	 * Create the application.
 	 */
-	public HireDirector() {
+	public HireDirectorFrame() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HireDirector window = initialize();
+					HireDirectorFrame window = initialize();
 					window.frmHireDirector.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,7 +58,7 @@ public class HireDirector {
 	 * Initialize the contents of the frame.
 	 * @return 
 	 */
-	private HireDirector initialize() {
+	private HireDirectorFrame initialize() {
 		frmHireDirector = new JFrame();
 		frmHireDirector.setTitle("Hire director");
 		frmHireDirector.setBounds(100, 100, 450, 320);
@@ -228,20 +229,15 @@ public class HireDirector {
 																														Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
 					frmHireDirector.dispose();
 					new ManagerFrame();
-				} catch (EqualMaterialException e1) {
-					JOptionPane.showMessageDialog(frmHireDirector,"The materials are equals");
 				} catch (EmptyFieldException e1) {
 					JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in");
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(frmHireDirector,"Enter numeric values ​​in full format");
 				} catch (MaximumCharactersException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-        }
+					JOptionPane.showMessageDialog(frmHireDirector,"The director name entered is too long, max 12 characters.");
+				}
 				
-				frmHireDirector.dispose();
-				new ManagerFrame();
+				
 			}
 		});
 		

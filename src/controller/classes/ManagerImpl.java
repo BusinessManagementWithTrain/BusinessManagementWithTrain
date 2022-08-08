@@ -4,6 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
 import exceptions.WrongNeededQuantityException;
@@ -112,11 +113,22 @@ public class ManagerImpl implements Manager {
 	@Override
 	public void hireDirector(Director hiredDirector) {
 		this.linkDirectors.add(hiredDirector);
+		this.linkGlobalRequests.stream()
+							   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+							   .forEach(r -> hiredDirector.addRequestToSatisfy(r));
+		this.linkRequestsManager.stream()
+							    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+							    .forEach(r -> hiredDirector.addRequestToSatisfy(r));
+		this.linkRequestsManager.stream()
+	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+	    					    .forEach(r -> linkRequestsManager.remove(r));
+		
+		// Quando crei un direttore con HireDirector devi aggiungergli le richieste che può soddisfare presenti in globalRequest
+		
 	}
 	
 	/*
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
-	 * e vengono eliminate le richieste precedentemente create dal direttore passato
 	 * 
 	 * @param nome del direttore licenziato
 	 */
@@ -184,7 +196,7 @@ public class ManagerImpl implements Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
 	@Override
-	public void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException {
+	public void nextDestination() throws Exception {
 		this.train.nextDestination();		
 	}
 
