@@ -1,35 +1,23 @@
 package model.classes;
 
-import java.util.Collection;
-
+//import dalle varie librerie di sistema
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import controller.classes.ManagerImpl;
 import exceptions.EmptyDestinationsSetException;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.Factory;
-import model.interfaces.Material;
 import model.interfaces.Request;
-import model.interfaces.Staff;
-import model.interfaces.Store;
 import model.interfaces.Train;
-import model.interfaces.Warehouse;
 
 /**
  * Classe destinata all'implementazione dell'interfaccia del treno, ovvero l'oggetto
@@ -50,12 +38,12 @@ public class TrainImpl implements Train {
 	private final Set<Request> loadingRequests;
 	private final Set<Request> unloadingRequests;
 	private final Map<String,Integer> stuffMap;
-	//private Set<Factory> destinationsSet;
 	private final Queue<Factory> destinationsSet;
 	private Factory currentDestination;
 	private final int maxCapacity;
 	private int quantitytoLoad;
 	private int quantitytoUnLoad;
+	
 	/**
 	 * Il costruttore servirà principalmente per associare il negozio e la capienza massima del treno,
 	 * ma anche per inizializzare tutte le strutture dati
@@ -168,35 +156,28 @@ public class TrainImpl implements Train {
 	private void cargoManagement() throws Exception{
 		this.quantitytoLoad=0;
 		this.quantitytoUnLoad=0;
-		List<Request> list;
+		List<Request> filteredList;
 		Exception myException = null;
 		// Il primo controllo viene effettuato sulla lista di scarico, si verifica che abbia almeno un elemento
 		if(!getUnloadingRequest().isEmpty()) {
 			
 			//lista filtrata con le sole aziende che hanno come azienda ricevente la destinazione corrente
-			list = this.unloadingRequests.stream().filter(i->i.getReceiverFactory().equals(currentDestination)).toList();
-			System.out.println(list);
+			filteredList = this.unloadingRequests.stream().filter(i->i.getReceiverFactory().equals(currentDestination)).toList();
+			
 			
 				//ciclo su ogni richiesta della lista filtrata
-				for (Request r : list) {
-					System.out.println("-----------------------------------");
+				for (Request r : filteredList) {
+					
 					try {
-							
 							this.currentDestination.getLoadingWarehouse().addMaterial(r.getSentQuantity());
 							this.quantitytoUnLoad =	mapManage(quantitytoUnLoad, r.getSentMaterial(), - r.getSentQuantity());	
 							this.unloadingRequests.remove(r);
-							System.out.println("bbbbb");
+							
 					} catch (FullWarehouseException e) {
-						System.out.println("a");
 						r.setReceiverFactoryToStore();
-						System.out.println("b");
 						this.destinationsSet.add(StoreImpl.getStoreInstance());
-						System.out.println("c");	
 						this.destinationsSet.remove(currentDestination);
-						System.out.println("d");
 						myException=e;
-						System.out.println("e");
-//							continue;
 					}
 				
 				}
@@ -205,9 +186,9 @@ public class TrainImpl implements Train {
 		
 		// Il secondo controllo viene effettuato sulla lista di carico, si verifica che abbia almeno un elemento
 		if(!getLoadingRequest().isEmpty()) {
-			list = this.loadingRequests.stream().filter(i->i.getSendingFactory().equals(currentDestination)).toList();
+			filteredList = this.loadingRequests.stream().filter(i->i.getSendingFactory().equals(currentDestination)).toList();
 			
-			for (Request r : list) {
+			for (Request r : filteredList) {
 						try {
 							isFull(r.getSentQuantity());
 							currentDestination.getUnloadingWarehouse().removeMaterial(r.getSentQuantity()); 
@@ -225,8 +206,6 @@ public class TrainImpl implements Train {
 						} catch (EmptyWarehouseException | FullTrainException e) {
 							this.destinationsSet.remove(currentDestination);
 							this.destinationsSet.add(currentDestination);
-//							myException = e;
-//							continue;
 						}
 			}
 		}
@@ -245,6 +224,7 @@ public class TrainImpl implements Train {
 		//aggiungo sul treno
 		this.stuffMap.merge(material,sentQuanity, Integer::sum); 
 		
+		//metto in valore assoluto così che risulti sempre positiva
 		return Math.abs(sentQuanity);
 	}
 
