@@ -107,6 +107,7 @@ public class ManagerImpl implements Manager {
 	
 	/*
 	 * Viene passato un riferimento all'oggetto direttore da aggiungere al set dei direttori
+	 * e gli vengono aggiunte le richieste accettabili
 	 * 
 	 * @param direttore assunto
 	 */
@@ -126,18 +127,20 @@ public class ManagerImpl implements Manager {
 	}
 	
 	/*
-	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
+	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori,
+	 * Inoltre verranno eliminate le richieste che hanno come destinazione l'azienda del direttore da licenziare
 	 * 
 	 * @param nome del direttore licenziato
 	 */
 	@Override
 	public void fireDirector (String directorName) {	
+		// elimino le richieste del direttore da linkRequestsManager
 		this.linkRequestsManager.stream()
 								.filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
 								.collect(Collectors.toSet())
 								.stream()
 								.forEach(r -> linkRequestsManager.remove(r));
-		
+		// elimino le richieste del direttore da linkGlobalManager
 		this.linkGlobalRequests.stream()
 							   .filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
 							   .collect(Collectors.toSet())
@@ -155,10 +158,16 @@ public class ManagerImpl implements Manager {
 						  .forEach(d -> d.getRequestsToSatisfy().stream()
 								  								.filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
 								  								.forEach(r -> d.removeRequestToSatisfy(r)));
+		// per ogni direttore che ha richieste di scarico nell'azienda del direttore da eliminare, 
+		// invoco il metodo che mi permette di resettare la richiesta del direttore
 		this.linkDirectors.stream()
 		  				  .filter(d -> d.getAcceptedRequest()!=null && d.getAcceptedRequest().getReceiverFactory()== showFactoryInfo(directorName))
 		  				  .forEach(Director::setAcceptedRequestToNull);
-		
+		// imposto come destinazione lo store a quelle richieste, contenute nel treno, che hanno come destinazione l'azienda del direttore da eliminare
+		this.train.getRequestsUnloading().stream()
+									     .filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+									     .forEach(r -> r.setReceiverFactoryToStore());
+		// rimuovo il direttore
 		this.linkDirectors.remove(getDirectorByName(directorName));										
 	}
 
