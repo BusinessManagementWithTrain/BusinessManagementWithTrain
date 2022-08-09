@@ -1,43 +1,5 @@
 package view.manager;
 
-
-
-/*
-		JButton btnNewButton_1 = new JButton("Confirm");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				try {
-					ManagerImpl.getManager().hireDirector(new DirectorImpl(directorNameTextField.getText(),
-									   						  			   new FactoryImpl(factoryNameTextField.getText(),
-									   						  					   		   new MaterialImpl(rawMaterialTextField.getText(),
-									   						  					   				   			processedMaterialTextField.getText()),
-									   						  					   		   Integer.valueOf(numberOperatorsTextField.getText()),
-									   						  					   		   Integer.valueOf(loadingWarehouseSizeTextField.getText()),
-									   						  					   		   Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
-					frmHireDirector.dispose();
-					new ManagerFrame();
-					
-				} catch (WrongNeededQuantityException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (EqualMaterialException e1) {
-					JOptionPane.showMessageDialog(frmHireDirector,"The materials are equals");
-				} catch (EmptyFieldException e1) {
-					JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in");
-				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (MaximumCharactersException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
- */
-
-
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -47,11 +9,11 @@ import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
 import exceptions.EqualMaterialException;
 import exceptions.MaximumCharactersException;
-import exceptions.WrongNeededQuantityException;
+import exceptions.WrongStaffValueException;
+import exceptions.WrongWarehouseCapacityException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
 import model.classes.MaterialImpl;
-import view.manager.ManagerFrame;
 
 import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
@@ -262,10 +224,10 @@ public class HireDirectorFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ManagerImpl.getManager().hireDirector(new DirectorImpl(directorNameTextField.getText(),
-									   						  			   new FactoryImpl(factoryNameTextField.getText(),
-									   						  					   		   new MaterialImpl(rawMaterialTextField.getText(),
-									   						  					   				   			processedMaterialTextField.getText()),
+					ManagerImpl.getManager().hireDirector(new DirectorImpl(OnlyFirstCapitalized(directorNameTextField.getText()),
+									   						  			   new FactoryImpl(OnlyFirstCapitalized(factoryNameTextField.getText()),
+									   						  					   		   new MaterialImpl(OnlyFirstCapitalized(rawMaterialTextField.getText()),
+									   						  					   				   			OnlyFirstCapitalized(processedMaterialTextField.getText())),
 									   						  					   		   Integer.valueOf(numberOperatorsTextField.getText()),
 									   						  					   		   Integer.valueOf(loadingWarehouseSizeTextField.getText()),
 									   						  					   		   Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
@@ -273,14 +235,16 @@ public class HireDirectorFrame {
 				new ManagerFrame();
 			} catch (EqualMaterialException e1) {
 				JOptionPane.showMessageDialog(frmHireDirector,"The materials are equal, change it.");
-			} catch (WrongNeededQuantityException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"");
 			} catch (EmptyFieldException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in");
+				JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in, change it");
 			} catch (NumberFormatException e1) {
 				JOptionPane.showMessageDialog(frmHireDirector,"Enter numeric values ​​in full format");
 			} catch (MaximumCharactersException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"The director name entered is too long, max 12 characters.");
+				JOptionPane.showMessageDialog(frmHireDirector,"One or more names are too long, max 12 characters, change it");
+			} catch (WrongStaffValueException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"The staff members can't be more than the warehouse's capacity, change it");
+			} catch (WrongWarehouseCapacityException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"The warehouse's capacity can't be more than the train's capacity, change it");
 			}
 		}});
 		
@@ -303,5 +267,8 @@ public class HireDirectorFrame {
 		return this;
 				
 	}
-
+	
+	private String OnlyFirstCapitalized(String str) {
+		return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+	}
 }

@@ -52,6 +52,10 @@ public interface Request {
 	 */
 	void setSendingFactory(Factory sendingFactory);
 
+	/**
+	 * Consente di impostare il parametro dell'azienda ricevente nel negozio, così da
+	 * poter indirizzare la richiesta allo stesso
+	 */
 	void setReceiverFactoryToStore();
 
 	

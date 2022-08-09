@@ -13,10 +13,6 @@ import javax.swing.JTable;
 import javax.swing.table.*;
 
 import controller.classes.ManagerImpl;
-import exceptions.EmptyDestinationsSetException;
-import exceptions.EmptyWarehouseException;
-import exceptions.FullTrainException;
-import exceptions.FullWarehouseException;
 import exceptions.LowTrainCapacityException;
 import view.manager.ManagerFrame;
 
@@ -29,8 +25,6 @@ import java.util.Map;
 import java.awt.Font;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-
-
 
 public class TrainFrame {
 

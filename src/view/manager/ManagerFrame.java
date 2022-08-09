@@ -59,7 +59,7 @@ public class ManagerFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Factory();
+				new FactoryFrame();
 				frmManager.dispose();
 			}
 		});
@@ -77,7 +77,7 @@ public class ManagerFrame {
 		JButton btnNewButton_1 = new JButton("Hire director");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new HireDirector();
+				new HireDirectorFrame();
 				frmManager.dispose();
 				
 			}
@@ -112,7 +112,7 @@ public class ManagerFrame {
 		JButton btnNewButton_3 = new JButton("View requests");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ViewRequests();
+				new ViewRequestsFrame();
 				frmManager.dispose();
 			}
 		});

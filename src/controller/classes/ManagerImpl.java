@@ -88,12 +88,14 @@ public class ManagerImpl implements Manager {
 	 * @param quantità di materiale richiesto dall'utente
 	 */
 	@Override
-	public void sendRequest(Request request) throws WrongNeededQuantityException {
+	public void sendRequest(Request request) {
 		boolean satisfy = false;
 		for (Director d : this.linkDirectors) {
 			if(request.getSentMaterial().equals(d.getFactory().getMaterial().getProcessedMaterial())) {
-				d.addRequestToSatisfy(request);
-				satisfy = true;
+				try {
+					d.addRequestToSatisfy(request);
+					satisfy = true;
+				} catch(WrongNeededQuantityException e) {}
 			}
 		}
 		
@@ -109,7 +111,7 @@ public class ManagerImpl implements Manager {
 	 * @param direttore assunto
 	 */
 	@Override
-	public void hireDirector(Director hiredDirector) throws WrongNeededQuantityException{
+	public void hireDirector(Director hiredDirector){
 		this.linkDirectors.add(hiredDirector);
 		
 		Set<Request> requestsToAdd = new LinkedHashSet<>();
@@ -117,7 +119,9 @@ public class ManagerImpl implements Manager {
 		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkRequestsManager, hiredDirector));
 		
 		for (Request request : requestsToAdd) {
-			hiredDirector.addRequestToSatisfy(request);
+			try {
+				hiredDirector.addRequestToSatisfy(request);
+			} catch(WrongNeededQuantityException e) {}
 		}
 
 		this.linkRequestsManager.stream()
