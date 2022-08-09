@@ -25,8 +25,9 @@ public interface Manager {
 	 * Viene passato un riferimento all'oggetto direttore da aggiungere al set dei direttori
 	 * 
 	 * @param direttore assunto
+	 * @throws WrongNeededQuantityException 
 	 */
-	void hireDirector(Director director);
+	void hireDirector(Director director) throws WrongNeededQuantityException;
 
 	/**
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori

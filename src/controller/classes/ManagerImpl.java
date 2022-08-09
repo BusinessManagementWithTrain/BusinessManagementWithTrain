@@ -1,6 +1,7 @@
 package controller.classes;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -111,10 +112,13 @@ public class ManagerImpl implements Manager {
 	 * @param direttore assunto
 	 */
 	@Override
-	public void hireDirector(Director hiredDirector) {
+	public void hireDirector(Director hiredDirector) throws WrongNeededQuantityException{
 		this.linkDirectors.add(hiredDirector);
-		this.linkGlobalRequests.stream()
-							   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+		
+		LinkedHashSet<Request> requestsToAdd;
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkGlobalRequests, hiredDirector));
+		
+		
 							   .forEach(r -> hiredDirector.addRequestToSatisfy(r));
 		this.linkRequestsManager.stream()
 							    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
@@ -125,6 +129,14 @@ public class ManagerImpl implements Manager {
 		
 		// Quando crei un direttore con HireDirector devi aggiungergli le richieste che può soddisfare presenti in globalRequest
 		
+	}
+	
+	private List<Request> fromLinkRequestToSpecificList(Set<Request> list, Director hiredDirector) {
+		return list.stream()
+				   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory()
+						   												.getMaterial()
+						   												.getProcessedMaterial()))
+				   .toList();
 	}
 	
 	/*

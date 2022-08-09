@@ -9,6 +9,7 @@ import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
 import exceptions.EqualMaterialException;
 import exceptions.MaximumCharactersException;
+import exceptions.WrongNeededQuantityException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
 import model.classes.MaterialImpl;
@@ -23,6 +24,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
 
@@ -221,13 +224,19 @@ public class HireDirector {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					ManagerImpl.getManager().hireDirector(new DirectorImpl(directorNameTextField.getText(), new FactoryImpl(factoryNameTextField.getText(),
-																														new MaterialImpl(rawMaterialTextField.getText(),processedMaterialTextField.getText()),
-																														Integer.valueOf(numberOperatorsTextField.getText()),
-																														Integer.valueOf(loadingWarehouseSizeTextField.getText()),
-																														Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
+					ManagerImpl.getManager().hireDirector(new DirectorImpl(directorNameTextField.getText(),
+									   						  			   new FactoryImpl(factoryNameTextField.getText(),
+									   						  					   		   new MaterialImpl(rawMaterialTextField.getText(),
+									   						  					   				   			processedMaterialTextField.getText()),
+									   						  					   		   Integer.valueOf(numberOperatorsTextField.getText()),
+									   						  					   		   Integer.valueOf(loadingWarehouseSizeTextField.getText()),
+									   						  					   		   Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
 					frmHireDirector.dispose();
 					new ManagerFrame();
+					
+				} catch (WrongNeededQuantityException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				} catch (EqualMaterialException e1) {
 					JOptionPane.showMessageDialog(frmHireDirector,"The materials are equals");
 				} catch (EmptyFieldException e1) {
@@ -238,10 +247,7 @@ public class HireDirector {
 				} catch (MaximumCharactersException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-        }
-				
-				frmHireDirector.dispose();
-				new ManagerFrame();
+				}
 			}
 		});
 		
