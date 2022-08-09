@@ -10,9 +10,6 @@ import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
 import exceptions.WrongNeededQuantityException;
 import exceptions.AnotherAcceptedRequestException;
-import exceptions.EmptyDestinationsSetException;
-import exceptions.EmptyWarehouseException;
-import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.*;
 import model.classes.*;
@@ -115,14 +112,14 @@ public class ManagerImpl implements Manager {
 	public void hireDirector(Director hiredDirector) throws WrongNeededQuantityException{
 		this.linkDirectors.add(hiredDirector);
 		
-		LinkedHashSet<Request> requestsToAdd;
+		Set<Request> requestsToAdd = new LinkedHashSet<>();
 		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkGlobalRequests, hiredDirector));
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkRequestsManager, hiredDirector));
 		
-		
-							   .forEach(r -> hiredDirector.addRequestToSatisfy(r));
-		this.linkRequestsManager.stream()
-							    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
-							    .forEach(r -> hiredDirector.addRequestToSatisfy(r));
+		for (Request request : requestsToAdd) {
+			hiredDirector.addRequestToSatisfy(request);
+		}
+
 		this.linkRequestsManager.stream()
 	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
 	    					    .forEach(r -> linkRequestsManager.remove(r));
@@ -297,5 +294,4 @@ public class ManagerImpl implements Manager {
 				 .findFirst()
 				 .get();
 	}
-		
 }

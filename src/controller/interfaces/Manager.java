@@ -112,14 +112,6 @@ public interface Manager {
 	Train showTrainInfo();
 	
 	/**
-	 * Metodo che visualizza le informazioni di una richiesta
-	 * 
-	 * @param ID della richiesta
-	 * @return richiesta associata all'id
-	 */
-	Request showRequestInfo(int id);
-	
-	/**
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
 	 * 
 	 * @return la lista di Direttori
