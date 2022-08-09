@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 public class TrainFrame {
 
 	private JFrame frame;
-	private JTextField currentDestinationLabel;
+	private JTextField currentDestinationtxt;
 	private JTextField TrainCurrentCapacitytxt;
 	
 	/**
@@ -74,6 +74,7 @@ public class TrainFrame {
 		
 		//Casella di testo della capacità corrente/totale
 		TrainCurrentCapacitytxt = new JTextField();
+		TrainCurrentCapacitytxt.setHorizontalAlignment(JTextField.CENTER);
 		TrainCurrentCapacitytxt.setEditable(false);
 		TrainCurrentCapacitytxt.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		TrainCurrentCapacitytxt.setBounds(449, 48, 229, 47);
@@ -90,17 +91,19 @@ public class TrainFrame {
 										+ " [Kg]");
 		
 		//casella di testo destinazione corrente
-		currentDestinationLabel = new JTextField();
-		currentDestinationLabel.setEditable(false);
+		currentDestinationtxt = new JTextField();
+		currentDestinationtxt.setHorizontalAlignment(JTextField.CENTER);
+		currentDestinationtxt.setFont(new Font("Serif", Font.ITALIC, 25));
+		currentDestinationtxt.setEditable(false);
 		try {
-			currentDestinationLabel.setText(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().getName());
+			currentDestinationtxt.setText(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().getName());
 		} catch (NullPointerException e) {
-			currentDestinationLabel.setText(null);
+			currentDestinationtxt.setText(null);
 		}
 		
-		currentDestinationLabel.setBounds(459, 166, 213, 69);
-		frame.getContentPane().add(currentDestinationLabel);
-		currentDestinationLabel.setColumns(10);
+		currentDestinationtxt.setBounds(459, 166, 213, 69);
+		frame.getContentPane().add(currentDestinationtxt);
+		currentDestinationtxt.setColumns(10);
 		
 		
 		//Bottone della prossima destinazione
@@ -117,25 +120,41 @@ public class TrainFrame {
 					ManagerImpl.getManager().nextDestination();
 					JOptionPane.showMessageDialog(frame, ManagerImpl.getManager().showTrainInfo().getQuantitytoUnLoad() + " Kg have been unloaded \n" + 
 												  		 ManagerImpl.getManager().showTrainInfo().getQuantitytoLoad() + " Kg have been loaded");
+				} catch (Exception e1) {
+					
+					switch (e1.getClass().toString()) {
+					case "FullWarehouseException":
+						JOptionPane.showMessageDialog(frame, "The loading warehouse hasn't enough free space.\nThe stuff will be send to the store");
+						break;
+
+					case "EmptyDestinationsSetException":
+						JOptionPane.showMessageDialog(frame, "There isn't a next destination...");
+						break;
+					
+					case "FullTrainException":
+						
+						JOptionPane.showMessageDialog(frame, "The train can't load entirely your stuff, we loaded the possible amount, "
+								 							 + "check the Stuff Table.\nWe will try to load the remaining stuff later");
+						break;
+					 
+					case "EmptyWarehouseException":
+						JOptionPane.showMessageDialog(frame, "The unloading warehouse hasn't enough material.\nWe loaded the possible amount, "
+						         					         + "check the Stuff Table\nWe will try to load the remaining stuff later.");
+					
+					default:
+						e1.printStackTrace();
+						break;
+					}
+					
+					
+					e1.printStackTrace();
+				} finally {
 					frame.dispose();
 					new TrainFrame();
-					
-					
-				} catch (FullWarehouseException e1) {
-					JOptionPane.showMessageDialog(frame, "the warehouse is full...");
-				} catch (FullTrainException e1) {
-					JOptionPane.showMessageDialog(frame, "the train is full...");
 				}
-				catch (EmptyDestinationsSetException e1) {
-					JOptionPane.showMessageDialog(frame, "there isn't a next destination...");
-				} catch (EmptyWarehouseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} 
+				
 			}
 		});
-		
-		
 		
 		
 		//back button
@@ -211,8 +230,6 @@ public class TrainFrame {
 		tableScrollPane.setBounds(10, 58, 255, 228);
 		frame.getContentPane().add(tableScrollPane);
 		//Fine costruzione Tabella del treno
-	    
-	    
 		return this;
 		
 	}

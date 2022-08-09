@@ -1,11 +1,9 @@
 package controller.classes;
 
-import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
 
 import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
@@ -51,7 +49,9 @@ public class ManagerImpl implements Manager {
 	/*
 	 * Sfruttando il SingleTon Design Pattern, necessiteremo di   un metodo statico
 	 * per l'allocazione della classe del manager e, dalla seconda invocazione, il metodo
-	 * statico ci permetterà di avere il riferimento all'unica istanza del manager
+	 * statico ci permetterà di avere il riferimento all'unica istanza del manager.
+	 * Ad eccezione delle invocazioni effettuate passando un nuovo valore intero che questo
+	 * andrà a creare un nuovo manager resettando le variabili
 	 *
 	 * @param la capacità del treno
 	 */
@@ -60,9 +60,7 @@ public class ManagerImpl implements Manager {
 			throw new LowTrainCapacityException("Low train capacity, please increase it.");
 		}
 		
-		if(manager == null) {
-			manager = new ManagerImpl(trainCapacity);
-		}
+		manager = new ManagerImpl(trainCapacity);
 		
 		return manager;
 	}
@@ -91,7 +89,8 @@ public class ManagerImpl implements Manager {
 	 * 
 	 * @param quantità di materiale richiesto dall'utente
 	 */
-	public void sendRequest(Request request) {
+	@Override
+	public void sendRequest(Request request) throws WrongNeededQuantityException {
 		boolean satisfy = false;
 		for (Director d : this.linkDirectors) {
 			if(request.getSentMaterial().equals(d.getFactory().getMaterial().getProcessedMaterial())) {
@@ -128,14 +127,22 @@ public class ManagerImpl implements Manager {
 	
 	/*
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
-	 * e vengono eliminate le richieste precedentemente create dal direttore passato
 	 * 
 	 * @param nome del direttore licenziato
 	 */
 	@Override
 	public void fireDirector (String directorName) {	
-		this.linkRequestsManager.stream().filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory())).forEach(r -> linkRequestsManager.remove(r));
-		this.linkGlobalRequests.stream().filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory())).forEach(r -> linkGlobalRequests.remove(r));
+		this.linkRequestsManager.stream()
+								.filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
+								.collect(Collectors.toSet())
+								.stream()
+								.forEach(r -> linkRequestsManager.remove(r));
+		
+		this.linkGlobalRequests.stream()
+							   .filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
+							   .collect(Collectors.toSet())
+							   .stream()
+							   .forEach(r -> linkGlobalRequests.remove(r));
 		/* 
 		 * prendiamo i direttori
 		 * cerchiamo i direttori che hanno almeno una richiesta da inviare all'azienda del directorName
@@ -187,7 +194,7 @@ public class ManagerImpl implements Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 */
 	@Override
-	public void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException {
+	public void nextDestination() throws Exception {
 		this.train.nextDestination();		
 	}
 
@@ -248,8 +255,6 @@ public class ManagerImpl implements Manager {
 		return this.train;
 	}
 
-	
-
 	/*
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
 	 * 
@@ -268,10 +273,10 @@ public class ManagerImpl implements Manager {
 		return linkRequestsManager;
 	}
 
-	/**
+	/*
 	 *  Metodo che ritorna il direttore data una specifica azienda
 	 * 
-	 *  @param FactoryFrame
+	 *  @param Factory
 	 *  @return il Direttore associato
 	 */
 	public Director getDirectorByFactory(Factory factory) {

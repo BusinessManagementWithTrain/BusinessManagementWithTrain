@@ -30,11 +30,18 @@ public interface Manager {
 
 	/**
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
-	 * e vengono eliminate le richieste precedentemente create dal direttore passato
 	 * 
 	 * @param nome del direttore licenziato
 	 */
 	void fireDirector(String directorName);
+	
+	/**
+	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
+	 * 
+	 * @param quantità di materiale richiesto dall'utente
+	 * @throws WrongNeededQuantityException 
+	 */
+	void sendRequest(Request request) throws WrongNeededQuantityException;
 
 	/**
 	 * Viene passata una richiesta che verrà successivamente inviata al treno 
@@ -58,8 +65,9 @@ public interface Manager {
 	 * Prossima destinazione da raggiungere con il treno  
 	 * @throws EmptyDestinationsSetException 
 	 * @throws EmptyWarehouseException 
+	 * @throws Exception 
 	 */
-	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException, EmptyWarehouseException;
+	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException, EmptyWarehouseException, Exception;
 	
 	/**
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato
@@ -76,7 +84,7 @@ public interface Manager {
 	 * @param nome del direttore
 	 * @throws WrongNeededQuantityException 
 	 */
-	public void emptyWarehouse(String directorName) throws WrongNeededQuantityException;
+	void emptyWarehouse(String directorName) throws WrongNeededQuantityException;
 	
 	/**
 	 * Metodo che visualizza le informazioni riguardanti un direttore
@@ -103,24 +111,32 @@ public interface Manager {
 	Train showTrainInfo();
 	
 	/**
+	 * Metodo che visualizza le informazioni di una richiesta
+	 * 
+	 * @param ID della richiesta
+	 * @return richiesta associata all'id
+	 */
+	Request showRequestInfo(int id);
+	
+	/**
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
 	 * 
 	 * @return la lista di Direttori
 	 */
-	public Set<Director> getLinkDirectors();
+	Set<Director> getLinkDirectors();
 	
 	/**
 	 *  Metodo che ritorna la lista delle richieste accettabili esclusivamente manager
 	 * 
 	 *  @return la lista di richieste del Manager
 	 */
-	public Set<Request> getlinkRequestsManager();
+	Set<Request> getlinkRequestsManager();
 	
 	/**
 	 *  Metodo che ritorna il direttore data una specifica azienda
 	 * 
-	 *  @param FactoryFrame
+	 *  @param Factory
 	 *  @return il Direttore associato
 	 */
-	public Director getDirectorByFactory(Factory factory);
+	Director getDirectorByFactory(Factory factory);
 }

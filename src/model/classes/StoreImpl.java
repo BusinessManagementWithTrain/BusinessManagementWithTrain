@@ -121,7 +121,13 @@ public class StoreImpl implements Store {
 	 * @return null
 	 */
 	@Override
-	public Staff getStaffMembers() {
+	public Staff getStuffMembers() {
 		return null;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return " Store ";
 	}
 }
