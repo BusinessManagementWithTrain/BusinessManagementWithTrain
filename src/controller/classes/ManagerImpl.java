@@ -49,7 +49,7 @@ public class ManagerImpl implements Manager {
 	}
 	
 	/*
-	 * Sfruttando il SingleTon Design Pattern, necessiteremo di  un metodo statico
+	 * Sfruttando il SingleTon Design Pattern, necessiteremo di   un metodo statico
 	 * per l'allocazione della classe del manager e, dalla seconda invocazione, il metodo
 	 * statico ci permetterà di avere il riferimento all'unica istanza del manager
 	 *
