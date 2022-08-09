@@ -47,7 +47,7 @@ public class ManagerImpl implements Manager {
 	}
 	
 	/*
-	 * Sfruttando il SingleTon Design Pattern, necessiteremo di un metodo statico
+	 * Sfruttando il SingleTon Design Pattern, necessiteremo di  un metodo statico
 	 * per l'allocazione della classe del manager e, dalla seconda invocazione, il metodo
 	 * statico ci permetterà di avere il riferimento all'unica istanza del manager.
 	 * Ad eccezione delle invocazioni effettuate passando un nuovo valore intero che questo
@@ -122,8 +122,6 @@ public class ManagerImpl implements Manager {
 		this.linkRequestsManager.stream()
 	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
 	    					    .forEach(r -> linkRequestsManager.remove(r));
-		
-		// Quando crei un direttore con HireDirector devi aggiungergli le richieste che può soddisfare presenti in globalRequest
 		
 	}
 	
