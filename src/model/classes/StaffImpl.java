@@ -4,6 +4,7 @@ import exceptions.EmptyWarehouseException;
 import exceptions.FullWarehouseException;
 import exceptions.StaffIsAlreadyNotWorkingException;
 import exceptions.StaffIsAlreadyWorkingException;
+import exceptions.WrongStaffValueException;
 import model.interfaces.Staff;
 import model.interfaces.Warehouse;
 
@@ -15,9 +16,9 @@ import model.interfaces.Warehouse;
 
 public class StaffImpl implements Staff {
 	/*
-	 * Come specificato nella documentazione, ogni gruppo di operatori avrà il riferimento
+	 * Come specificato nella documentazione, ogni gruppo di operatori avrï¿½ il riferimento
 	 * al numero totale dei dipendenti, al magazzino di carico in cui lavorare, al magazzino di
-	 * scarico dove appoggiare il materiale lavorato ed un booleano che controllerà se i dipendenti
+	 * scarico dove appoggiare il materiale lavorato ed un booleano che controllerï¿½ se i dipendenti
 	 * stiano effettivamente lavorando
 	 */
 	private final int staffNumber;
@@ -26,11 +27,18 @@ public class StaffImpl implements Staff {
 	private boolean isStaffWorking;
 	
 	/**
-	 * Il costruttore servirà principalmente ad assegnare i valori presi in input alle variabili interne e
+	 * Il costruttore servirï¿½ principalmente ad assegnare i valori presi in input alle variabili interne e
 	 * ad inizializzare la variabile booleana a false in quanto, all'atto della creazione, i 
 	 * dipendenti non stiano ancora lavorando
+	 * 
+	 * @throws WrongStaffValueException 
 	 */
-	public StaffImpl(final int staffNumber, final Warehouse receiverWarehouse, final Warehouse sendingWarehouse) {
+	public StaffImpl(final int staffNumber, final Warehouse receiverWarehouse, final Warehouse sendingWarehouse) throws WrongStaffValueException {
+		if(staffNumber < 1 									 || 
+		   staffNumber > sendingWarehouse.getTotalCapacity() || 
+		   staffNumber > receiverWarehouse.getTotalCapacity()) {
+			throw new WrongStaffValueException();
+		}
 		this.staffNumber 			= staffNumber;
 		this.receiverWarehouse		= receiverWarehouse;
 		this.sendingWarehouse 		= sendingWarehouse;

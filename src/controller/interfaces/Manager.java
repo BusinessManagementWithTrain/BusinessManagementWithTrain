@@ -25,8 +25,9 @@ public interface Manager {
 	 * Viene passato un riferimento all'oggetto direttore da aggiungere al set dei direttori
 	 * 
 	 * @param direttore assunto
+	 * @throws WrongNeededQuantityException 
 	 */
-	void hireDirector(Director director);
+	void hireDirector(Director director) throws WrongNeededQuantityException;
 
 	/**
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
@@ -109,14 +110,6 @@ public interface Manager {
 	 * @return il treno
 	 */
 	Train showTrainInfo();
-	
-	/**
-	 * Metodo che visualizza le informazioni di una richiesta
-	 * 
-	 * @param ID della richiesta
-	 * @return richiesta associata all'id
-	 */
-	Request showRequestInfo(int id);
 	
 	/**
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager

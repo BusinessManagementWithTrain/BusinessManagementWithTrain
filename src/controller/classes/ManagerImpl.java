@@ -1,6 +1,7 @@
 package controller.classes;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -9,9 +10,6 @@ import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
 import exceptions.WrongNeededQuantityException;
 import exceptions.AnotherAcceptedRequestException;
-import exceptions.EmptyDestinationsSetException;
-import exceptions.EmptyWarehouseException;
-import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.*;
 import model.classes.*;
@@ -90,12 +88,14 @@ public class ManagerImpl implements Manager {
 	 * @param quantità di materiale richiesto dall'utente
 	 */
 	@Override
-	public void sendRequest(Request request) throws WrongNeededQuantityException {
+	public void sendRequest(Request request) {
 		boolean satisfy = false;
 		for (Director d : this.linkDirectors) {
 			if(request.getSentMaterial().equals(d.getFactory().getMaterial().getProcessedMaterial())) {
-				d.addRequestToSatisfy(request);
-				satisfy = true;
+				try {
+					d.addRequestToSatisfy(request);
+					satisfy = true;
+				} catch(WrongNeededQuantityException e) {}
 			}
 		}
 		
@@ -112,18 +112,31 @@ public class ManagerImpl implements Manager {
 	 * @param direttore assunto
 	 */
 	@Override
-	public void hireDirector(Director hiredDirector) {
+	public void hireDirector(Director hiredDirector){
 		this.linkDirectors.add(hiredDirector);
-		this.linkGlobalRequests.stream()
-							   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
-							   .forEach(r -> hiredDirector.addRequestToSatisfy(r));
-		this.linkRequestsManager.stream()
-							    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
-							    .forEach(r -> hiredDirector.addRequestToSatisfy(r));
+		
+		Set<Request> requestsToAdd = new LinkedHashSet<>();
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkGlobalRequests, hiredDirector));
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkRequestsManager, hiredDirector));
+		
+		for (Request request : requestsToAdd) {
+			try {
+				hiredDirector.addRequestToSatisfy(request);
+			} catch(WrongNeededQuantityException e) {}
+		}
+
 		this.linkRequestsManager.stream()
 	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
 	    					    .forEach(r -> linkRequestsManager.remove(r));
 		
+	}
+	
+	private List<Request> fromLinkRequestToSpecificList(Set<Request> list, Director hiredDirector) {
+		return list.stream()
+				   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory()
+						   												.getMaterial()
+						   												.getProcessedMaterial()))
+				   .toList();
 	}
 	
 	/*
@@ -294,5 +307,4 @@ public class ManagerImpl implements Manager {
 				 .findFirst()
 				 .get();
 	}
-		
 }

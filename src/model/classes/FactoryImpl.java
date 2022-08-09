@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import exceptions.EmptyFieldException;
 import exceptions.MaximumCharactersException;
+import exceptions.WrongStaffValueException;
+import exceptions.WrongWarehouseCapacityException;
 import model.interfaces.Factory;
 import model.interfaces.Material;
 import model.interfaces.Staff;
@@ -17,6 +19,9 @@ import model.interfaces.Warehouse;
  */
 
 public class FactoryImpl implements Factory {
+	
+	private final static int MIN_NAME_CHAR = 1;
+	private final static int MAX_NAME_CHAR = 12;
 	
 	/*
 	 * Come specificato nella documentazione, ogni azienda avrà rispettivamente, il nome, il materiale
@@ -41,15 +46,15 @@ public class FactoryImpl implements Factory {
 	 * @param la capienza del magazzino di scarico
 	 * @throws EmptyFieldException 
 	 * @throws MaximumCharactersException 
+	 * @throws WrongStaffValueException 
+	 * @throws WrongWarehouseCapacityException 
 	 */
-	public FactoryImpl(final String name, final Material material, final int staffSize, final int loadingSize, final int unloadingSize) throws EmptyFieldException, MaximumCharactersException {
-		//se la lunghezza del nome ha meno di 1 carattere allora lancio un'eccezione
-		if(name.length() < 1) 
+	public FactoryImpl(final String name, final Material material, final int staffSize, final int loadingSize, final int unloadingSize) throws EmptyFieldException, MaximumCharactersException, WrongStaffValueException, WrongWarehouseCapacityException {
+		if(name.length() < MIN_NAME_CHAR) {
 			throw new EmptyFieldException();
-		
-		//se il nome dell'azienda contiene più di 12 caratteri allora lancio un'eccezione
-		else if(name.length()>12)
+		} else if(name.length() > MAX_NAME_CHAR) {
 			throw new MaximumCharactersException();
+		}
 		
 		else {
 			this.name 					= name;
