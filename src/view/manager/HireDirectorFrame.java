@@ -234,17 +234,17 @@ public class HireDirectorFrame {
 				frmHireDirector.dispose();
 				new ManagerFrame();
 			} catch (EqualMaterialException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"The materials are equal, change it.");
+				JOptionPane.showMessageDialog(frmHireDirector,"The materials are equals, change it.");
 			} catch (EmptyFieldException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in, change it.");
 			} catch (NumberFormatException e1) {
 				JOptionPane.showMessageDialog(frmHireDirector,"Enter numeric values ​​in full format");
 			} catch (MaximumCharactersException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"One or more names are too long, max 12 characters, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,"One or more names are too long,\nmax 12 characters, change it.");
 			} catch (WrongStaffValueException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"The staff members can't be more than the warehouse's capacity, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,"The staff members can't be more than\nthe warehouse's capacity, change it.");
 			} catch (WrongWarehouseCapacityException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"The warehouse's capacity can't be more than the train's capacity, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,"The warehouse's capacity can't be more than\nthe train's capacity, change it.");
 			}
 		}});
 		

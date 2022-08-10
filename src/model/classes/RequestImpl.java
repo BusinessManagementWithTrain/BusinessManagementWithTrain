@@ -1,7 +1,5 @@
 package model.classes;
 
-import controller.classes.ManagerImpl;
-import exceptions.WrongNeededQuantityException;
 import model.interfaces.Factory;
 import model.interfaces.Request;
 
@@ -31,26 +29,21 @@ public class RequestImpl implements Request {
 
 	
 	/**
-	 * Il costruttore servir� per prendere in input tutti i dati al fine di poter
+	 * Il costruttore  prende in input tutti i dati al fine di poter
 	 * creare una richiesta vera e propria.
-	 * Inotre servir� ad associare l'id univoco della richiesta che verr� gestito
+	 * Inotre associa l'id univoco della richiesta che viene gestito
 	 * ed aggiornato ad ogni nuova richiesta
 	 * 
 	 * @param azienda mittente
 	 * @param azienda destinatario
 	 * @param materiale richiesto
 	 * @param quantit� richiesta
-	 * @throws WrongNeededQuantityException 
 	 */
-	public RequestImpl(final Factory receiverFactory, final String sentMaterial, final int sentQuantity) throws WrongNeededQuantityException {
+	public RequestImpl(final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
 		this(null, receiverFactory, sentMaterial, sentQuantity);
 	}
 	
-	public RequestImpl(final Factory sendingFactory, final Factory receiverFactory, final String sentMaterial, final int sentQuantity) throws WrongNeededQuantityException {
-		if(sentQuantity > ManagerImpl.getManager().showTrainInfo().getMaxCapacity()) {
-			throw new WrongNeededQuantityException();
-		}
-		
+	public RequestImpl(final Factory sendingFactory, final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
 		this.sendingFactory		= sendingFactory;
 		this.receiverFactory 	= receiverFactory;
 		this.sentMaterial 		= sentMaterial;
@@ -130,7 +123,7 @@ public class RequestImpl implements Request {
 	
 	
 	/*
-	 * Come precedentemente specificato, l'uguaglianza tra due richieste sar� effettiva
+	 * Come precedentemente specificato, l'uguaglianza tra due richieste sareffettiva
 	 * quando il loro codice univoco sar� uguale
 	 * 
 	 * @param obj
