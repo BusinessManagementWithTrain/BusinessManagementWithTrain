@@ -1,6 +1,7 @@
 package model.classes;
 
 
+import exceptions.EqualMaterialException;
 import model.interfaces.Material;
 
 /**
@@ -25,8 +26,13 @@ public class MaterialImpl implements Material {
 	 * poter creare un materiale completo.
 	 * 
 	 * @param name
+	 * @throws EqualMaterialException 
 	 */
-	public MaterialImpl(final String rawMaterial, final String processedMaterial) {
+	public MaterialImpl(final String rawMaterial, final String processedMaterial) throws EqualMaterialException {
+		if(rawMaterial.equals(processedMaterial)) {
+			throw new EqualMaterialException();
+		}
+		
 		this.rawMaterial 			= rawMaterial;
 		this.processedMaterial 		= processedMaterial;
 	}
@@ -69,12 +75,4 @@ public class MaterialImpl implements Material {
 		return (this.processedMaterial.equals(other.rawMaterial) ||
 				this.rawMaterial.equals(other.processedMaterial));
 	}
-
-	@Override
-	public String toString() {
-		return "MaterialImpl: "  + rawMaterial + " " + processedMaterial;
-	}
-	
-	
-	
 }

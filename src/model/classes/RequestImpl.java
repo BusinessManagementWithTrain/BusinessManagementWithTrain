@@ -1,5 +1,7 @@
 package model.classes;
 
+import controller.classes.ManagerImpl;
+import exceptions.WrongNeededQuantityException;
 import model.interfaces.Factory;
 import model.interfaces.Request;
 
@@ -38,12 +40,17 @@ public class RequestImpl implements Request {
 	 * @param azienda destinatario
 	 * @param materiale richiesto
 	 * @param quantit� richiesta
+	 * @throws WrongNeededQuantityException 
 	 */
-	public RequestImpl(final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
+	public RequestImpl(final Factory receiverFactory, final String sentMaterial, final int sentQuantity) throws WrongNeededQuantityException {
 		this(null, receiverFactory, sentMaterial, sentQuantity);
 	}
 	
-	public RequestImpl(final Factory sendingFactory, final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
+	public RequestImpl(final Factory sendingFactory, final Factory receiverFactory, final String sentMaterial, final int sentQuantity) throws WrongNeededQuantityException {
+		if(sentQuantity > ManagerImpl.getManager().showTrainInfo().getMaxCapacity()) {
+			throw new WrongNeededQuantityException();
+		}
+		
 		this.sendingFactory		= sendingFactory;
 		this.receiverFactory 	= receiverFactory;
 		this.sentMaterial 		= sentMaterial;
@@ -112,6 +119,10 @@ public class RequestImpl implements Request {
 		this.sendingFactory = sendingFactory;
 	}
 	
+	/*
+	 * Consente di impostare il parametro dell'azienda ricevente nel negozio, così da
+	 * poter indirizzare la richiesta allo stesso
+	 */
 	@Override
 	public void setReceiverFactoryToStore() {
 		this.receiverFactory = StoreImpl.getStoreInstance();
@@ -135,14 +146,4 @@ public class RequestImpl implements Request {
 		RequestImpl other = (RequestImpl) obj;
 		return this.requestId == other.requestId;
 	}
-
-	@Override
-	public String toString() {
-		return " Request:" + " " + sendingFactory.getName() + " " + receiverFactory.getName()
-				+ " " + sentMaterial + " " + sentQuantity;
-	}
-	
-	
-	
-	
 }

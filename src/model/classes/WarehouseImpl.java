@@ -1,7 +1,9 @@
 package model.classes;
 
+import controller.classes.ManagerImpl;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullWarehouseException;
+import exceptions.WrongWarehouseCapacityException;
 import model.interfaces.Warehouse;
 
 /**
@@ -26,8 +28,13 @@ public class WarehouseImpl implements Warehouse {
 	 * 
 	 * @param il nome del materiale
 	 * @param la capienza totale del magazzino
+	 * @throws WrongWarehouseCapacityException 
 	 */
-	public WarehouseImpl(final String material, final int totalCapacity) {
+	public WarehouseImpl(final String material, final int totalCapacity) throws WrongWarehouseCapacityException {
+		if(totalCapacity > ManagerImpl.getManager().showTrainInfo().getMaxCapacity()) {
+			throw new WrongWarehouseCapacityException();
+		}
+		
 		this.material = material;
 		this.totalCapacity = totalCapacity;
 		this.currentCapacity = 0;
@@ -96,12 +103,4 @@ public class WarehouseImpl implements Warehouse {
 		return this.material;
 		
 	}
-
-	@Override
-	public String toString() {
-		return "WarehouseImpl: " + material + " " + totalCapacity + " " + currentCapacity;
-	}
-	
-	
-	
 }

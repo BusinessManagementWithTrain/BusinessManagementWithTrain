@@ -25,8 +25,9 @@ public interface Manager {
 	 * Viene passato un riferimento all'oggetto direttore da aggiungere al set dei direttori
 	 * 
 	 * @param direttore assunto
+	 * @throws WrongNeededQuantityException 
 	 */
-	void hireDirector(Director director);
+	void hireDirector(Director director) throws WrongNeededQuantityException;
 
 	/**
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
@@ -34,6 +35,14 @@ public interface Manager {
 	 * @param nome del direttore licenziato
 	 */
 	void fireDirector(String directorName);
+	
+	/**
+	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
+	 * 
+	 * @param quantità di materiale richiesto dall'utente
+	 * @throws WrongNeededQuantityException 
+	 */
+	void sendRequest(Request request) throws WrongNeededQuantityException;
 
 	/**
 	 * Viene passata una richiesta che verrà successivamente inviata al treno 
@@ -76,7 +85,7 @@ public interface Manager {
 	 * @param nome del direttore
 	 * @throws WrongNeededQuantityException 
 	 */
-	public void emptyWarehouse(String directorName) throws WrongNeededQuantityException;
+	void emptyWarehouse(String directorName) throws WrongNeededQuantityException;
 	
 	/**
 	 * Metodo che visualizza le informazioni riguardanti un direttore
@@ -103,26 +112,18 @@ public interface Manager {
 	Train showTrainInfo();
 	
 	/**
-	 * Metodo che visualizza le informazioni di una richiesta
-	 * 
-	 * @param ID della richiesta
-	 * @return richiesta associata all'id
-	 */
-	Request showRequestInfo(int id);
-	
-	/**
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
 	 * 
 	 * @return la lista di Direttori
 	 */
-	public Set<Director> getLinkDirectors();
+	Set<Director> getLinkDirectors();
 	
 	/**
 	 *  Metodo che ritorna la lista delle richieste accettabili esclusivamente manager
 	 * 
 	 *  @return la lista di richieste del Manager
 	 */
-	public Set<Request> getlinkRequestsManager();
+	Set<Request> getlinkRequestsManager();
 	
 	/**
 	 *  Metodo che ritorna il direttore data una specifica azienda
@@ -130,5 +131,5 @@ public interface Manager {
 	 *  @param Factory
 	 *  @return il Direttore associato
 	 */
-	public Director getDirectorByFactory(Factory factory);
+	Director getDirectorByFactory(Factory factory);
 }

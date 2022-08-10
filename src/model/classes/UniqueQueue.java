@@ -109,7 +109,5 @@ public class UniqueQueue<T> implements Queue<T> {
 	public String toString() {
 		return " UniqueQueue " + queue ;
 	}
-	
-	
 }
 

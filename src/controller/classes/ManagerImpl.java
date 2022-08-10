@@ -1,16 +1,15 @@
 package controller.classes;
 
 import java.util.LinkedHashSet;
-import java.util.NoSuchElementException;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 
 import controller.interfaces.Manager;
 import exceptions.LowTrainCapacityException;
 import exceptions.WrongNeededQuantityException;
 import exceptions.AnotherAcceptedRequestException;
-import exceptions.EmptyDestinationsSetException;
-import exceptions.EmptyWarehouseException;
-import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
 import model.interfaces.*;
 import model.classes.*;
@@ -46,9 +45,11 @@ public class ManagerImpl implements Manager {
 	}
 	
 	/*
-	 * Sfruttando il SingleTon Design Pattern, necessiteremo di un metodo statico
+	 * Sfruttando il SingleTon Design Pattern, necessiteremo di   un metodo statico
 	 * per l'allocazione della classe del manager e, dalla seconda invocazione, il metodo
-	 * statico ci permetterà di avere il riferimento all'unica istanza del manager
+	 * statico ci permetterà di avere il riferimento all'unica istanza del manager.
+	 * Ad eccezione delle invocazioni effettuate passando un nuovo valore intero che questo
+	 * andrà a creare un nuovo manager resettando le variabili
 	 *
 	 * @param la capacità del treno
 	 */
@@ -57,9 +58,7 @@ public class ManagerImpl implements Manager {
 			throw new LowTrainCapacityException("Low train capacity, please increase it.");
 		}
 		
-		if(manager == null) {
-			manager = new ManagerImpl(trainCapacity);
-		}
+		manager = new ManagerImpl(trainCapacity);
 		
 		return manager;
 	}
@@ -88,12 +87,15 @@ public class ManagerImpl implements Manager {
 	 * 
 	 * @param quantità di materiale richiesto dall'utente
 	 */
+	@Override
 	public void sendRequest(Request request) {
 		boolean satisfy = false;
 		for (Director d : this.linkDirectors) {
 			if(request.getSentMaterial().equals(d.getFactory().getMaterial().getProcessedMaterial())) {
-				d.addRequestToSatisfy(request);
-				satisfy = true;
+				try {
+					d.addRequestToSatisfy(request);
+					satisfy = true;
+				} catch(WrongNeededQuantityException e) {}
 			}
 		}
 		
@@ -105,22 +107,81 @@ public class ManagerImpl implements Manager {
 	
 	/*
 	 * Viene passato un riferimento all'oggetto direttore da aggiungere al set dei direttori
+	 * e gli vengono aggiunte le richieste accettabili
 	 * 
 	 * @param direttore assunto
 	 */
 	@Override
-	public void hireDirector(Director hiredDirector) {
+	public void hireDirector(Director hiredDirector){
 		this.linkDirectors.add(hiredDirector);
+		
+		Set<Request> requestsToAdd = new LinkedHashSet<>();
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkGlobalRequests, hiredDirector));
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkRequestsManager, hiredDirector));
+		
+		for (Request request : requestsToAdd) {
+			try {
+				hiredDirector.addRequestToSatisfy(request);
+			} catch(WrongNeededQuantityException e) {}
+		}
+
+		this.linkRequestsManager.stream()
+	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+	    					    .forEach(r -> linkRequestsManager.remove(r));
+		
+	}
+	
+	private List<Request> fromLinkRequestToSpecificList(Set<Request> list, Director hiredDirector) {
+		return list.stream()
+				   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory()
+						   												.getMaterial()
+						   												.getProcessedMaterial()))
+				   .toList();
 	}
 	
 	/*
-	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
+	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori,
+	 * Inoltre verranno eliminate le richieste che hanno come destinazione l'azienda del direttore da licenziare
 	 * 
 	 * @param nome del direttore licenziato
 	 */
 	@Override
-	public void fireDirector (String directorName) {
-		this.linkDirectors.remove(getDirectorByName(directorName));		
+	public void fireDirector (String directorName) {	
+		// elimino le richieste del direttore da linkRequestsManager
+		this.linkRequestsManager.stream()
+								.filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
+								.collect(Collectors.toSet())
+								.stream()
+								.forEach(r -> linkRequestsManager.remove(r));
+		// elimino le richieste del direttore da linkGlobalManager
+		this.linkGlobalRequests.stream()
+							   .filter(r -> r.getReceiverFactory().equals(this.getDirectorByName(directorName).getFactory()))
+							   .collect(Collectors.toSet())
+							   .stream()
+							   .forEach(r -> linkGlobalRequests.remove(r));
+		/* 
+		 * prendiamo i direttori
+		 * cerchiamo i direttori che hanno almeno una richiesta da inviare all'azienda del directorName
+		 * rimuoviamo tutti le richieste dai direttori */
+		this.linkDirectors.stream()
+						  .filter(d -> !d.getRequestsToSatisfy().stream()
+								  							    .filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+								  							    .collect(Collectors.toSet())
+								  							    .isEmpty())
+						  .forEach(d -> d.getRequestsToSatisfy().stream()
+								  								.filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+								  								.forEach(r -> d.removeRequestToSatisfy(r)));
+		// per ogni direttore che ha richieste di scarico nell'azienda del direttore da eliminare, 
+		// invoco il metodo che mi permette di resettare la richiesta del direttore
+		this.linkDirectors.stream()
+		  				  .filter(d -> d.getAcceptedRequest()!=null && d.getAcceptedRequest().getReceiverFactory()== showFactoryInfo(directorName))
+		  				  .forEach(Director::setAcceptedRequestToNull);
+		// imposto come destinazione lo store a quelle richieste, contenute nel treno, che hanno come destinazione l'azienda del direttore da eliminare
+		this.train.getRequestsUnloading().stream()
+									     .filter(r -> r.getReceiverFactory().equals(showFactoryInfo(directorName)))
+									     .forEach(r -> r.setReceiverFactoryToStore());
+		// rimuovo il direttore
+		this.linkDirectors.remove(getDirectorByName(directorName));										
 	}
 
 	/*
@@ -217,35 +278,6 @@ public class ManagerImpl implements Manager {
 	}
 
 	/*
-	 * Metodo che visualizza le informazioni di una richiesta
-	 * 
-	 * @param ID della richiesta
-	 * @return richiesta associata all'id
-	 */
-	@Override
-	public Request showRequestInfo(int id){
-		try {
-			return this.show(id, this.linkGlobalRequests);
-		} catch(NoSuchElementException e){
-			return this.show(id, this.linkRequestsManager);
-		}
-	}
-	
-	/*
-	 *  Metodo che ritorna una richiesta in base all'id e al set di richieste che gli viene passato
-	 * 
-	 *  @param ID della richiesta
-	 *  @param set con le richieste
-	 *  @return richiesta associata all'id e al tipo di set passatogli 
-	 */
-	private Request show(int id, Set<Request> set) throws NoSuchElementException{
-		return set.stream()
-				  .filter(r ->r.getRequestId() == (id))
-				  .findFirst()
-				  .get();		
-	}
-
-	/*
 	 *  Metodo che ritorna la lista dei direttori assunti dal Manager
 	 * 
 	 *  @return la lista di Direttori
@@ -263,7 +295,7 @@ public class ManagerImpl implements Manager {
 		return linkRequestsManager;
 	}
 
-	/**
+	/*
 	 *  Metodo che ritorna il direttore data una specifica azienda
 	 * 
 	 *  @param Factory
@@ -275,5 +307,4 @@ public class ManagerImpl implements Manager {
 				 .findFirst()
 				 .get();
 	}
-		
 }

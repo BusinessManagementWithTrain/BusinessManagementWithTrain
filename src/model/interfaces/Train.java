@@ -1,11 +1,7 @@
 package model.interfaces;
 
 import java.util.Map;
-
-import exceptions.EmptyDestinationsSetException;
-import exceptions.EmptyWarehouseException;
-import exceptions.FullTrainException;
-import exceptions.FullWarehouseException;
+import java.util.Set;
 
 /**
  * Interfaccia del treno, ovvero l'oggetto che gestirà
@@ -18,11 +14,10 @@ public interface Train {
 	
 	/**
 	 * Metodo che invia il treno alla prossima tappa utile
-	 * @throws EmptyDestinationsSetException 
-	 * @throws EmptyWarehouseException 
+	 *
 	 * @throws Exception 
 	 */
-	void nextDestination() throws FullWarehouseException,FullTrainException, EmptyDestinationsSetException, EmptyWarehouseException, Exception;
+	void nextDestination() throws Exception;
 	
 	/**
 	 * metodo per aggiungere richieste alla lista di richieste di carico
@@ -71,4 +66,11 @@ public interface Train {
 	 * @return la capienza corrente del treno
 	 */
 	int getCurrentCapacity();
+	
+	/**
+	 * Metodo per ottenere il riferimento alle richieste di scarico
+	 * 
+	 * @return le richieste di scarico
+	 */
+	Set<Request> getRequestsUnloading();
 }

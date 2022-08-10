@@ -7,7 +7,10 @@ import javax.swing.JTextField;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
+import exceptions.EqualMaterialException;
 import exceptions.MaximumCharactersException;
+import exceptions.WrongStaffValueException;
+import exceptions.WrongWarehouseCapacityException;
 import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
 import model.classes.MaterialImpl;
@@ -220,26 +223,30 @@ public class HireDirectorFrame {
 		JButton btnNewButton_1 = new JButton("Confirm");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				try {
-					ManagerImpl.getManager().hireDirector(new DirectorImpl(directorNameTextField.getText(), new FactoryImpl(factoryNameTextField.getText(),
-																														new MaterialImpl(rawMaterialTextField.getText(),processedMaterialTextField.getText()),
-																														Integer.valueOf(numberOperatorsTextField.getText()),
-																														Integer.valueOf(loadingWarehouseSizeTextField.getText()),
-																														Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
-					frmHireDirector.dispose();
-					new ManagerFrame();
-				} catch (EmptyFieldException e1) {
-					JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in");
-				} catch (NumberFormatException e1) {
-					JOptionPane.showMessageDialog(frmHireDirector,"Enter numeric values ​​in full format");
-				} catch (MaximumCharactersException e1) {
-					JOptionPane.showMessageDialog(frmHireDirector,"The director name entered is too long, max 12 characters.");
-				}
-				
-				
+					ManagerImpl.getManager().hireDirector(new DirectorImpl(OnlyFirstCapitalized(directorNameTextField.getText()),
+									   						  			   new FactoryImpl(OnlyFirstCapitalized(factoryNameTextField.getText()),
+									   						  					   		   new MaterialImpl(OnlyFirstCapitalized(rawMaterialTextField.getText()),
+									   						  					   				   			OnlyFirstCapitalized(processedMaterialTextField.getText())),
+									   						  					   		   Integer.valueOf(numberOperatorsTextField.getText()),
+									   						  					   		   Integer.valueOf(loadingWarehouseSizeTextField.getText()),
+									   						  					   		   Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
+				frmHireDirector.dispose();
+				new ManagerFrame();
+			} catch (EqualMaterialException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"The materials are equal, change it.");
+			} catch (EmptyFieldException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in, change it");
+			} catch (NumberFormatException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"Enter numeric values ​​in full format");
+			} catch (MaximumCharactersException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"One or more names are too long, max 12 characters, change it");
+			} catch (WrongStaffValueException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"The staff members can't be more than the warehouse's capacity, change it");
+			} catch (WrongWarehouseCapacityException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,"The warehouse's capacity can't be more than the train's capacity, change it");
 			}
-		});
+		}});
 		
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -260,5 +267,8 @@ public class HireDirectorFrame {
 		return this;
 				
 	}
-
+	
+	private String OnlyFirstCapitalized(String str) {
+		return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+	}
 }
