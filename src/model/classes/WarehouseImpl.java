@@ -103,12 +103,4 @@ public class WarehouseImpl implements Warehouse {
 		return this.material;
 		
 	}
-
-	@Override
-	public String toString() {
-		return "WarehouseImpl: " + material + " " + totalCapacity + " " + currentCapacity;
-	}
-	
-	
-	
 }
