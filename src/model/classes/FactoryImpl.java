@@ -44,10 +44,10 @@ public class FactoryImpl implements Factory {
 	 * @param il numero dei dipendenti
 	 * @param la capienza del magazzino di carico
 	 * @param la capienza del magazzino di scarico
-	 * @throws EmptyFieldException 
-	 * @throws MaximumCharactersException 
-	 * @throws WrongStaffValueException 
-	 * @throws WrongWarehouseCapacityException 
+	 * @throws EmptyFieldException
+	 * @throws MaximumCharactersException
+	 * @throws WrongStaffValueException
+	 * @throws WrongWarehouseCapacityException
 	 */
 	public FactoryImpl(final String name, final Material material, final int staffSize, final int loadingSize, final int unloadingSize) throws EmptyFieldException, MaximumCharactersException, WrongStaffValueException, WrongWarehouseCapacityException {
 		if(name.length() < MIN_NAME_CHAR) {
@@ -135,13 +135,4 @@ public class FactoryImpl implements Factory {
 		FactoryImpl other = (FactoryImpl) obj;
 		return Objects.equals(name, other.name);
 	}
-
-	@Override
-	public String toString() {
-		return "FactoryImpl [name=" + name + ", material=" + material + ", loadingWarehouse=" + loadingWarehouse
-				+ ", unloadingWarehouse=" + unloadingWarehouse + ", staff=" + staff + "]";
-	}
-	
-	
-	
 }

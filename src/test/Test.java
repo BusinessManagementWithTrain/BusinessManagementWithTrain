@@ -14,6 +14,7 @@ import model.classes.DirectorImpl;
 import model.classes.FactoryImpl;
 import model.classes.MaterialImpl;
 import model.classes.RequestImpl;
+import model.classes.StoreImpl;
 import model.interfaces.Director;
 import model.interfaces.Factory;
 import model.interfaces.Material;

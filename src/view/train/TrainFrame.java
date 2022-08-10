@@ -117,36 +117,29 @@ public class TrainFrame {
 				} catch (Exception e1) {
 					
 					switch (e1.getClass().toString()) {
-					case "FullWarehouseException":
+					case "class exceptions.FullWarehouseException":
 						JOptionPane.showMessageDialog(frame, "The loading warehouse hasn't enough free space.\nThe stuff will be send to the store");
 						break;
 
-					case "EmptyDestinationsSetException":
+					case "class exceptions.EmptyDestinationsSetException":
 						JOptionPane.showMessageDialog(frame, "There isn't a next destination...");
 						break;
 					
-					case "FullTrainException":
+					case "class exceptions.FullTrainException":
 						
 						JOptionPane.showMessageDialog(frame, "The train can't load entirely your stuff, we loaded the possible amount, "
 								 							 + "check the Stuff Table.\nWe will try to load the remaining stuff later");
 						break;
 					 
-					case "EmptyWarehouseException":
+					case "class exceptions.EmptyWarehouseException":
 						JOptionPane.showMessageDialog(frame, "The unloading warehouse hasn't enough material.\nWe loaded the possible amount, "
 						         					         + "check the Stuff Table\nWe will try to load the remaining stuff later.");
-					
-					default:
-						e1.printStackTrace();
 						break;
 					}
-					
-					
-					e1.printStackTrace();
 				} finally {
 					frame.dispose();
 					new TrainFrame();
 				}
-				
 			}
 		});
 		

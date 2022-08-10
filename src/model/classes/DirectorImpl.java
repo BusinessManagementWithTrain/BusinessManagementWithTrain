@@ -58,6 +58,19 @@ public class DirectorImpl implements Director {
 	}
 
 	/*
+	 * Questo metodo permette di fare un controllo sulla capacità del magazzino
+	 * di carico, così da garantire in ingresso solo le richieste soddisfabili
+	 *
+	 * @param la quantità della richiesta da verificare
+	 * @throws WrongNeededQuantityException
+	 */
+	private void checkWarehouseCapacity(int neededQuantity) throws WrongNeededQuantityException {
+		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
+			throw new WrongNeededQuantityException();
+		}
+	}
+	
+	/*
 	 * Consente al direttore di creare una richiesta per ricevere il materiale
 	 * da lavorare
 	 * 
@@ -196,19 +209,5 @@ public class DirectorImpl implements Director {
 		DirectorImpl other = (DirectorImpl) obj;
 		return Objects.equals(this.factory, other.factory) ||
 			   Objects.equals(this.name, other.name);
-	}
-  
-  /*
-   * Questo metodo permette di fare un controllo sulla capacità del magazzino
-   * di carico prima di far girare le varie richieste, così da garantire solo
-   * le richieste soddisfabili
-   *
-   * @param la quantità della richiesta da verificare
-   * @throws WrongNeededQuantityException
-   */
-	private void checkWarehouseCapacity(int neededQuantity) throws WrongNeededQuantityException {
-		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
-			throw new WrongNeededQuantityException();
-		}
 	}
 }
