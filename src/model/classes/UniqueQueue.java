@@ -12,14 +12,23 @@ public class UniqueQueue<T> implements Queue<T> {
 
 	private final Queue<T> queue = new LinkedList<T>();
 	private final Set<T> set = new HashSet<T>();
+	 
 	
+	// se il set non conteneva l'elemento, gli viene aggiunto
+	//ed in seguito lo aggiungo alla queue
 	@Override public boolean add(T t) {
-	    // Only add element to queue if the set does not contain the specified element.
-	    if (set.add(t))
-	        queue.add(t);
-	    return true; // Must always return true as per API def.
+	    if (set.add(t)) {
+	    	 queue.add(t);
+	    	 return true;
+	    }
+	    return false;
+	       
+	    
 	}
 	
+
+	
+	//aggiunta di una colloection di elementi al set ed alla queue
 	@Override public boolean addAll(Collection<? extends T> arg0) {
 	    boolean ret = false;
 	    for (T t: arg0)
@@ -30,23 +39,27 @@ public class UniqueQueue<T> implements Queue<T> {
 	    return ret;
 	}
 	
+	//rimozione di un elemento
 	@Override public T remove() throws NoSuchElementException {
 	    T ret = queue.remove();
 	    set.remove(ret);
 	    return ret;
 	}
 	
+	//rimozione di un oggetto dalle collection
 	@Override public boolean remove(Object arg0) {
 	    boolean ret = queue.remove(arg0);
 	    set.remove(arg0);
 	    return ret;
 	}
 	
+	//rimuozione di una collection di elementi
 	@Override public boolean removeAll(Collection<?> arg0) {
 	    boolean ret = queue.removeAll(arg0);
 	    set.removeAll(arg0);
 	    return ret;
 	}
+	
 	
 	@Override public void clear() {
 	    set.clear();
@@ -93,7 +106,7 @@ public class UniqueQueue<T> implements Queue<T> {
 	@Override public T peek() {
 	    return queue.peek();
 	}
-
+	
 	@Override
 	public T poll() {
 		return queue.poll();
