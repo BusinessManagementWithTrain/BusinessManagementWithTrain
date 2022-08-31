@@ -17,12 +17,13 @@ import model.interfaces.Director;
 import model.interfaces.Request;
 
 /**
-* Classe destinata all'implementazione dell'interfaccia del direttore, ovvero l'oggetto
-* che gestir� un'azienda e comunicher� con gli altri direttori all'atto dell'utilizzo del programma.
-* 
-* @author Grasso Emanuele
-*
-*/
+ * Classe destinata all'implementazione dell'interfaccia del direttore, ovvero l'oggetto
+ * attuo a gestire un'azienda e comunicare con gli altri direttori all'atto 
+ * dell'utilizzo del programma.
+ * 
+ * @author Grasso Emanuele
+ *
+ */
 
 public class DirectorImpl implements Director {
 	
@@ -30,9 +31,9 @@ public class DirectorImpl implements Director {
 	private final static int MAX_NAME_CHAR = 12;
 	
 	/* 
-	 * Come specificato dalla documentazione, ogni direttore avrà un nome,
+	 * Come specificato dalla documentazione, ogni direttore ha un nome,
 	 * un'unica azienda da gestire, un set di richieste da poter soddisfare
-	 * e la richiesta da completare attualmente accettata
+	 * e la richiesta attualmente accettata
 	 */
 	private final String name;
 	private final Factory factory;
@@ -40,7 +41,7 @@ public class DirectorImpl implements Director {
 	private Request acceptedRequest;
 	
 	/**
-	 * Il costruttore servirà principalmente ad associare il nome e
+	 * Il costruttore serve principalmente ad associare il nome e
 	 * l'azienda al corrispettivo direttore
 	 * 
 	 * @param azienda
@@ -128,8 +129,8 @@ public class DirectorImpl implements Director {
 	}
 	
 	/*
-	 * Consente al dirigente di rimuovere una richiesta dalla lista delle
-	 * richieste soddisfabili poich� gi� soddisfatta da un altro direttore
+	 * Consente al dirigente di rimuovere una richiesta (soddisfatta da un altro
+	 * direttore) dalla lista delle richieste soddisfabili
 	 * 
 	 * @param richiestaSoddisfatta
 	 */
@@ -210,7 +211,13 @@ public class DirectorImpl implements Director {
 		return this.factory;
 	}
 
-	
+	/*
+	 * Metodo di hash riscritto in modo da garantire l'unicità dei direttori
+	 * in base al loro nome; 
+	 * restituendo un intero pari alla somma dei codici
+	 * ASCII dei caratteri del nome sommati alla posizione nel nome e moltiplicati per
+	 * la lungezza dello stesso
+	 */
 	@Override
 	public int hashCode() {
 		int value = 0;

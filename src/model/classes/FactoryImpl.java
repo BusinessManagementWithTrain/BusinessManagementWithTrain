@@ -1,6 +1,5 @@
 package model.classes;
 
-import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
 import exceptions.MaximumCharactersException;
 import exceptions.WrongStaffValueException;
@@ -62,8 +61,6 @@ public class FactoryImpl implements Factory {
 			this.unloadingWarehouse		= new WarehouseImpl(material.getProcessedMaterial(), unloadingSize);
 			this.staff 					= new StaffImpl(staffSize, this.loadingWarehouse, this.unloadingWarehouse);
 		}
-		
-		
 	}
 
 	/*
@@ -117,6 +114,13 @@ public class FactoryImpl implements Factory {
 		return this.staff;
 	}
 	
+	/*
+	 * Metodo di hash riscritto in modo da garantire l'unicità delle aziende
+	 * in base al loro nome; 
+	 * restituendo un intero pari alla somma dei codici
+	 * ASCII dei caratteri del nome sommati alla posizione nel nome e moltiplicati per
+	 * la lungezza dello stesso
+	 */
 	@Override
 	public int hashCode() {
 		int value = 0;

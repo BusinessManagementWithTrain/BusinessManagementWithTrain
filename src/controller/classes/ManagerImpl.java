@@ -1,7 +1,6 @@
 package controller.classes;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,8 +18,8 @@ import model.classes.*;
 public class ManagerImpl implements Manager {
 	
 	/*
-	 * Come specificato nella documentazione, la classe manager conterrà, rispettivamente, in primis il 
-	 * riferimento alla classe stessa per poter sfruttare il SingleTon Design Pattern, dopodichè conterrà
+	 * Come specificato nella documentazione, la classe manager contiene, rispettivamente, il 
+	 * riferimento alla classe stessa per poter sfruttare il SingleTon Design Pattern,
 	 * un set di tutti i direttori assunti, un set di tutte le richieste sottisfabili unicamente dal manager,
 	 * un set di tutte le richieste attive attualmente, il riferimento al negozio ed il riferimento al treno
 	 */
@@ -47,11 +46,11 @@ public class ManagerImpl implements Manager {
 	}
 
 	/*
-	 * Sfruttando il SingleTon Design Pattern, necessiteremo di un metodo statico
+	 * Sfruttando il SingleTon Design Pattern, necessitiamo di un metodo statico
 	 * per l'allocazione della classe del manager e, dalla seconda invocazione, il metodo
 	 * statico ci permetterà di avere il riferimento all'unica istanza del manager.
-	 * Ad eccezione delle invocazioni effettuate passando un nuovo valore intero che questo
-	 * andrà a creare un nuovo manager resettando le variabili
+	 * Ad eccezione delle invocazioni effettuate passando un nuovo valore intero poichè in questo
+	 * modo si andrà a creare un nuovo manager resettando le variabili
 	 *
 	 * @param la capacità del treno
 	 */
@@ -62,17 +61,15 @@ public class ManagerImpl implements Manager {
 			manager = null;
 			throw e;
 		}
-		
 		return manager;
 	}
-	
 	
 	public static ManagerImpl getManager() {
 		return manager;
 	}
 	
 	/*
-	 * Viene passato un nome del direttore e ritorna il riferimento al direttore 
+	 * Metodo che restituisce un direttore assunto partendo dal nome 
 	 * 
 	 * @param nome del direttore
 	 * @return il direttore associato al nome
@@ -83,9 +80,133 @@ public class ManagerImpl implements Manager {
 								 .findFirst()
 								 .get();
 	}
+	
+	/*
+	 * Metodo utilizzato per aggiungere un nuovo direttore al set dei direttori
+	 * 
+	 * @param direttore assunto
+	 */
+	@Override
+	public void hireDirector(Director hiredDirector) throws DirectorIsAlreadyPresentException {	
+		//Solo se il direttore non è presente e neanche l'azienda
+		if(this.linkDirectors.contains(hiredDirector) ||
+		   factoryIsPresent(hiredDirector.getFactory())) {
+			throw new DirectorIsAlreadyPresentException();
+		}
+		
+		this.linkDirectors.add(hiredDirector);
+		
+		/*
+		 * Da questo momento vengono rivisionate tutte le ricerche già in circolo
+		 * per selezionare quelle soddisfabili dal nuovo direttore
+		 */
+		Set<Request> requestsToAdd = new HashSet<>();
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkGlobalRequests, hiredDirector));
+		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkRequestsManager, hiredDirector));
+		
+		for (Request request : requestsToAdd) {
+			try {
+				hiredDirector.addRequestToSatisfy(request);
+			} catch(WrongNeededQuantityException e) {}
+		}
+
+		/*
+		 * Qui eliminiamo le richieste che prima erano soddisfabili solo dal manager
+		 * ma che ora vengono soddisfatte dal nuovo direttore;
+		 */
+		this.linkRequestsManager.stream()
+	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
+	    					    .forEach(r -> linkRequestsManager.remove(r));
+		
+	}
+	
+	/*
+	 * Metodo privato utilizzato per filtrare un set restituendone
+	 * un altro composto unicamente da richieste soddisfabili dal direttore richiesto
+	 * 
+	 * @param il set da filtrare
+	 * @param il direttore assunto
+	 */
+	private Set<Request> fromLinkRequestToSpecificList(Set<Request> set, Director hiredDirector) {
+		return set.stream()
+				   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory()
+						   												.getMaterial()
+						   												.getProcessedMaterial()))
+				   .collect(Collectors.toSet());
+	}
+	
+	/*
+	 * Metodo utilizzato per rimuovere un direttore dal set dei direttori
+	 * 
+	 * @param nome del direttore licenziato
+	 */
+	@Override
+	public void fireDirector (String directorName) {
+		//Salvataggio del direttore in una variabile d'appoggio
+		Director firedDirector = getDirectorByName(directorName);
+		
+		this.linkDirectors.remove(getDirectorByName(directorName));
+		
+		// elimino le richieste del direttore da linkRequestsManager
+		removeRequestBySet(linkRequestsManager, firedDirector);
+		
+		// elimino le richieste del direttore da linkGlobalManager
+		removeRequestBySet(linkGlobalRequests, firedDirector);
+		
+		/*
+		 * A questo punto elimino tutte le richieste precedentemente
+		 * create dal direttore licenziato
+		 */
+		this.linkDirectors.stream()
+						  .forEach(d -> d.getRequestsToSatisfy().stream()
+																.filter(r -> r.getReceiverFactory().equals(firedDirector.getFactory()))
+																.collect(Collectors.toSet()).stream()
+																							.forEach(r -> d.removeRequestToSatisfy(r)));
+		
+		/*
+		 * Resetto le richieste precedentemente create dal direttore
+		 * licenziato e successivamente accettate da un altro direttore
+		 */
+		this.linkDirectors.stream()
+		  				  .filter(d -> d.getAcceptedRequest() != null && 
+		  				  		  d.getAcceptedRequest().getReceiverFactory().equals(firedDirector.getFactory()))
+		  				  .forEach(Director::setAcceptedRequestToNull);
+		
+		/*
+		 * Prendo le richieste precedentemente create dal direttore
+		 * licenziato, successivamente accettate da un altro direttore
+		 * ed infine caricate sul treno e gli setto come destinazione il negozio
+		 */
+		this.train.getUnloadingRequests().stream()
+									     .filter(r -> r.getReceiverFactory().equals(firedDirector.getFactory()))
+									     .forEach(r -> r.setReceiverFactoryToStore());
+		
+		//Rimetto in circolo tutte le richieste che poteva soddisfare il direttore licenziato
+		firedDirector.getRequestsToSatisfy().stream().forEach(r -> sendRequest(r));
+		
+		if(firedDirector.getAcceptedRequest() != null) {
+			sendRequest(firedDirector.getAcceptedRequest());
+		}
+												
+	}
+	
+	/*
+	 * Metodo privato che rimuove da un set specificato tutte le richieste
+	 * in cui compare l'azienda del direttore licenziato
+	 * 
+	 * @param il set da filtrare
+	 * @param il direttore licenziato
+	 */
+	private void removeRequestBySet(Set<Request> set, Director firedDirector) {
+		set.stream()
+		   .filter(r -> r.getReceiverFactory().equals(firedDirector.getFactory()))
+		   .collect(Collectors.toSet())
+		   .stream()
+		   .forEach(r -> set.remove(r));
+	}
 		
 	/*
-	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
+	 * Metodo che aggiunge la richiesta ai vari direttori che possono soddisfarla
 	 * 
 	 * @param quantità di materiale richiesto dall'utente
 	 */
@@ -107,116 +228,19 @@ public class ManagerImpl implements Manager {
 			this.linkRequestsManager.add(request);
 	}
 	
-	
+	/*
+	 * Metodo che restituisce un valore booleano in base alla presenza
+	 * dell'azienda tra i direttori assunti
+	 * 
+	 * @param azienda da cercare
+	 * @return
+	 */
+	@Override
 	public boolean factoryIsPresent(Factory factory) {
 		return this.linkDirectors.stream()
 				   				 .map(Director::getFactory)
 				   				 .collect(Collectors.toSet()).contains(factory);
 	}
-	
-	/*
-	 * Viene passato un riferimento all'oggetto direttore da aggiungere al set dei direttori
-	 * e gli vengono aggiunte le richieste accettabili
-	 * 
-	 * @param direttore assunto
-	 */
-	@Override
-	public void hireDirector(Director hiredDirector) throws DirectorIsAlreadyPresentException {	
-		if(this.linkDirectors.contains(hiredDirector) ||
-		   factoryIsPresent(hiredDirector.getFactory())) {
-			throw new DirectorIsAlreadyPresentException();
-		}
-		
-		this.linkDirectors.add(hiredDirector);
-		
-		Set<Request> requestsToAdd = new HashSet<>();
-		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkGlobalRequests, hiredDirector));
-		requestsToAdd.addAll(fromLinkRequestToSpecificList(this.linkRequestsManager, hiredDirector));
-		
-		for (Request request : requestsToAdd) {
-			try {
-				hiredDirector.addRequestToSatisfy(request);
-			} catch(WrongNeededQuantityException e) {}
-		}
-
-		this.linkRequestsManager.stream()
-	    					    .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory().getMaterial().getProcessedMaterial()))
-	    					    .forEach(r -> linkRequestsManager.remove(r));
-		
-	}
-	
-	private List<Request> fromLinkRequestToSpecificList(Set<Request> list, Director hiredDirector) {
-		return list.stream()
-				   .filter(r -> r.getSentMaterial().equals(hiredDirector.getFactory()
-						   												.getMaterial()
-						   												.getProcessedMaterial()))
-				   .toList();
-	}
-	
-	/*
-	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori,
-	 * Inoltre verranno eliminate le richieste che hanno come destinazione l'azienda del direttore da licenziare
-	 * 
-	 * @param nome del direttore licenziato
-	 */
-	@Override
-	public void fireDirector (String directorName) {
-		Director firedDirector = getDirectorByName(directorName);
-		
-		this.linkDirectors.remove(getDirectorByName(directorName));
-		
-		// elimino le richieste del direttore da linkRequestsManager
-		removeRequestBySet(linkRequestsManager, firedDirector);
-		
-		// elimino le richieste del direttore da linkGlobalManager
-		removeRequestBySet(linkGlobalRequests, firedDirector);
-		
-		/* 
-		 * prendiamo i direttori
-		 * cerchiamo i direttori che hanno almeno una richiesta da inviare all'azienda del directorName
-		 * rimuoviamo tutti le richieste dai direttori */
-		
-		
-		/*
-		 * Prendo i direttori
-		 * cerco i direttori che hanno almeno una richiesta con destinazione la tappa
-		 * rimuovo le richieste con la tappa
-		 */
-		this.linkDirectors.stream()
-						  .forEach(d -> d.getRequestsToSatisfy().stream()
-																.filter(r -> r.getReceiverFactory().equals(firedDirector.getFactory()))
-																.collect(Collectors.toSet()).stream()
-																							.forEach(r -> d.removeRequestToSatisfy(r)));
-		
-		// per ogni direttore che ha richieste di scarico nell'azienda del direttore da eliminare, 
-		// invoco il metodo che mi permette di resettare la richiesta del direttore
-		this.linkDirectors.stream()
-		  				  .filter(d -> d.getAcceptedRequest() != null && 
-		  				  		  d.getAcceptedRequest().getReceiverFactory().equals(firedDirector.getFactory()))
-		  				  .forEach(Director::setAcceptedRequestToNull);
-		
-		// imposto come destinazione lo store a quelle richieste, contenute nel treno, che hanno come destinazione l'azienda del direttore da eliminare
-		this.train.getUnloadingRequests().stream()
-									     .filter(r -> r.getReceiverFactory().equals(firedDirector.getFactory()))
-									     .forEach(r -> r.setReceiverFactoryToStore());
-		
-		
-		firedDirector.getRequestsToSatisfy().stream().forEach(r -> sendRequest(r));
-		
-		if(firedDirector.getAcceptedRequest() != null) {
-			sendRequest(firedDirector.getAcceptedRequest());
-		}
-												
-	}
-	
-	private void removeRequestBySet(Set<Request> set, Director firedDirector) {
-		set.stream()
-		   .filter(r -> r.getReceiverFactory().equals(firedDirector.getFactory()))
-		   .collect(Collectors.toSet())
-		   .stream()
-		   .forEach(r -> set.remove(r));
-	}
-	
 
 	/*
 	 * Viene passata una richiesta che verrà successivamente inviata al treno 
@@ -238,6 +262,7 @@ public class ManagerImpl implements Manager {
 	/*
 	 * Viene passata una richiesta al Manager che verrà subito soddisfatta senza passare per il treno
 	 * Successivamente verrà eliminata dalle richieste del Manager
+	 * 
 	 * @param richiesta soddisfatta
 	 */
 	public void satisfiesRequestManager(Request requestApproved) throws FullWarehouseException {

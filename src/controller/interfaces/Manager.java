@@ -26,7 +26,7 @@ import model.interfaces.Train;
 public interface Manager {
 
 	/**
-	 * Viene passato un riferimento all'oggetto direttore da aggiungere al set dei direttori
+	 * Metodo utilizzato per aggiungere un nuovo direttore al set dei direttori
 	 * 
 	 * @param direttore assunto
 	 * @throws WrongNeededQuantityException 
@@ -35,19 +35,28 @@ public interface Manager {
 	void hireDirector(Director director) throws WrongNeededQuantityException, DirectorIsAlreadyPresentException;
 
 	/**
-	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
+	 * Metodo utilizzato per rimuovere un direttore dal set dei direttori
 	 * 
 	 * @param nome del direttore licenziato
 	 */
 	void fireDirector(String directorName);
 	
 	/**
-	 * Viene aggiunta la richiesta ai vari direttori che possono soddisfarla
+	 * Metodo che aggiunge la richiesta ai vari direttori che possono soddisfarla
 	 * 
 	 * @param quantità di materiale richiesto dall'utente
 	 * @throws WrongNeededQuantityException 
 	 */
 	void sendRequest(Request request) throws WrongNeededQuantityException;
+	
+	/**
+	 * Metodo che restituisce un valore booleano in base alla presenza
+	 * dell'azienda tra i direttori assunti
+	 * 
+	 * @param azienda da cercare
+	 * @return
+	 */
+	boolean factoryIsPresent(Factory factory);
 
 	/**
 	 * Viene passata una richiesta che verrà successivamente inviata al treno 
@@ -67,7 +76,8 @@ public interface Manager {
 
 	
 	/**
-	 * Prossima destinazione da raggiungere con il treno  
+	 * Prossima destinazione da raggiungere con il treno 
+	 * 
 	 * @throws EmptyDestinationsQueueException 
 	 * @throws EmptyWarehouseException 
 	 * @throws Exception 
@@ -84,7 +94,7 @@ public interface Manager {
 	void createNewRequest(int quantity, String directorName) throws WrongNeededQuantityException;
 	
 	/**
-	 * Metodo che permette di svuotare il magazzino con il materiale lavorato tramite il nome di un direttore
+	 * Metodo che permette di svuotare il magazzino con il materiale lavorato del direttore specificato
 	 * 
 	 * @param nome del direttore
 	 * @throws WrongNeededQuantityException 
