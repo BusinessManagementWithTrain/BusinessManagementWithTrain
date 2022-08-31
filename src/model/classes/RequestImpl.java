@@ -129,15 +129,18 @@ public class RequestImpl implements Request {
 		this.sendingFactory = null;
 	}
 	
-	
+	/*
+	 * Metodo di hash riscritto in modo da garantire l'unicità delle richieste
+	 * in base al loro id univoco
+	 */
 	@Override
 	public int hashCode() {
 		return this.requestId;
 	}
 	
 	/*
-	 * Come precedentemente specificato, l'uguaglianza tra due richieste sareffettiva
-	 * quando il loro codice univoco sar� uguale
+	 * Come precedentemente specificato, l'uguaglianza tra due richieste è effettiva
+	 * quando il loro codice univoco è uguale
 	 * 
 	 * @param obj
 	 */

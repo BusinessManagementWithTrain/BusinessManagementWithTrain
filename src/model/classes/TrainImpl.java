@@ -1,16 +1,16 @@
 package model.classes;
 
-//imports
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import controller.classes.ManagerImpl;
-import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyDestinationsQueueException;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
@@ -61,8 +61,8 @@ public class TrainImpl implements Train {
 			throw new LowTrainCapacityException();
 		}
 		
-		this.loadingRequests 		= new LinkedHashSet<>();
-		this.unloadingRequests		= new LinkedHashSet<>();
+		this.loadingRequests 		= new HashSet<>();
+		this.unloadingRequests		= new HashSet<>();
 		this.stuffMap 				= new LinkedHashMap<>();
 		this.destinationsQueue		= new UniqueQueue<>();
 		this.maxCapacity			= maxCapacity;
@@ -126,9 +126,9 @@ public class TrainImpl implements Train {
 	 * 
 	 * @throws EmptyDestinationsSetException
 	 */
-	private void checkDestinationSet() throws EmptyDestinationsSetException {
+	private void checkDestinationSet() throws EmptyDestinationsQueueException {
 		if(this.destinationsQueue.isEmpty()) {
-			throw new EmptyDestinationsSetException("Destinations set empty, no destinations");
+			throw new EmptyDestinationsQueueException("Destinations set empty, no destinations");
 		}
 	}
 	
