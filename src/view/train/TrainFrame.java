@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.*;
 
 import controller.classes.ManagerImpl;
-import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyDestinationsQueueException;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
@@ -125,7 +125,7 @@ public class TrainFrame {
 		  					  					  "ERROR!",
 		  					  					  JOptionPane.ERROR_MESSAGE);
 
-				} catch(EmptyDestinationsSetException e1) {
+				} catch(EmptyDestinationsQueueException e1) {
 					JOptionPane.showMessageDialog(frame,
 		  					  					  "There isn't a next destination!",
 		  					  					  "ERROR!",

@@ -5,7 +5,7 @@ import java.util.Set;
 import exceptions.AnotherAcceptedRequestException;
 import exceptions.AnotherEmptyRequestIsPresentException;
 import exceptions.DirectorIsAlreadyPresentException;
-import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyDestinationsQueueException;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
@@ -66,11 +66,11 @@ public interface Manager {
 	
 	/**
 	 * Prossima destinazione da raggiungere con il treno  
-	 * @throws EmptyDestinationsSetException 
+	 * @throws EmptyDestinationsQueueException 
 	 * @throws EmptyWarehouseException 
 	 * @throws Exception 
 	 */
-	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsSetException, EmptyDestinationsSetException, EmptyWarehouseException, Exception;
+	void nextDestination() throws FullWarehouseException, FullTrainException, EmptyDestinationsQueueException, EmptyDestinationsQueueException, EmptyWarehouseException, Exception;
 	
 	/**
 	 * Metodo che servirà per creare una nuova richiesta grazie al direttore specificato

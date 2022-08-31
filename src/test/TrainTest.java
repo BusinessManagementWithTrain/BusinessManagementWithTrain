@@ -8,7 +8,7 @@ import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import controller.classes.ManagerImpl;
-import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyDestinationsQueueException;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
@@ -129,9 +129,13 @@ public class TrainTest {
 	private void firstExceptionTrainTest() throws Exception {
 		/*
 		 * Nella seconda batteria di test andremo a verificare le corrette invocazioni
-		 * delle eccezioni create ad hoc
+		 * delle prime eccezioni create ad hoc
 		 */
 		try {
+			/*
+			 * La prima eccezione testata è quella relativa alla creazione di un treno
+			 * con capienza inferiore alle 100 unità (valore decretato da noi)
+			 */
 			ManagerImpl.getManager(0);
 		} catch(LowTrainCapacityException e) {
 			assertNull(ManagerImpl.getManager());
@@ -139,7 +143,10 @@ public class TrainTest {
 		
 		ManagerImpl.getManager(1000);
 		
-		
+		/*
+		 * Proseguiamo creando tre aziende la cui dimensione dei magazzini di carico ci permetterà
+		 * di testare efficacemente le prime eccezioni
+		 */
 		Material primoMateriale			= new MaterialImpl("Grezzo", "Lavorato");
 		Factory primaAzienda			= new FactoryImpl("PrimaAz", primoMateriale, 20, 400, 1000);
 		Director primoDirettore		 	= new DirectorImpl("PrimoDir", primaAzienda);
@@ -156,13 +163,21 @@ public class TrainTest {
 		ManagerImpl.getManager().hireDirector(terzoDirettore);
 		
 		try {
+			/*
+			 * La seconda eccezione testata è quella relativa al tentativo di far muovere
+			 * il treno senza aver prima inserito una tappa
+			 */
 			ManagerImpl.getManager().nextDestination();
 			fail("No exception here!");
-		} catch(EmptyDestinationsSetException e) {
+		} catch(EmptyDestinationsQueueException e) {
 			assertNull(ManagerImpl.getManager().showTrainInfo().getCurrentDestination());
 		}
 		
 		try {
+			/*
+			 * La terza eccezione testata è quella relativa al tentato sovraccarico
+			 * del treno
+			 */
 			Request richiesta 			= secondoDirettore.newRequest(1000);
 			primoDirettore.addRequestToSatisfy(richiesta);
 			ManagerImpl.getManager().satisfiesRequestDirector(richiesta, "PrimoDir");
@@ -179,6 +194,13 @@ public class TrainTest {
 			fail("No exception here!");
 			
 		} catch(FullTrainException e) {
+			/*
+			 * Riscontrata l'eccezione però dobbiamo testare che il programma si comporti
+			 * come specificato nella documentazione:
+			 * 	- Caricare più materiale possibile nel treno;
+			 * 	- Riaggiungere la tappa attuale in fondo alla lista;
+			 * 	- Riprovare a soddisfare le richieste rimanenti in un secondo momento
+			 */
 			assertEquals(100, terzoDirettore.getFactory().getUnloadingWarehouse().getCurrentCapacity());
 			assertEquals(1000, ManagerImpl.getManager().showTrainInfo().getCurrentCapacity());
 			assertTrue(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().equals(terzaAzienda));
@@ -193,6 +215,16 @@ public class TrainTest {
 	}
 	
 	private void fullWarehouseExceptionTrainTest() throws Exception {
+		
+		/*
+		 * Nella terza batteria di test andremo a verificare la corretta invocazione
+		 * dell'eccezione "FullWarehouseException"
+		 */
+		
+		/*
+		 * Iniziamo creando tre aziende di cui due con i magazzini uguali
+		 * ed una con i magazzini leggermente più grandi delle altre due
+		 */
 		Material primoMateriale			= new MaterialImpl("Grezzo", "Lavorato");
 		Factory primaAzienda			= new FactoryImpl("PrimaAz", primoMateriale, 20, 400, 400);
 		Director primoDirettore		 	= new DirectorImpl("PrimoDir", primaAzienda);
@@ -209,20 +241,23 @@ public class TrainTest {
 		ManagerImpl.getManager().hireDirector(terzoDirettore);
 		
 		try {
+			/*
+			 * A questo punto andiamo a creare due richieste la cui somma supera la capienza
+			 * del magazzino di carico dell'azienda richiedente
+			 */
 			Request richiesta	 		= secondoDirettore.newRequest(400);
-			
 			primoDirettore.addRequestToSatisfy(richiesta);
 			ManagerImpl.getManager().satisfiesRequestDirector(richiesta, "PrimoDir");
 			primoDirettore.getFactory().getUnloadingWarehouse().addMaterial(400);
 			
 			richiesta = secondoDirettore.newRequest(200);
-			
 			terzoDirettore.addRequestToSatisfy(richiesta);
 			ManagerImpl.getManager().satisfiesRequestDirector(richiesta, "TerzoDir");
 			terzoDirettore.getFactory().getUnloadingWarehouse().addMaterial(200);
 			
 			assertEquals(2, ManagerImpl.getManager().showTrainInfo().getLoadingRequests().size());
 			
+			//Proseguiamo facendo spostare il treno fino alla tappa desiderata
 			ManagerImpl.getManager().nextDestination();
 			assertTrue(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().equals(primaAzienda));
 			assertEquals(400, ManagerImpl.getManager().showTrainInfo().getCurrentCapacity());
@@ -239,6 +274,12 @@ public class TrainTest {
 			
 			fail("No exception here!");
 		} catch(FullWarehouseException e) {
+			/*
+			 * Riscontrata l'eccezione però dobbiamo testare che il programma si comporti
+			 * come specificato nella documentazione:
+			 * 	- Scaricare più materiale possibile nel magazzino di scarico;
+			 * 	- Aggiungere il negozio alle tappe da raggiungere;
+			 */
 			assertTrue(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().equals(secondaAzienda));
 			
 			ManagerImpl.getManager().nextDestination();
@@ -248,6 +289,13 @@ public class TrainTest {
 	}
 	
 	private void emptyWarehouseExceptionTrainTest() throws Exception {
+		
+		/*
+		 * Nella terza batteria di test andremo a verificare la corretta invocazione
+		 * dell'eccezione "EmptyWarehouseException"
+		 */
+		
+		//Andiamo a creare le aziende di cui necessiteremo per il test
 		Material primoMateriale			= new MaterialImpl("Grezzo", "Lavorato");
 		Factory primaAzienda			= new FactoryImpl("PrimaAz", primoMateriale, 20, 400, 400);
 		Director primoDirettore		 	= new DirectorImpl("PrimoDir", primaAzienda);
@@ -264,22 +312,32 @@ public class TrainTest {
 		ManagerImpl.getManager().hireDirector(terzoDirettore);
 		
 		try {
-			Request richiesta = secondoDirettore.newRequest(200);
-			
+			/*
+			 * A questo punto andiamo a creare due richieste ma facciamo in modo che
+			 * solamente ad un azienda possa soddisfarne una
+			 */
+			Request richiesta = secondoDirettore.newRequest(200);	
 			primoDirettore.addRequestToSatisfy(richiesta);
 			ManagerImpl.getManager().satisfiesRequestDirector(richiesta, "PrimoDir");
 			primoDirettore.getFactory().getUnloadingWarehouse().addMaterial(200);
 			
 			richiesta = secondoDirettore.newRequest(200);
-			
 			terzoDirettore.addRequestToSatisfy(richiesta);
 			ManagerImpl.getManager().satisfiesRequestDirector(richiesta, "TerzoDir");
-			
+		
+			//Proseguiamo facendo spostare il treno fino alla tappa desiderata
 			ManagerImpl.getManager().nextDestination();
 			ManagerImpl.getManager().nextDestination();
 			
 			fail("No exception here!");
 		} catch(EmptyWarehouseException e) {
+			/*
+			 * Riscontrata l'eccezione però dobbiamo testare che il programma si comporti
+			 * come specificato nella documentazione:
+			 * 	- Caricare più materiale possibile nel treno;
+			 * 	- Riaggiungere la tappa attuale in fondo alla lista;
+			 * 	- Riprovare a soddisfare le richieste rimanenti in un secondo momento
+			 */
 			assertTrue(ManagerImpl.getManager().showTrainInfo().getCurrentDestination().equals(terzaAzienda));
 			
 			ManagerImpl.getManager().nextDestination();

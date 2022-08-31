@@ -2,7 +2,14 @@ package test;
 
 
 /**
- * Breve descrizione dei test
+ * Test effettuati sfruttando il framework JUnit.
+ * Come si può notare dalla composizione di questa classe, viene invocata
+ * una classe separata per ogni componente da testare, con relativo messaggio
+ * di conferma in caso di test superato.
+ * 
+ * Ogni classe di test conterrà al suo interno le batterie di test
+ * ritenute necessarie per ottenere un corretto feedback da parte
+ * dell'applicativo.
  * 
  * @author Grasso Emanuele
  */
