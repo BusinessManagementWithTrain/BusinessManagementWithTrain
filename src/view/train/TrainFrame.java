@@ -13,6 +13,10 @@ import javax.swing.JTable;
 import javax.swing.table.*;
 
 import controller.classes.ManagerImpl;
+import exceptions.EmptyDestinationsSetException;
+import exceptions.EmptyWarehouseException;
+import exceptions.FullTrainException;
+import exceptions.FullWarehouseException;
 import exceptions.LowTrainCapacityException;
 import view.manager.ManagerFrame;
 
@@ -112,30 +116,37 @@ public class TrainFrame {
 			public void mouseClicked(MouseEvent e) {				
 				try {
 					ManagerImpl.getManager().nextDestination();
-					JOptionPane.showMessageDialog(frame, ManagerImpl.getManager().showTrainInfo().getQuantitytoUnLoad() + " Kg have been unloaded \n" + 
+					JOptionPane.showMessageDialog(frame, ManagerImpl.getManager().showTrainInfo().getQuantitytoUnload() + " Kg have been unloaded \n" + 
 												  		 ManagerImpl.getManager().showTrainInfo().getQuantitytoLoad() + " Kg have been loaded");
-				} catch (Exception e1) {
-					
-					switch (e1.getClass().toString()) {
-					case "class exceptions.FullWarehouseException":
-						JOptionPane.showMessageDialog(frame, "The loading warehouse hasn't enough free space.\nThe stuff will be send to the store");
-						break;
+				} catch(FullWarehouseException e1) {
+					JOptionPane.showMessageDialog(frame,
+		  					  					  "The loading warehouse hasn't enough free space."
+		  					  					  + "\nThe stuff will be send to the store!",
+		  					  					  "ERROR!",
+		  					  					  JOptionPane.ERROR_MESSAGE);
 
-					case "class exceptions.EmptyDestinationsSetException":
-						JOptionPane.showMessageDialog(frame, "There isn't a next destination...");
-						break;
-					
-					case "class exceptions.FullTrainException":
-						
-						JOptionPane.showMessageDialog(frame, "The train can't load entirely your stuff, we loaded the possible amount, "
-								 							 + "check the Stuff Table.\nWe will try to load the remaining stuff later");
-						break;
-					 
-					case "class exceptions.EmptyWarehouseException":
-						JOptionPane.showMessageDialog(frame, "The unloading warehouse hasn't enough material.\nWe loaded the possible amount, "
-						         					         + "check the Stuff Table\nWe will try to load the remaining stuff later.");
-						break;
-					}
+				} catch(EmptyDestinationsSetException e1) {
+					JOptionPane.showMessageDialog(frame,
+		  					  					  "There isn't a next destination!",
+		  					  					  "ERROR!",
+		  					  					  JOptionPane.ERROR_MESSAGE);
+
+				} catch(FullTrainException e1) {
+					JOptionPane.showMessageDialog(frame,
+		  					  					  "The train can't load entirely your stuff, we loaded the possible amount,\n"
+		  					  					  + "check the Stuff Table.\nWe will try to load the remaining stuff later!",
+		  					  					  "Warning!",
+		  					  					  JOptionPane.WARNING_MESSAGE);
+
+				} catch(EmptyWarehouseException e1) {
+					JOptionPane.showMessageDialog(frame,
+		  					  					  "The unloading warehouse hasn't enough material.\nWe loaded the possible amount,"
+		  					  					  + "check the Stuff Table.\nWe will try to load the remaining stuff later!",
+		  					  					  "Warning!",
+		  					  					  JOptionPane.WARNING_MESSAGE);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					System.exit(0);
 				} finally {
 					frame.dispose();
 					new TrainFrame();

@@ -82,9 +82,15 @@ public class FirstPageFrame {
 					new ManagerFrame();
 					initialPage.dispose();
 				} catch (NumberFormatException e1) {
-				JOptionPane.showMessageDialog(initialPage,"The value is not an integer.");
+					JOptionPane.showMessageDialog(initialPage,
+							  					  "The value is not an integer!",
+							  					  "ERROR!",
+							  					  JOptionPane.ERROR_MESSAGE);
 				} catch (LowTrainCapacityException e1) {
-				JOptionPane.showMessageDialog(initialPage,"The value is too low, please increase it.");
+					JOptionPane.showMessageDialog(initialPage,
+		  					  					  "The value is too low, please increase it!",
+		  					  					  "ERROR!",
+		  					  					  JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

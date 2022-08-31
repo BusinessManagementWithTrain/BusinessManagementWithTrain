@@ -1,5 +1,7 @@
 package model.classes;
 
+import controller.classes.ManagerImpl;
+import exceptions.WrongSendingFactoryException;
 import model.interfaces.Factory;
 import model.interfaces.Request;
 
@@ -34,10 +36,9 @@ public class RequestImpl implements Request {
 	 * Inotre associa l'id univoco della richiesta che viene gestito
 	 * ed aggiornato ad ogni nuova richiesta
 	 * 
-	 * @param azienda mittente
-	 * @param azienda destinatario
-	 * @param materiale richiesto
-	 * @param quantit� richiesta
+	 * @param receiverFactory : azienda mittente
+	 * @param sentMaterial : nome del materiale richiesto
+	 * @param sentQuantity : quantità richiesta
 	 */
 	public RequestImpl(final Factory receiverFactory, final String sentMaterial, final int sentQuantity) {
 		this(null, receiverFactory, sentMaterial, sentQuantity);
@@ -106,9 +107,15 @@ public class RequestImpl implements Request {
 	 * avr� accettato la richiesta
 	 * 
 	 * @param aziendaMittente
+	 * @throws WrongSendingFactoryException
 	 */
 	@Override
-	public void setSendingFactory(Factory sendingFactory) {
+	public void setSendingFactory(Factory sendingFactory) throws WrongSendingFactoryException {
+		if(!sendingFactory.getMaterial().getProcessedMaterial().equals(this.sentMaterial) ||
+		   !ManagerImpl.getManager().factoryIsPresent(sendingFactory)) {
+			throw new WrongSendingFactoryException();
+		}
+			
 		this.sendingFactory = sendingFactory;
 	}
 	
@@ -119,8 +126,14 @@ public class RequestImpl implements Request {
 	@Override
 	public void setReceiverFactoryToStore() {
 		this.receiverFactory = StoreImpl.getStoreInstance();
+		this.sendingFactory = null;
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		return this.requestId;
+	}
 	
 	/*
 	 * Come precedentemente specificato, l'uguaglianza tra due richieste sareffettiva

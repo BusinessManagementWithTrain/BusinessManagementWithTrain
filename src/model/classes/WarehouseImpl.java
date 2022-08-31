@@ -45,6 +45,7 @@ public class WarehouseImpl implements Warehouse {
 	 * Incrementa il numero di materiale all'interno del magazzino
 	 * 
 	 * @param quantit� da inserire nel magazzino
+	 * @throws FullWarehouseException
 	 */
 	@Override
 	public void addMaterial(int quantity) throws FullWarehouseException {
@@ -62,10 +63,10 @@ public class WarehouseImpl implements Warehouse {
 	 */
 	@Override
 	public void removeMaterial(int quantity) throws EmptyWarehouseException {
-		if(!(this.currentCapacity - quantity >= 0)){
-			
-			throw new EmptyWarehouseException("The warehouse is empty!");
+		if(this.currentCapacity - quantity < 0){
+			throw new EmptyWarehouseException();
 		}
+		
 		this.currentCapacity -= quantity;
 	}
 

@@ -30,7 +30,7 @@ public class StoreImpl implements Store {
 	 * Il costruttore sar� privato per consentire l'utilizzo del Singleton Pattern
 	 */
 	private StoreImpl() {
-		this.loadingWarehouse = new Warehouse(){
+		this.loadingWarehouse = new Warehouse() {
 			@Override
 			public void addMaterial(int quantity) {}
 

@@ -1,8 +1,10 @@
 package model.interfaces;
 
+import exceptions.WrongSendingFactoryException;
+
 /**
  * Interfaccia della richiesta, oggetto fondamentale sul quale tutto il programma grava,
- * questa consentir� ai vari direttori e al dirigente di poter richiedere e/o spedire del materiale.
+ * questa consente ai vari direttori e al dirigente di poter richiedere e/o spedire del materiale.
  * 
  * @author Grasso Emanuele
  */
@@ -49,8 +51,9 @@ public interface Request {
 	 * avr� accettato la richiesta
 	 * 
 	 * @param azienda mittente
+	 * @throws WrongSendingFactoryException 
 	 */
-	void setSendingFactory(Factory sendingFactory);
+	void setSendingFactory(Factory sendingFactory) throws WrongSendingFactoryException;
 
 	/**
 	 * Consente di impostare il parametro dell'azienda ricevente nel negozio, così da

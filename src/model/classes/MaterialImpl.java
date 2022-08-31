@@ -1,7 +1,7 @@
 package model.classes;
 
 
-import exceptions.EqualMaterialException;
+import exceptions.EqualsMaterialsException;
 import model.interfaces.Material;
 
 /**
@@ -15,8 +15,8 @@ import model.interfaces.Material;
 public class MaterialImpl implements Material {
 
 	/*
-	 * Come indicato dalla documentazione, ogni materiale conterr� le informazioni relative
-	 * al nome, due materiali verranno considerati uguali quando avranno lo stesso nome
+	 * Come indicato dalla documentazione, ogni materiale 
+	 * contiene le informazioni relative al nome del grezzo e del lavorato
 	 */
 	private final String rawMaterial;
 	private final String processedMaterial;
@@ -26,11 +26,11 @@ public class MaterialImpl implements Material {
 	 * poter creare un materiale completo.
 	 * 
 	 * @param name
-	 * @throws EqualMaterialException 
+	 * @throws EqualsMaterialsException 
 	 */
-	public MaterialImpl(final String rawMaterial, final String processedMaterial) throws EqualMaterialException {
+	public MaterialImpl(final String rawMaterial, final String processedMaterial) throws EqualsMaterialsException {
 		if(rawMaterial.equals(processedMaterial)) {
-			throw new EqualMaterialException();
+			throw new EqualsMaterialsException();
 		}
 		
 		this.rawMaterial 			= rawMaterial;
@@ -55,24 +55,5 @@ public class MaterialImpl implements Material {
 	@Override
 	public String getProcessedMaterial() {
 		return this.processedMaterial;
-	}
-
-	/*
-	 * Come indicato nella documentazione, due materiali verranno considerati uguali
-	 * quando avranno lo stesso nome
-	 * 
-	 * @param obj
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MaterialImpl other = (MaterialImpl) obj;
-		return (this.processedMaterial.equals(other.rawMaterial) ||
-				this.rawMaterial.equals(other.processedMaterial));
 	}
 }

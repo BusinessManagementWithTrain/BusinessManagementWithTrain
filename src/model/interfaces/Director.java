@@ -3,11 +3,13 @@ package model.interfaces;
 import java.util.Set;
 
 import exceptions.AnotherAcceptedRequestException;
+import exceptions.AnotherEmptyRequestIsPresentException;
 import exceptions.WrongNeededQuantityException;
 
 /**
- * Interfaccia del direttore, ovvero l'oggetto che gestir�
- * un'azienda e comunicher� con gli altri direttori all'atto dell'utilizzo del programma.
+ * Interfaccia del direttore, ovvero l'oggetto attuo a gestire
+ * un'azienda e comunicare con gli altri direttori all'atto 
+ * dell'utilizzo del programma.
  * 
  * @author Grasso Emanuele
  */
@@ -29,8 +31,9 @@ public interface Director {
 	 * 
 	 * @return la richiesta per svuotare
 	 * @throws WrongNeededQuantityException 
+	 * @throws AnotherEmptyRequestIsPresentException 
 	 */
-	Request emptyWarehouse() throws WrongNeededQuantityException; 
+	Request emptyWarehouse() throws WrongNeededQuantityException, AnotherEmptyRequestIsPresentException; 
 	
 	/**
 	 * Consente al dirigente di aggiungere una richiesta al set delle

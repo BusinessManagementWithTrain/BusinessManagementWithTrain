@@ -20,6 +20,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import controller.classes.ManagerImpl;
+import exceptions.AnotherEmptyRequestIsPresentException;
 import exceptions.WrongNeededQuantityException;
 import model.interfaces.Factory;
 
@@ -118,9 +119,18 @@ public class UnloadingRequestPopup {
 			try {
 				ManagerImpl.getManager().emptyWarehouse(directorName);
 				JOptionPane.showMessageDialog(unloadingRequestDialogPopup, "Unloading Request Create Succesfully!");
-				unloadingRequestDialogPopup.dispose();
 			} catch(WrongNeededQuantityException exc) {
-				JOptionPane.showMessageDialog(unloadingRequestDialogPopup, "The unloading warehouse is already empty!");
+				JOptionPane.showMessageDialog(unloadingRequestDialogPopup,
+					    					  "The unloading warehouse is already empty!",
+					    					  "ERROR!",
+					    					  JOptionPane.ERROR_MESSAGE);
+			} catch(AnotherEmptyRequestIsPresentException exc) {
+				JOptionPane.showMessageDialog(unloadingRequestDialogPopup,
+  					  						  "Another empty request has already been created!",
+  					  						  "ERROR!",
+  					  						  JOptionPane.ERROR_MESSAGE);
+			} finally {
+				unloadingRequestDialogPopup.dispose();
 			}
 			
 		});
