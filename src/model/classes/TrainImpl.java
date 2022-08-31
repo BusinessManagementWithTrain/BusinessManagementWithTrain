@@ -4,12 +4,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
+=======
+//imports
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+>>>>>>> 201efd9507c5ae2cd0fb834f39cdef16d12ff1c6
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import controller.classes.ManagerImpl;
 import exceptions.EmptyDestinationsQueueException;
 import exceptions.EmptyWarehouseException;
@@ -174,7 +179,7 @@ public class TrainImpl implements Train {
 					/*
 					 * A questo punto proviamo a scaricare singolarmente tutte le richieste
 					 * provando prima a riempire il magazzino di carico che potrebbe generare
-					 * un'eccezione se troppo pieno.
+					 * un'eccezione, nel caso sia troppo pieno.
 					 * Procedendo poi a svuotare il treno rimuovendo la richiesta ormai completata
 					 */
 					this.currentDestination.getLoadingWarehouse().addMaterial(request.getSentQuantity());
