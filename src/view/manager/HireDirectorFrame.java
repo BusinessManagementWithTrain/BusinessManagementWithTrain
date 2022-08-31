@@ -6,8 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import controller.classes.ManagerImpl;
+import exceptions.DirectorIsAlreadyPresentException;
 import exceptions.EmptyFieldException;
-import exceptions.EqualMaterialException;
+import exceptions.EqualsMaterialsException;
 import exceptions.MaximumCharactersException;
 import exceptions.WrongStaffValueException;
 import exceptions.WrongWarehouseCapacityException;
@@ -225,7 +226,7 @@ public class HireDirectorFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ManagerImpl.getManager().hireDirector(new DirectorImpl(OnlyFirstCapitalized(directorNameTextField.getText()),
-									   						  			   new FactoryImpl(OnlyFirstCapitalized(factoryNameTextField.getText()),
+									   						  			   new FactoryImpl(factoryNameTextField.getText(),
 									   						  					   		   new MaterialImpl(OnlyFirstCapitalized(rawMaterialTextField.getText()),
 									   						  					   				   			OnlyFirstCapitalized(processedMaterialTextField.getText())),
 									   						  					   		   Integer.valueOf(numberOperatorsTextField.getText()),
@@ -233,18 +234,42 @@ public class HireDirectorFrame {
 									   						  					   		   Integer.valueOf(unloadingWarehouseSizeTextField.getText()))));
 				frmHireDirector.dispose();
 				new ManagerFrame();
-			} catch (EqualMaterialException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"The materials are equal, change it.");
+			} catch (EqualsMaterialsException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,
+	  					  					  "The materials are equals, change it!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
 			} catch (EmptyFieldException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"One of the fields has not been filled in, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,
+	  					  					  "One of the fields has not been filled in, change it!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
 			} catch (NumberFormatException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"Enter numeric values ​​in full format");
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(frmHireDirector,
+	  					  					  "Enter numeric values ​​in full format!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
 			} catch (MaximumCharactersException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"One or more names are too long, max 12 characters, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,
+	  					  					  "One or more names are too long,\nmax 12 characters, change it!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
 			} catch (WrongStaffValueException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"The staff members can't be more than the warehouse's capacity, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,
+	  					  					  "The staff members can't be more than\nthe warehouse's capacity, change it!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
 			} catch (WrongWarehouseCapacityException e1) {
-				JOptionPane.showMessageDialog(frmHireDirector,"The warehouse's capacity can't be more than the train's capacity, change it");
+				JOptionPane.showMessageDialog(frmHireDirector,
+	  					  					  "The warehouse's capacity can't be more than\nthe train's capacity, change it!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
+			} catch (DirectorIsAlreadyPresentException e1) {
+				JOptionPane.showMessageDialog(frmHireDirector,
+						  					  "This director is already hired, remember\ntwo directors are equals whed they have\nthe same name or factory!",
+						  					  "ERROR!",
+						  					  JOptionPane.ERROR_MESSAGE);
 			}
 		}});
 		

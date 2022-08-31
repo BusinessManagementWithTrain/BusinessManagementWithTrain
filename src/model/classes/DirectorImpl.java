@@ -3,14 +3,16 @@ package model.classes;
 import model.interfaces.Factory;
 
 import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Set;
 
+import controller.classes.ManagerImpl;
 import exceptions.AnotherAcceptedRequestException;
+import exceptions.AnotherEmptyRequestIsPresentException;
 import exceptions.EmptyFieldException;
 import exceptions.MaximumCharactersException;
 import exceptions.WrongNeededQuantityException;
+import exceptions.WrongSendingFactoryException;
 import model.interfaces.Director;
 import model.interfaces.Request;
 
@@ -54,7 +56,7 @@ public class DirectorImpl implements Director {
 		
 		this.name 				= name;
 		this.factory 			= factory;
-		this.requestsToSatisfy	= new LinkedHashSet<>();
+		this.requestsToSatisfy	= new HashSet<>();
 	}
 
 	/*
@@ -62,10 +64,11 @@ public class DirectorImpl implements Director {
 	 * di carico, così da garantire in ingresso solo le richieste soddisfabili
 	 *
 	 * @param la quantità della richiesta da verificare
+	 * @param la capienza del magazzino da paragonare
 	 * @throws WrongNeededQuantityException
 	 */
-	private void checkWarehouseCapacity(int neededQuantity) throws WrongNeededQuantityException {
-		if(neededQuantity < 1 || neededQuantity > this.factory.getLoadingWarehouse().getTotalCapacity()) {
+	private void checkWarehouseCapacity(int neededQuantity, int warehouseCapacity) throws WrongNeededQuantityException {
+		if(neededQuantity < 1 || neededQuantity > warehouseCapacity) {
 			throw new WrongNeededQuantityException();
 		}
 	}
@@ -80,7 +83,8 @@ public class DirectorImpl implements Director {
 	@Override
 	public Request newRequest(int neededQuantity) throws WrongNeededQuantityException {
 		
-		checkWarehouseCapacity(neededQuantity);
+		checkWarehouseCapacity(neededQuantity,
+							   this.factory.getLoadingWarehouse().getTotalCapacity());
 		
 		return new RequestImpl(this.factory,
 							   this.factory.getLoadingWarehouse().getMaterial(),
@@ -89,13 +93,19 @@ public class DirectorImpl implements Director {
 	
 	/*
 	 * Crea la richiesta per svuotare il magazzino di prodotti lavorati
-	 * 
+	 *  
 	 * @return la richiesta per svuotare
 	 */
 	@Override
-	public Request emptyWarehouse() throws WrongNeededQuantityException {
+	public Request emptyWarehouse() throws WrongNeededQuantityException, AnotherEmptyRequestIsPresentException {
 		if(this.factory.getUnloadingWarehouse().getCurrentCapacity() == 0) {
 			throw new WrongNeededQuantityException();
+		} else if(ManagerImpl.getManager()
+						     .showTrainInfo()
+							 .getLoadingRequests().stream()
+												  .anyMatch(r -> r.getReceiverFactory().equals(StoreImpl.getStoreInstance()) &&
+														  	     r.getSendingFactory().equals(this.factory))) {
+			throw new AnotherEmptyRequestIsPresentException();
 		}
 		
 		return new RequestImpl(this.factory,
@@ -111,7 +121,8 @@ public class DirectorImpl implements Director {
 	 */
 	@Override
 	public void addRequestToSatisfy(Request requestToSatisfy) throws WrongNeededQuantityException {
-		checkWarehouseCapacity(requestToSatisfy.getSentQuantity());
+		checkWarehouseCapacity(requestToSatisfy.getSentQuantity(),
+							   this.factory.getUnloadingWarehouse().getTotalCapacity());
 		
 		this.requestsToSatisfy.add(requestToSatisfy);
 	}
@@ -139,8 +150,15 @@ public class DirectorImpl implements Director {
 			throw new AnotherAcceptedRequestException();
 		}
 		
-		requestFulfilled.setSendingFactory(factory);
+		try {
+			requestFulfilled.setSendingFactory(this.factory);
+		} catch (WrongSendingFactoryException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
 		this.acceptedRequest = requestFulfilled;
+		this.requestsToSatisfy.remove(requestFulfilled);
 	}
 	
 	/*
@@ -191,6 +209,18 @@ public class DirectorImpl implements Director {
 	public Factory getFactory() {
 		return this.factory;
 	}
+
+	
+	@Override
+	public int hashCode() {
+		int value = 0;
+		
+		for (int i = 0; i < this.name.length(); i++) {
+			value += this.name.toCharArray()[i] + i;
+		}
+		
+		return value * this.name.length();
+	}
 	
 	/*
 	 * Come specificato nella documentazione, due direttori sono considerati
@@ -207,7 +237,9 @@ public class DirectorImpl implements Director {
 		if (getClass() != obj.getClass())
 			return false;
 		DirectorImpl other = (DirectorImpl) obj;
-		return Objects.equals(this.factory, other.factory) ||
-			   Objects.equals(this.name, other.name);
+		return this.name.equals(other.name) ||
+			   this.factory.equals(other.factory);
 	}
+	
+	
 }

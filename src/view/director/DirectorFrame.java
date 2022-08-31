@@ -28,12 +28,14 @@ public class DirectorFrame {
 
 	private JFrame directorFrame;
 	private final String directorName;
+	private final Factory directorFactory;
 
 	/**
 	 * Create the application.
 	 */
 	public DirectorFrame(String directorName) {
 		this.directorName = directorName;
+		this.directorFactory = ManagerImpl.getManager().showFactoryInfo(directorName);
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

@@ -145,7 +145,10 @@ public class ViewRequestsFrame {
 				try {
 					ManagerImpl.getManager().satisfiesRequestManager(request);
 				} catch (FullWarehouseException e1) {
-					JOptionPane.showMessageDialog(panel_1,"The loading Warehouse of \""+request.getReceiverFactory().getName()+"\" is full");
+					JOptionPane.showMessageDialog(panel_1,
+												  "The loading Warehouse of \""+request.getReceiverFactory().getName()+"\" is full!",
+												  "ERROR!",
+												  JOptionPane.ERROR_MESSAGE);
 				}
 				frmViewRequests.dispose();
 				new ViewRequestsFrame();

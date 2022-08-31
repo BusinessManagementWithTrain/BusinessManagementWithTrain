@@ -1,11 +1,13 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
-import exceptions.EqualMaterialException;
+import exceptions.EqualsMaterialsException;
 import exceptions.MaximumCharactersException;
 import exceptions.WrongStaffValueException;
 import exceptions.WrongWarehouseCapacityException;
@@ -18,16 +20,16 @@ public class FactoryTest {
 	
 	/*
 	 * I test sulle aziende si focalizzano principalmente nel verificare
-	 * le corrette allocazioni e soprattutto verificare l'utilizzo corretto
+	 * le corrette allocazioni, il corretto funzionamento dei metodi (specialmente
+	 * quello relativo all'uguaglianza) e soprattutto verificare l'utilizzo corretto
 	 * delle eccezioni.
 	 */
 	
-	@org.junit.Test
 	public void factoryTests() {
 		try {
 			/*
-			 * In entrambe le creazioni del manager notiamo che la capienza del treno viene
-			 * asssociata sempre a 1000, questo per evitare di incorrere nell'eccezione
+			 * In entrambe le creazioni del manager notiamo che la capienza del treno viene 
+			 * associata sempre a 1000, questo per evitare di incorrere nell'eccezione
 			 */
 			
 			//Creiamo un nuovo manager ed invochiamo la prima batteria di test
@@ -40,108 +42,138 @@ public class FactoryTest {
 		} catch (Exception e) {
 			//Se arriviamo qui qualcosa è andato storto
 			e.printStackTrace();
+			fail("Unexpected exception!");
 		}
 	}
 
-	private void generalFactoryTest() throws EqualMaterialException, EmptyFieldException, MaximumCharactersException, WrongStaffValueException, WrongWarehouseCapacityException {
+	private void generalFactoryTest() throws EqualsMaterialsException, EmptyFieldException, MaximumCharactersException, WrongStaffValueException, WrongWarehouseCapacityException {
 
 		/*
 		 * Nella prima batteria andremo a testare le associazioni corrette da parte
 		 * dell'applicativo e, successivamente, andremo a verificare il criterio
 		 * d'uguaglianza, ossia il nome uguale
 		 */
-		Material primoMateriale 	= new MaterialImpl("Primogrezzo", "Primolavorato");
-		Factory primaAzienda		= new FactoryImpl("Nomeazienda", primoMateriale, 20, 400, 300);
 		
-		assertEquals(primaAzienda.getMaterial().getRawMaterial(), "Primogrezzo");
-		assertEquals(primaAzienda.getMaterial().getProcessedMaterial(), "Primolavorato");
-		assertEquals(primaAzienda.getName(), "Nomeazienda");
-		assertEquals(primaAzienda.getLoadingWarehouse().getTotalCapacity(), 400);
-		assertEquals(primaAzienda.getUnloadingWarehouse().getTotalCapacity(), 300);
-		assertEquals(primaAzienda.getStuffMembers().getNumber(), 20);
-			
-		Material secondoMateriale 	= new MaterialImpl("Secgrezzo", "Seclavorato");
-		Factory secondaAzienda	= new FactoryImpl("Nomeazienda", secondoMateriale, 30, 300, 400);
-		assertEquals(primaAzienda, secondaAzienda);		
+		//Iniziamo creando un'azienda e verificando l'allocazione corretta delle componenti
+		Material primoMateriale 	= new MaterialImpl("PrimGrezzo", "PrimLavorato");
+		Factory primaAzienda		= new FactoryImpl("azienda", primoMateriale, 20, 400, 300);
+		
+		assertEquals("PrimGrezzo", primaAzienda.getMaterial().getRawMaterial());
+		assertEquals("PrimLavorato", primaAzienda.getMaterial().getProcessedMaterial());
+		assertEquals("azienda", primaAzienda.getName());
+		assertEquals(400, primaAzienda.getLoadingWarehouse().getTotalCapacity());
+		assertEquals(300, primaAzienda.getUnloadingWarehouse().getTotalCapacity());
+		assertEquals(20, primaAzienda.getStuffMembers().getNumber());
+		
+		/*
+		 * A questo punto andiamo a testare il criterio d'uguaglianza associando
+		 * alla nuova azienda un nuovo materiale ma il nome uguale alla prima azienda
+		 */
+		Material secondoMateriale 	= new MaterialImpl("SecGrezzo", "SecLavorato");
+		Factory secondaAzienda		= new FactoryImpl("azienda", secondoMateriale, 30, 300, 400);
+		
+		//Verifichiamo l'uguaglianza accertandoci di avere a che fare con due entità distinte
+		assertNotSame(primaAzienda, secondaAzienda);
+		assertEquals(primaAzienda, secondaAzienda);
 	}
 	
-	private void exceptionFactoryTest() {
+	private void exceptionFactoryTest() throws EqualsMaterialsException {
 		/*
 		 * Nella seconda batteria di test andremo a verificare le corrette invocazioni
 		 * delle eccezioni create ad hoc
 		 */
-		Material materiale;
-		Factory azienda = null;
+		
+		//Iniziamo creando tutto il necessario per permetterci di inizializzare un'azienda
+		Material materiale 			= new MaterialImpl("Grezzo", "Lavorato");
+		Factory azienda 			= null;
 		
 		try {
-			//Nel primo caso il nome dell'azienda è vuoto
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("", materiale, 20, 400, 300);
-		} catch(EmptyFieldException | EqualMaterialException | MaximumCharactersException | WrongStaffValueException | WrongWarehouseCapacityException e) {
-			assertEquals(e.getClass(), EmptyFieldException.class);
+			//La prima eccezione testata è quella relativa ad un nome "vuoto"
+			azienda					= new FactoryImpl("", materiale, 20, 400, 300);
+			fail("No exception here!");
+		} catch(EmptyFieldException | MaximumCharactersException | WrongStaffValueException | WrongWarehouseCapacityException e) {
+			assertEquals(EmptyFieldException.class, e.getClass());
 			assertNull(azienda);
 		}
 		
 		try {
-			//Nel secondo caso il nome dell'azienda supera i 12 caratteri massimi consentiti
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("Nomemagg12car", materiale, 20, 400, 300);
-		} catch(MaximumCharactersException | EqualMaterialException | EmptyFieldException | WrongStaffValueException | WrongWarehouseCapacityException e) {
-			assertEquals(e.getClass(), MaximumCharactersException.class);
+			//La seconda eccezione testata è quella relativa ad un nome più lungo di 12 caratteri
+			azienda					= new FactoryImpl("Nomemagg12car", materiale, 20, 400, 300);
+			fail("No exception here!");
+		} catch(MaximumCharactersException | EmptyFieldException | WrongStaffValueException | WrongWarehouseCapacityException e) {
+			assertEquals(MaximumCharactersException.class, e.getClass());
 			assertNull(azienda);
 		}
 		
 		try {
-			//Nel terzo caso il numero dei membri staff supera la capienza dei magazzini
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("Nomeazienda", materiale, 500, 400, 300);
-		} catch(WrongStaffValueException | EqualMaterialException | EmptyFieldException | MaximumCharactersException | WrongWarehouseCapacityException e) {
-			assertEquals(e.getClass(), WrongStaffValueException.class);
+			/*
+			 * La terza eccezione testata è quella relativa al numero dei membri dello staff
+			 * superiore al numero della capienza di entrambi i magazzini
+			 */
+			azienda					= new FactoryImpl("Nomeazienda", materiale, 500, 400, 300);
+			fail("No exception here!");
+		} catch(WrongStaffValueException | EmptyFieldException | MaximumCharactersException | WrongWarehouseCapacityException e) {
+			assertEquals(WrongStaffValueException.class, e.getClass());
 			assertNull(azienda);
 		}
 		
 		try {
-			//Nel quarto caso il numero dei membri staff supera la capienza del magazzino di scarico
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("Nomeazienda", materiale, 400, 500, 300);
-		} catch(WrongStaffValueException | EqualMaterialException | EmptyFieldException | MaximumCharactersException | WrongWarehouseCapacityException e) {
-			assertEquals(e.getClass(), WrongStaffValueException.class);
+			/*
+			 * La quarta eccezione testata è quella relativa al numero dei membri dello staff
+			 * superiore al numero della capienza del magazzino di scarico
+			 */
+			azienda					= new FactoryImpl("Nomeazienda", materiale, 400, 500, 300);
+			fail("No exception here!");
+		} catch(WrongStaffValueException | EmptyFieldException | MaximumCharactersException | WrongWarehouseCapacityException e) {
+			assertEquals(WrongStaffValueException.class, e.getClass());
 			assertNull(azienda);
 		}
 		
 		try {
-			//Nel quinto caso il numero dei membri staff supera la capienza del magazzino di carico
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("Nomeazienda", materiale, 400, 300, 500);
-		} catch(WrongStaffValueException | EqualMaterialException | EmptyFieldException | MaximumCharactersException | WrongWarehouseCapacityException e) {
-			assertEquals(e.getClass(), WrongStaffValueException.class);
+			/*
+			 * La quinta eccezione testata è quella relativa al numero dei membri dello staff
+			 * superiore al numero della capienza del magazzino di carico
+			 */
+			azienda					= new FactoryImpl("Nomeazienda", materiale, 400, 300, 500);
+			fail("No exception here!");
+		} catch(WrongStaffValueException | EmptyFieldException | MaximumCharactersException | WrongWarehouseCapacityException e) {
+			assertEquals(WrongStaffValueException.class, e.getClass());
 			assertNull(azienda);
 		}
 
 		try {
-			//Nel sesto caso la capienza dei magazzini supera la capienza del treno
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("Nomeazienda", materiale, 20, 2000, 2000);
-		} catch(WrongWarehouseCapacityException | EqualMaterialException | EmptyFieldException | MaximumCharactersException | WrongStaffValueException e) {
-			assertEquals(e.getClass(), WrongWarehouseCapacityException.class);
+			/*
+			 * La sesta eccezione testata è quella relativa al numero della capienza 
+			 * di entrambi i magazzini superiore alla capienza del treno
+			 */
+			azienda					= new FactoryImpl("Nomeazienda", materiale, 20, 2000, 2000);
+			fail("No exception here!");
+		} catch(WrongWarehouseCapacityException | EmptyFieldException | MaximumCharactersException | WrongStaffValueException e) {
+			assertEquals(WrongWarehouseCapacityException.class, e.getClass());
 			assertNull(azienda);
 		}
 		
 		try {
-			//Nel settimo caso la capienza del magazzino di scarico supera la capienza del treno
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("Nomeazienda", materiale, 20, 200, 2000);
-		} catch(WrongWarehouseCapacityException | EqualMaterialException | EmptyFieldException | MaximumCharactersException | WrongStaffValueException e) {
-			assertEquals(e.getClass(), WrongWarehouseCapacityException.class);
+			/*
+			 * La settima eccezione testata è quella relativa al numero della capienza 
+			 * del magazzino di scarico superiore alla capienza del treno
+			 */
+			azienda					= new FactoryImpl("Nomeazienda", materiale, 20, 200, 2000);
+			fail("No exception here!");
+		} catch(WrongWarehouseCapacityException | EmptyFieldException | MaximumCharactersException | WrongStaffValueException e) {
+			assertEquals(WrongWarehouseCapacityException.class, e.getClass());
 			assertNull(azienda);
 		}
 		
 		try {
-			//Nell'ottavo caso la capienza del magazzino di carico supera la capienza del treno
-			materiale 	= new MaterialImpl("Grezzo", "Lavorato");
-			azienda		= new FactoryImpl("Nomeazienda", materiale, 20, 2000, 200);
-		} catch(WrongWarehouseCapacityException | EqualMaterialException | EmptyFieldException | MaximumCharactersException | WrongStaffValueException e) {
-			assertEquals(e.getClass(), WrongWarehouseCapacityException.class);
+			/*
+			 * L'ottava eccezione testata è quella relativa al numero della capienza 
+			 * del magazzino di carico superiore alla capienza del treno
+			 */
+			azienda					= new FactoryImpl("Nomeazienda", materiale, 20, 2000, 200);
+			fail("No exception here!");
+		} catch(WrongWarehouseCapacityException | EmptyFieldException | MaximumCharactersException | WrongStaffValueException e) {
+			assertEquals(WrongWarehouseCapacityException.class, e.getClass());
 			assertNull(azienda);
 		}
 		

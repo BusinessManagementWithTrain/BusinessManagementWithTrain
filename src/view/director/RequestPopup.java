@@ -188,7 +188,10 @@ public class RequestPopup {
 				directorFrame.dispose();
 				new DirectorFrame(directorName);
 			} catch (AnotherAcceptedRequestException e1) {
-				JOptionPane.showMessageDialog(requestPopup, "Another request is already accepted!");
+				JOptionPane.showMessageDialog(requestPopup,
+											  "Another request is already accepted!",
+											  "ERROR!",
+											  JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		newPanel.add(acceptButton);

@@ -60,9 +60,15 @@ public class StaffFrame {
 				new StaffFrame(internalDirectorName);
 				
 			} catch (EmptyWarehouseException e1) {
-				JOptionPane.showMessageDialog(frame, "The loading Warehouse has not enough materials!");
+				JOptionPane.showMessageDialog(frame,
+						  					  "The loading Warehouse has not enough materials!",
+						  					  "ERROR!",
+						  					  JOptionPane.ERROR_MESSAGE);
 			} catch (StaffIsAlreadyWorkingException e1) {
-				JOptionPane.showMessageDialog(frame, "The staff is already working!");
+				JOptionPane.showMessageDialog(frame,
+						  					  "The staff is already working!",
+						  					  "ERROR!",
+						  					  JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		startWorkingBtn.setBounds(135, 30, 165, 50);
@@ -77,11 +83,16 @@ public class StaffFrame {
 				new StaffFrame(internalDirectorName);
 				
 			} catch (FullWarehouseException e1) {
-				JOptionPane.showMessageDialog(frame, "The unloading Warehouse has not enough space!");
+				JOptionPane.showMessageDialog(frame,
+	  					  					  "The unloading Warehouse has not enough space!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
 			} catch (StaffIsAlreadyNotWorkingException e1) {
-				JOptionPane.showMessageDialog(frame, "The staff is already not working!");
+				JOptionPane.showMessageDialog(frame,
+	  					  					  "The staff is already not working!",
+	  					  					  "ERROR!",
+	  					  					  JOptionPane.ERROR_MESSAGE);
 			}
-			
 		});
 		stopWorkingBtn.setBounds(135, 183, 165, 50);
 		frame.getContentPane().add(stopWorkingBtn);

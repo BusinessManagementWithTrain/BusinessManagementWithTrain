@@ -14,6 +14,7 @@ import exceptions.EmptyDestinationsSetException;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
 import exceptions.FullWarehouseException;
+import exceptions.LowTrainCapacityException;
 import model.interfaces.Factory;
 import model.interfaces.Request;
 import model.interfaces.Train;
@@ -37,6 +38,8 @@ public class TrainImpl implements Train {
 	 * Inoltre, per aiutare l'interfaccia grafica, il treno supporterà due ulteriori campi per far
 	 * facilmente riferimento alla quantità di materiale caricato e scaricato.
 	 */
+	private static final int MIN_QUANTITY = 100;
+	
 	private final Set<Request> loadingRequests;
 	private final Set<Request> unloadingRequests;
 	private final Map<String,Integer> stuffMap;
@@ -51,8 +54,13 @@ public class TrainImpl implements Train {
 	 * e per inizializzare tutte le strutture dati e gli indicatori
 	 * 
 	 * @param capacitÃ  massima di spazio del treno
+	 * @throws LowTrainCapacityException 
 	 */
-	public TrainImpl(final int maxCapacity) {
+	public TrainImpl(final int maxCapacity) throws LowTrainCapacityException {
+		if(maxCapacity < MIN_QUANTITY) {
+			throw new LowTrainCapacityException();
+		}
+		
 		this.loadingRequests 		= new LinkedHashSet<>();
 		this.unloadingRequests		= new LinkedHashSet<>();
 		this.stuffMap 				= new LinkedHashMap<>();
@@ -106,7 +114,7 @@ public class TrainImpl implements Train {
 	 * @param la quantità da aggiungere al treno
 	 * @return true o false in base al controllo
 	 */
-	private void isFull(int newLoad) throws FullTrainException{
+	private void isFull(int newLoad) throws FullTrainException {
 		if(getCurrentCapacity() + newLoad > this.maxCapacity) {
 			throw new FullTrainException();
 		}
@@ -125,9 +133,15 @@ public class TrainImpl implements Train {
 	}
 	
 	/*
+	 * Metodo utilizzato per modificare i valori della mappa all'interno
+	 * del treno
+	 * 
+	 * @param il materiale da modificare
+	 * @param il valore da aggiungere/rimuovere dalla mappa
+	 * @return il valore da aggiungere/rimuovere dalla mappa in valore assoluto
 	 * 
 	 */
-	private int mapManage(int quantity,String material,int sentQuanity) {
+	private int mapManage(String material, int sentQuanity) {
 		this.stuffMap.merge(material, sentQuanity, Integer::sum); 
 		
 		return Math.abs(sentQuanity);
@@ -164,8 +178,7 @@ public class TrainImpl implements Train {
 					 */
 					this.currentDestination.getLoadingWarehouse().addMaterial(request.getSentQuantity());
 					
-					this.quantityToUnload =	mapManage(this.quantityToUnload,
-													  request.getSentMaterial(),
+					this.quantityToUnload =	mapManage(request.getSentMaterial(),
 													  - request.getSentQuantity());	
 					
 					this.unloadingRequests.remove(request);
@@ -190,6 +203,9 @@ public class TrainImpl implements Train {
 		//A questo punto procediamo con le richieste di carico (se presenti)
 		if(!getLoadingRequest().isEmpty()) {
 		
+			//Inizialmente rimuoviamo la tappa corrente che, in caso di problemi, verrà riaggiunta
+			this.destinationsQueue.remove(this.currentDestination);
+			
 			for (Request request : this.getLoadingRequest()) {
 				
 				//Posizioniamo un try-catch all'interno di un ciclo for-each così da gestire eventuali eccezioni
@@ -202,21 +218,19 @@ public class TrainImpl implements Train {
 					isFull(request.getSentQuantity());
 					this.currentDestination.getUnloadingWarehouse().removeMaterial(request.getSentQuantity()); 
 
-					this.quantityToLoad = mapManage(this.quantityToLoad,
-													request.getSentMaterial(),
+					this.quantityToLoad = mapManage(request.getSentMaterial(),
 													request.getSentQuantity());
 	
 				 	this.loadingRequests.remove(request);
 				 	this.unloadingRequests.add(request);
-				 	this.destinationsQueue.add(request.getReceiverFactory()); 
+				 	this.destinationsQueue.add(request.getReceiverFactory());
 					
-				 	
-				 	if(request.getReceiverFactory() != StoreImpl.getStoreInstance()) {
+				 	if(!request.getReceiverFactory().equals(StoreImpl.getStoreInstance())) {
 				 		ManagerImpl.getManager().getDirectorByFactory(this.currentDestination).setAcceptedRequestToNull();
 				 	}
 				} catch (EmptyWarehouseException | FullTrainException e) {
-					this.destinationsQueue.remove(this.currentDestination);
 					this.destinationsQueue.add(this.currentDestination);
+					myException = e;
 				}
 			}
 		}
@@ -237,7 +251,6 @@ public class TrainImpl implements Train {
 		checkDestinationSet();
 		this.currentDestination = this.destinationsQueue.peek();
 		cargoManagement();
-		this.destinationsQueue.remove(this.currentDestination);
 	}
 	
 	/*
@@ -298,7 +311,7 @@ public class TrainImpl implements Train {
 	 * @return la quantità da scaricare dal treno
 	 */
 	@Override
-	public int getQuantitytoUnLoad() {
+	public int getQuantitytoUnload() {
 		return this.quantityToUnload;
 	}
 	
@@ -321,9 +334,19 @@ public class TrainImpl implements Train {
 	 * @return le richieste di scarico
 	 */
 	@Override
-	public Set<Request> getRequestsUnloading() {
+	public Set<Request> getUnloadingRequests() {
 		return Collections.unmodifiableSet(this.unloadingRequests);
 		
+	}
+	
+	/*
+	 * Metodo per ottenere il riferimento alle richieste di carico
+	 * 
+	 * @return le richieste di carico
+	 */
+	@Override
+	public Set<Request> getLoadingRequests() {
+		return Collections.unmodifiableSet(this.loadingRequests);
 	}
 }
 

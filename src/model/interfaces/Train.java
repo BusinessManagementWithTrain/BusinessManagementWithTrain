@@ -52,7 +52,7 @@ public interface Train {
 	 *
 	 * @return la quantità da scaricare dal treno
 	 */
-	int getQuantitytoUnLoad();
+	int getQuantitytoUnload();
 
 	/**
 	 * Metodo che consente di avere il riferimento alla capienza massima del treno 
@@ -73,5 +73,12 @@ public interface Train {
 	 * 
 	 * @return le richieste di scarico
 	 */
-	Set<Request> getRequestsUnloading();
+	Set<Request> getUnloadingRequests();
+	
+	/**
+	 * Metodo per ottenere il riferimento alle richieste di carico
+	 * 
+	 * @return le richieste di carico
+	 */
+	Set<Request> getLoadingRequests();
 }

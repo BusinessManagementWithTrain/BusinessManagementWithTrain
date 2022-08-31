@@ -16,10 +16,10 @@ import model.interfaces.Warehouse;
 
 public class StaffImpl implements Staff {
 	/*
-	 * Come specificato nella documentazione, ogni gruppo di operatori avr� il riferimento
+	 * Come specificato nella documentazione, ogni gruppo di operatori ha il riferimento
 	 * al numero totale dei dipendenti, al magazzino di carico in cui lavorare, al magazzino di
-	 * scarico dove appoggiare il materiale lavorato ed un booleano che controller� se i dipendenti
-	 * stiano effettivamente lavorando
+	 * scarico dove appoggiare il materiale lavorato ed un booleano che controllerà se i dipendenti
+	 * staranno effettivamente lavorando
 	 */
 	private final int staffNumber;
 	private final Warehouse receiverWarehouse;
@@ -27,9 +27,9 @@ public class StaffImpl implements Staff {
 	private boolean isStaffWorking;
 	
 	/**
-	 * Il costruttore servir� principalmente ad assegnare i valori presi in input alle variabili interne e
-	 * ad inizializzare la variabile booleana a false in quanto, all'atto della creazione, i 
-	 * dipendenti non stiano ancora lavorando
+	 * Il costruttore assegna i valori presi in input alle variabili interne ed inizializza
+	 * la variabile booleana a false in quanto, all'atto della creazione, i 
+	 * dipendenti non stanno ancora lavorando
 	 * 
 	 * @throws WrongStaffValueException 
 	 */

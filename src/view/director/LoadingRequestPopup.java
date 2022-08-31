@@ -122,9 +122,15 @@ public class LoadingRequestPopup {
 				JOptionPane.showMessageDialog(loadingRequestDialogPopup, "Loading Request Create Succesfully!");
 				loadingRequestDialogPopup.dispose();
 			} catch(NumberFormatException exc) {
-				JOptionPane.showMessageDialog(loadingRequestDialogPopup, "The entered value is not an integer!");
+				JOptionPane.showMessageDialog(loadingRequestDialogPopup,
+  						 					  "The entered value is not an integer!",
+  						 					  "ERROR!",
+  						 					  JOptionPane.ERROR_MESSAGE);
 			} catch(WrongNeededQuantityException exc) {
-				JOptionPane.showMessageDialog(loadingRequestDialogPopup, "The entered value is too big, negative or null!");
+				JOptionPane.showMessageDialog(loadingRequestDialogPopup,
+											  "The entered value is too big, negative or null!",
+											  "ERROR!",
+											  JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		buttonsPanel.add(createButton, BorderLayout.EAST);

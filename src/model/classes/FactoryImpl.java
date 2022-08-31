@@ -1,7 +1,6 @@
 package model.classes;
 
-import java.util.Objects;
-
+import controller.classes.ManagerImpl;
 import exceptions.EmptyFieldException;
 import exceptions.MaximumCharactersException;
 import exceptions.WrongStaffValueException;
@@ -118,6 +117,17 @@ public class FactoryImpl implements Factory {
 		return this.staff;
 	}
 	
+	@Override
+	public int hashCode() {
+		int value = 0;
+		
+		for (int i = 0; i < this.name.length(); i++) {
+			value += this.name.toCharArray()[i] + i;
+		}
+		
+		return value * this.name.length();
+	}
+	
 	/*
 	 * Come specificato nella documentazione, due aziende sono considerate uguali
 	 * se hanno lo stesso nome
@@ -133,6 +143,6 @@ public class FactoryImpl implements Factory {
 		if (getClass() != obj.getClass())
 			return false;
 		FactoryImpl other = (FactoryImpl) obj;
-		return Objects.equals(name, other.name);
+		return this.name.equals(other.name);
 	}
 }

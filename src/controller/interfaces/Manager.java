@@ -3,6 +3,8 @@ package controller.interfaces;
 import java.util.Set;
 
 import exceptions.AnotherAcceptedRequestException;
+import exceptions.AnotherEmptyRequestIsPresentException;
+import exceptions.DirectorIsAlreadyPresentException;
 import exceptions.EmptyDestinationsSetException;
 import exceptions.EmptyWarehouseException;
 import exceptions.FullTrainException;
@@ -28,8 +30,9 @@ public interface Manager {
 	 * 
 	 * @param direttore assunto
 	 * @throws WrongNeededQuantityException 
+	 * @throws DirectorIsAlreadyPresentException 
 	 */
-	void hireDirector(Director director) throws WrongNeededQuantityException;
+	void hireDirector(Director director) throws WrongNeededQuantityException, DirectorIsAlreadyPresentException;
 
 	/**
 	 * Viene passato il nome di un direttore da rimuovere dal set dei direttori
@@ -57,9 +60,8 @@ public interface Manager {
 
 	/**
 	 * Questo metodo permette al Manager di soddisfare le richieste che non possono soddisfare i direttori
+	 * 
 	 * @throws FullWarehouseException 
-	 * 
-	 * 
 	 */
 	void satisfiesRequestManager(Request requestApproved) throws FullWarehouseException;
 
@@ -86,8 +88,9 @@ public interface Manager {
 	 * 
 	 * @param nome del direttore
 	 * @throws WrongNeededQuantityException 
+	 * @throws AnotherEmptyRequestIsPresentException 
 	 */
-	void emptyWarehouse(String directorName) throws WrongNeededQuantityException;
+	void emptyWarehouse(String directorName) throws WrongNeededQuantityException, AnotherEmptyRequestIsPresentException;
 	
 	/**
 	 * Metodo che visualizza le informazioni riguardanti un direttore
