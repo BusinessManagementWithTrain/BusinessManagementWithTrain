@@ -1,8 +1,9 @@
 package model.interfaces;
 
 /**
- * Interfaccia dell'azienda, ovvero l'oggetto per il quale saranno usati i magazzini 
- * per interagire con il treno.
+ * Interfaccia dell'azienda, ovvero l'oggetto dotato di due magazzini che interagisce con il treno 
+ * per il carico e lo scarico del materiale, il quale verrà lavorato
+ * dai membri dello staff interni a quest'oggetto.   
  * @author Rinaldi Simone
  */
 

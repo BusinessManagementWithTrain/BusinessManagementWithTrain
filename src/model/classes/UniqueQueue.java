@@ -130,4 +130,3 @@ public class UniqueQueue<T> implements Queue<T> {
 		return " UniqueQueue " + queue ;
 	}
 }
-

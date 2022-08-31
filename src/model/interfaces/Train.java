@@ -4,8 +4,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Interfaccia del treno, ovvero l'oggetto che gestirà
- * il carico e lo scarico merci tra i magazzini delle aziende
+ * Interfaccia del treno, ovvero l'oggetto che simulerà 
+ * il mezzo di trasporto attuo a gestire il carico e lo scarico merci 
+ * tra i magazzini delle aziende.
  * 
  * @author Rinaldi Simone
  */

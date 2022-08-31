@@ -16,7 +16,9 @@ import model.interfaces.Request;
 import model.interfaces.Train;
 
 /**
- * Breve descrizione del dirigente
+ * Interfaccia del Manager, oggetto che ha la possibilità di gestire un numero non arbitrario
+ * di direttori e di manipolare le operazioni tra di essi. 
+ * Ha inoltre la possibilità di soddisfare particolari richieste.
  * 
  * @author Battistelli Stefano
  */
